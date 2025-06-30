@@ -1,7 +1,7 @@
-import { TelaLoginHub } from "@/components/ui/Teladelogin";
+import { BlocoInformativo } from "@/components/ui/BlocoInformativo";
 
 function App() {
-  return <TelaLoginHub />;
+  return <BlocoInformativo />;
 }
 
 export default App;
