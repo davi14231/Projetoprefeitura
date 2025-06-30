@@ -1,7 +1,7 @@
-import { BlocoInformativo } from "@/components/ui/BlocoInformativo";
+import { SolicitarDoacao } from "@/components/ui/SolicitarDoacao";
 
 function App() {
-  return <BlocoInformativo />;
+  return <SolicitarDoacao />;
 }
 
 export default App;
