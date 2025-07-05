@@ -1,7 +1,7 @@
-import { SolicitarDoacao } from "@/components/ui/SolicitarDoacao";
+import { Teladelogin } from "@/components/ui/Teladelogin";
 
 function App() {
-  return <SolicitarDoacao />;
+  return <Teladelogin />;
 }
 
 export default App;

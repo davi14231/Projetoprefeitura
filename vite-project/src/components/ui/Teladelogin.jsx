@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export function TelaLoginHub() {
+export function Teladelogin() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
