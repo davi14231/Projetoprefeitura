@@ -1,4 +1,4 @@
-import { Header } from "@/components/ui/layouts/Headertelainicial";
+import { Header } from "@/components/ui/layouts/Header";
 
 function App(){
   return <Header />;
