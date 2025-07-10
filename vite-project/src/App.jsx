@@ -1,7 +1,7 @@
-import { SolicitarDoacao } from "@/components/ui/paginas/SolicitarDoacao";
+import { Header } from "@/components/ui/layouts/Headertelainicial";
 
 function App(){
-  return <SolicitarDoacao />;
+  return <Header />;
 }
 
 export default App;
