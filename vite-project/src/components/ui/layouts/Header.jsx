@@ -19,12 +19,19 @@ export function Header() {
           {/* Campo de busca */}
           <div className="flex-1 flex justify-center md:justify-center my-2 md:my-0">
             <div className="relative w-full max-w-md">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <img
+                  src="/imagens/lupa.png"
+                  alt="Buscar"
+                  className="w-5 h-5 opacity-60"
+                  draggable={false}
+                />
+              </span>
               <Input
                 type="text"
                 placeholder="Pesquisar necessidades ou itens das ONGs"
                 className="pl-10 pr-4 py-2 rounded-lg text-gray-800 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">🔍</span>
             </div>
           </div>
 
@@ -34,9 +41,6 @@ export function Header() {
             <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Realocação</a>
             <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Necessidades</a>
             <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors text-sm border-b-2 border-blue-400 pb-1">Edição</a>
-            <Botao className="ml-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white text-sm font-medium">
-              Entrar como ONG
-            </Botao>
           </nav>
         </div>
       </div>
