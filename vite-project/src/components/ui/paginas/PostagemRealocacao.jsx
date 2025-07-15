@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Upload, Facebook, Instagram } from "lucide-react";
 
-export function PostargemRealocação() {
+export function PostagemRealocacao() {
   const [facebook, setFacebook] = useState(false);
   const [instagram, setInstagram] = useState(false);
 
