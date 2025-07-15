@@ -1,47 +1,28 @@
-import './Footer.css';
-
-const Footer = () => {
+export function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer-container">
-        <div className="footer-column">
+    <footer className="bg-[#172233] w-full text-white py-12 px-4 border-t-2 border-blue-400">
+      <div className="max-w-6xl mx-auto flex flex-wrap gap-12">
+        {/* Logo e slogan */}
+        <div className="min-w-[220px] flex flex-col gap-2">
           <img
             src="/imagens/logo-recife.png"
-            alt="Logo da Prefeitura do Recife"
-            className="footer-logo"
+            alt="Recife Prefeitura"
+            className="w-36 mb-2"
           />
-          <p className="footer-tagline">A união que transforma vidas</p>
+          <span className="font-bold text-lg">Bora Impactar</span>
+          <span className="text-sm text-white/80 leading-tight">A união que transforma vidas</span>
         </div>
-
-        <div className="footer-column">
-          <h3>Links Rápidos</h3>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-            <li><a href="/doacoes">Portal de Doações</a></li>
-            <li><a href="/estoque">Plataforma de Estoque</a></li>
-            <li><a href="/perfil">Perfil</a></li>
-            <li><a href="/">Home</a></li>
-            <li><a href="/suporte">Suporte</a></li>
-          </ul>
-        </div>
-
-        <div className="footer-column">
-          <h3>Como Podemos Ajudar?</h3>
-          <p>
-            Para solicitar algo específico ou informações, envie<br />
-            um contato:<br />
-            <a href="mailto:contato@recifeconecta.org">contato@recifeconecta.org</a>
-          </p>
-        </div>
-
-        <div className="footer-column">
-          <h3>Como a ONG Solicita Itens?</h3>
-          <p>
-            Acesse o site Org da sua ONG e clique em “Solicitar”
-          </p>
+        {/* Portal */}
+        <div className="min-w-[220px] flex flex-col gap-2">
+          <span className="font-bold text-lg mb-1">Portal</span>
+          <a href="#" className="text-white/90 text-sm hover:underline">Início</a>
+          <a href="#" className="text-white/90 text-sm hover:underline">ONG</a>
+          <a href="#" className="text-white/90 text-sm hover:underline">Conecta Recife</a>
+          <a href="#" className="text-white/90 text-sm hover:underline">Sobre as ONGs</a>
         </div>
       </div>
     </footer>
   );
-};
+}
 
 export default Footer;
