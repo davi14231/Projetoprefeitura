@@ -10,12 +10,12 @@ export function CardHome({
   descricao,
 }) {
   return (
-    <Card className="max-w-sm w-full bg-white rounded-2xl border border-blue-200 shadow-lg overflow-hidden transition hover:shadow-xl p-0">
+    <Card className="w-full min-w-[260px] max-w-[340px] bg-white rounded-2xl border border-blue-200 shadow-lg overflow-hidden transition hover:shadow-xl p-0 mx-auto">
       <div className="relative">
         <img
           src={imageUrl}
           alt={titulo}
-          className="w-full h-44 object-cover rounded-t-2xl m-0"
+          className="w-full h-40 md:h-44 lg:h-48 object-cover rounded-t-2xl m-0"
         />
         {/* Badges sobre a imagem */}
         <div className="absolute top-4 left-4 flex gap-2 z-10">
@@ -32,8 +32,8 @@ export function CardHome({
           </span>
         </div>
       </div>
-      <CardContent className="py-6 px-6">
-        <CardTitle className="text-3xl font-bold mb-2 leading-tight">{titulo}</CardTitle>
+      <CardContent className="py-5 px-5">
+        <CardTitle className="text-xl md:text-2xl font-bold mb-2 leading-tight">{titulo}</CardTitle>
         <a href="#" className="text-blue-600 text-base font-medium hover:underline mb-3 block">{ong}</a>
         <CardDescription className="text-gray-600 text-base mt-2 leading-relaxed">
           {descricao}
