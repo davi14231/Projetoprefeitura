@@ -22,10 +22,12 @@ export function BlocoONG() {
               </div>
             </div>
             <div className="pt-4">
-              <span className="font-semibold text-gray-800 mb-1">Cadastre sua ONG</span>
-              <span className="text-gray-500 text-sm text-center">
+              <div className="font-semibold text-gray-800 mb-2 text-center">
+                Cadastre sua ONG
+              </div>
+              <p className="text-gray-500 text-sm text-center">
                 Faça o cadastro e seja validado pela equipe da plataforma
-              </span>
+              </p>
             </div>
           </div>
           <div className="bg-white rounded-lg shadow-md p-6 w-64 flex flex-col items-center relative">
@@ -38,10 +40,12 @@ export function BlocoONG() {
               </div>
             </div>
             <div className="pt-4">
-              <span className="font-semibold text-gray-800 mb-1">Adicione necessidades</span>
-              <span className="text-gray-500 text-sm text-center">
+              <div className="font-semibold text-gray-800 mb-2 text-center">
+                Adicione necessidades
+              </div>
+              <p className="text-gray-500 text-sm text-center">
                 Publique os itens que sua ONG precisa e mantenha atualizado
-              </span>
+              </p>
             </div>
           </div>
           <div className="bg-white rounded-lg shadow-md p-6 w-64 flex flex-col items-center relative">
@@ -54,10 +58,12 @@ export function BlocoONG() {
               </div>
             </div>
             <div className="pt-4">
-              <span className="font-semibold text-gray-800 mb-1">Receba doações</span>
-              <span className="text-gray-500 text-sm text-center">
+              <div className="font-semibold text-gray-800 mb-2 text-center">
+                Receba doações
+              </div>
+              <p className="text-gray-500 text-sm text-center">
                 Receba contato direto dos doadores e organize a entrega
-              </span>
+              </p>
             </div>
           </div>
         </div>
