@@ -8,9 +8,15 @@ export function CardHome({
   ong,
   titulo,
   descricao,
+  onClick, // Recebe a função de clique como uma propriedade
 }) {
   return (
-    <Card className="w-[300px] h-[420px] bg-white rounded-2xl border border-blue-200 shadow-lg overflow-hidden transition hover:shadow-xl p-0 flex flex-col">
+    <Card 
+      onClick={onClick} // 1. Aplica a função de clique ao card inteiro
+      role="button" // 2. Melhora a acessibilidade, informando que o elemento é um botão
+      tabIndex={0} // 3. Permite que o card seja focado usando a tecla Tab do teclado
+      className="w-[300px] h-[420px] bg-white rounded-2xl border border-blue-200 shadow-lg overflow-hidden transition hover:shadow-xl p-0 flex flex-col cursor-pointer" // 4. Adiciona o cursor de ponteiro para indicar que é clicável
+    >
       <div className="relative flex-shrink-0">
         <img
           src={imageUrl}
@@ -36,7 +42,11 @@ export function CardHome({
         <CardTitle className="text-lg font-bold mb-2 leading-tight line-clamp-2 min-h-[3.5rem]">
           {titulo}
         </CardTitle>
-        <a href="#" className="text-blue-600 text-sm font-medium hover:underline mb-3 block truncate">
+        <a 
+          href="#" 
+          onClick={(e) => e.stopPropagation()} // 5. Impede que o clique no nome da ONG "borbulhe" e ative o clique do card
+          className="text-blue-600 text-sm font-medium hover:underline mb-3 block truncate"
+        >
           {ong}
         </a>
         <CardDescription className="text-gray-600 text-sm leading-relaxed flex-1 line-clamp-4">
