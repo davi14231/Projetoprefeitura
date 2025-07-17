@@ -70,7 +70,7 @@ export function BlocoONG() {
         
         {/* Botão Solicite Itens */}
         <div className="text-center">
-          <button className="bg-white text-blue-600 font-semibold px-8 py-3 rounded-full hover:bg-gray-50 transition-colors shadow-lg">
+          <button className="bg-white text-blue-600 font-semibold px-8 py-3 rounded-full hover:bg-gray-200 transition-colors shadow-lg cursor-pointer">
             Solicite Itens
           </button>
         </div>

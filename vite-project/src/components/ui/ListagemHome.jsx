@@ -19,10 +19,10 @@ function ListagemHome({ itens, carrosselId = 'carousel-container' }) {
       {/* Botão de navegação esquerda */}
       <button 
         onClick={scrollLeft}
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors border border-gray-200"
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors border border-gray-200 flex items-center justify-center cursor-pointer"
         style={{ marginLeft: '-20px' }}
       >
-        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </button>
@@ -50,7 +50,7 @@ function ListagemHome({ itens, carrosselId = 'carousel-container' }) {
       {/* Botão de navegação direita */}
       <button 
         onClick={scrollRight}
-        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors border border-gray-200"
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-colors border border-gray-200 cursor-pointer"
         style={{ marginRight: '-20px' }}
       >
         <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
