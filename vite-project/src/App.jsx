@@ -28,6 +28,15 @@ const itens = [
     ong: "Projeto Educar",
     titulo: "Material Escolar",
     descricao: "Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes."
+  },
+  {
+    id: 4,
+    imageUrl: "https://images.unsplash.com/photo-1577563908411-5077b6dc7624?auto=format&fit=crop&w=400&q=80",
+    categoria: "Educação",
+    urgencia: "Baixa",
+    ong: "Projeto Educar",
+    titulo: "Material Escolar",
+    descricao: "Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes."
   }
 ];
 

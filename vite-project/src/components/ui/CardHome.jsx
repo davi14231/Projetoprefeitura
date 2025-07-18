@@ -10,12 +10,17 @@ export function CardHome({
   descricao,
   onClick, // Recebe a função de clique como uma propriedade
 }) {
+  // Define a cor do badge de urgência conforme o valor
+  let urgenciaColor = "bg-red-400/90 text-white";
+  if (urgencia === "Média") urgenciaColor = "bg-yellow-400/90 text-yellow-900";
+  if (urgencia === "Baixa") urgenciaColor = "bg-green-400/90 text-white";
+
   return (
     <Card 
-      onClick={onClick} // 1. Aplica a função de clique ao card inteiro
-      role="button" // 2. Melhora a acessibilidade, informando que o elemento é um botão
-      tabIndex={0} // 3. Permite que o card seja focado usando a tecla Tab do teclado
-      className="w-[300px] h-[420px] bg-white rounded-2xl border border-blue-200 shadow-lg overflow-hidden transition hover:shadow-xl p-0 flex flex-col cursor-pointer" // 4. Adiciona o cursor de ponteiro para indicar que é clicável
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      className="w-[300px] h-[420px] bg-white rounded-2xl border border-blue-200 shadow-lg overflow-hidden transition hover:shadow-xl p-0 flex flex-col cursor-pointer"
     >
       <div className="relative flex-shrink-0">
         <img
@@ -25,7 +30,7 @@ export function CardHome({
         />
         {/* Badges sobre a imagem */}
         <div className="absolute top-4 left-4 flex gap-2 z-10">
-          <span className="bg-red-400/90 text-white text-xs px-3 py-1 rounded-full font-semibold shadow-sm drop-shadow">
+          <span className={`${urgenciaColor} text-xs px-3 py-1 rounded-full font-semibold shadow-sm drop-shadow`}>
             {urgencia}
           </span>
           <span className="bg-white/90 text-gray-800 text-xs px-3 py-1 rounded-full font-semibold shadow-sm border border-gray-200">
@@ -44,7 +49,7 @@ export function CardHome({
         </CardTitle>
         <a 
           href="#" 
-          onClick={(e) => e.stopPropagation()} // 5. Impede que o clique no nome da ONG "borbulhe" e ative o clique do card
+          onClick={(e) => e.stopPropagation()}
           className="text-blue-600 text-sm font-medium hover:underline mb-3 block truncate"
         >
           {ong}
