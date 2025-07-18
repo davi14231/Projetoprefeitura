@@ -1,0 +1,93 @@
+.my-new-screen {
+  min-height: 100vh;
+  background: #b9d2f7;
+  display: flex;
+  flex-direction: column;
+}
+
+.my-new-screen main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px 0 16px;
+}
+
+.my-new-screen h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #22304d;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.my-new-screen .data-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.my-new-screen .data-item {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(34,48,77,0.07);
+  padding: 24px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s;
+}
+
+.my-new-screen .data-item:hover {
+  box-shadow: 0 4px 16px rgba(34,48,77,0.13);
+}
+
+.my-new-screen .data-item h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #22304d;
+  margin-bottom: 8px;
+}
+
+.my-new-screen .data-item p {
+  color: #444;
+  font-size: 1rem;
+  margin-bottom: 18px;
+}
+
+.my-new-screen .data-button {
+  background: #4bb174;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 0;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.my-new-screen .data-button:hover {
+  background: #388e54;
+}
+
+.my-new-screen input,
+.my-new-screen select {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  margin-right: 12px;
+  margin-bottom: 10px;
+}
+
+.my-new-screen input:focus,
+.my-new-screen select:focus {
+  outline: 2px solid #4bb174;
+}
+
+.my-new-screen a,
+.my-new-screen button,
+.my-new-screen .data-button {
+  cursor: pointer;
+
+}
