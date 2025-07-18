@@ -1,7 +1,7 @@
 import { CardHome } from "@/components/ui/CardHome";
 import { useState } from "react";
 
-function ListagemHome({ itens, carrosselId = 'carousel-container' }) {
+function ListagemHome2({ itens, carrosselId = 'carousel-container' }) {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const scrollLeft = () => {
@@ -61,4 +61,4 @@ function ListagemHome({ itens, carrosselId = 'carousel-container' }) {
   );
 }
 
-export default ListagemHome;
+export default ListagemHome2;

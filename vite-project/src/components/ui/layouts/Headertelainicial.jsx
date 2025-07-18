@@ -12,7 +12,7 @@ export function HeaderTelainicial() {
         </div>
         
         {/* Botão Entrar como ONG */}
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer">
           Entrar como ONG
         </button>
       </div>
