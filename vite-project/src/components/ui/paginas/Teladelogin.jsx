@@ -62,7 +62,7 @@ export function Teladelogin() {
                 Esqueceu a senha?
               </a>
             </div>
-            <Botao type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+            <Botao type="submit" className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer">
               Entrar
             </Botao>
             {/* Divisor "ou" */}
@@ -76,7 +76,7 @@ export function Teladelogin() {
                 </span>
               </div>
             </div>
-            <Botao variant="outline" type="button" className="w-full" onClick={handleCriarConta}>
+            <Botao variant="outline" type="button" className="w-full cursor-pointer" onClick={handleCriarConta}>
               Criar Conta
             </Botao>
           </form>
