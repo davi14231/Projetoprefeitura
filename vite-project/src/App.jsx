@@ -1,3 +1,4 @@
+
 import Tela_Home from "@/components/ui/paginas/Tela_Home";
 
 // Dados dos cards - futuramente virão do backend
