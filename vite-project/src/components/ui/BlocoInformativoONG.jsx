@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export function BlocoONG() {
   return (
     <div className="w-full bg-gradient-to-b from-[#4286f4] to-[#2866d1] py-12">
@@ -70,9 +72,9 @@ export function BlocoONG() {
         
         {/* Botão Solicite Itens */}
         <div className="text-center">
-          <button className="bg-white text-blue-600 font-semibold px-8 py-3 rounded-full hover:bg-gray-200 transition-colors shadow-lg cursor-pointer">
+          <Link to="/login" className="bg-white text-blue-600 font-semibold px-8 py-3 rounded-full hover:bg-gray-200 transition-colors shadow-lg cursor-pointer">
             Solicite Itens
-          </button>
+          </Link>
         </div>
       </div>
     </div>
