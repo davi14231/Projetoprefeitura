@@ -187,7 +187,11 @@ export default function TodasDoacoes() {
 										type="text"
 										placeholder="Pesquisar necessidades ou itens das ONGs"
 										className="pl-10 pr-4 py-2 rounded-lg text-gray-800 text-sm bg-white border border-gray-200 shadow focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-										style={{ fontFamily: "Inter, sans-serif", height: "40px" }}
+										style={{
+											fontFamily: "Inter, sans-serif",
+											height: "40px",
+											boxShadow: "0 1px 4px 0 rgba(0,0,0,0.04)",
+										}}
 									/>
 								</div>
 							</div>
@@ -206,21 +210,6 @@ export default function TodasDoacoes() {
 									<option>Brinquedos</option>
 									<option>Livros</option>
 									<option>Medicamentos</option>
-								</select>
-							</div>
-							<div className="w-[140px]">
-								<Label htmlFor="urgencia" className="sr-only">
-									Urgência
-								</Label>
-								<select
-									id="urgencia"
-									className="border rounded-md px-3 py-2 bg-white text-gray-700 w-full text-[0.97rem]"
-									style={{ fontFamily: "Inter, sans-serif" }}
-								>
-									<option>Urgência</option>
-									<option>Urgente</option>
-									<option>Normal</option>
-									<option>Especial</option>
 								</select>
 							</div>
 						</div>
