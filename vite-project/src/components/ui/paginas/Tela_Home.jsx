@@ -2,6 +2,7 @@
   import { BlocoDoador } from "@/components/ui/BlocoInformativoDoador";
   import { BlocoONG } from "@/components/ui/BlocoInformativoONG";
   import ListagemHome from "@/components/ui/ListagemHome";
+import ListagemHome2 from "@/components/ui/ListagemHome2";
   import Footer from "@/components/ui/layouts/Footer";
   import { HeaderTelainicial } from "../layouts/Headertelainicial";
 
@@ -59,7 +60,7 @@
                 <span className="text-red-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
                 <span className="font-bold text-lg">Prestes a Vencer</span>
               </div>
-              <ListagemHome itens={itens} />
+              <ListagemHome itens={itens} carrosselId="carousel-prestes" />
             </div>
 
             {/* Carrossel 2: Todas as Necessidades */}
@@ -68,7 +69,7 @@
                 <span className="text-purple-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20m10-10H2"/></svg></span>
                 <span className="font-bold text-lg">Todas as Necessidades</span>
               </div>
-              <ListagemHome itens={itens} />
+              <ListagemHome2 itens={itens} carrosselId="carousel-todas" />
               <div className="flex justify-end mt-6">
                 <a href="#" className="text-blue-600 font-semibold flex items-center gap-1 hover:underline">Ver todas <span className="ml-1">→</span></a>
               </div>
