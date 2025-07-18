@@ -24,6 +24,7 @@ export function Teladelogin() {
       <Card className="w-full max-w-md">
         <CardHeader className="items-center text-center">
           <img src="/logo-hub-doacoes.png" alt="Logo do Hub de Doações" className="w-28 h-auto mb-4" />
+          <img src="/imagens/logo_recife.png" alt="Logo do Hub de Doações" className="w-28 h-auto mb-4" />
           <CardTitle className="text-2xl font-bold">Entrar como ONG</CardTitle>
           <CardDescription>Acesse sua conta para continuar</CardDescription>
         </CardHeader>
