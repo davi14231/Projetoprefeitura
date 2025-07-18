@@ -11,7 +11,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Botao } from "@/components/ui/botao";
 
 // Ícones
 import { VscClose } from "react-icons/vsc";
@@ -47,13 +47,13 @@ export default function DetalheDoacao() {
                 Publicado: {dadosDaDoacao.publicadoEm}
               </CardDescription>
             </div>
-            <Button
+            <Botao
               variant="ghost"
               size="icon"
               className="text-white hover:bg-slate-700 rounded-full"
             >
               <VscClose size={24} />
-            </Button>
+            </Botao>
           </div>
         </CardHeader>
 
@@ -109,15 +109,15 @@ export default function DetalheDoacao() {
                 Divulgue essa doação
               </span>
               <div className="flex gap-2">
-                <Button variant="outline" size="icon">
+                <Botao variant="outline" size="icon">
                   <FaWhatsapp className="text-green-600" size={18} />
-                </Button>
-                <Button variant="outline" size="icon">
+                </Botao>
+                <Botao variant="outline" size="icon">
                   <FaInstagram className="text-pink-600" size={18} />
-                </Button>
-                <Button variant="outline" size="icon">
+                </Botao>
+                <Botao variant="outline" size="icon">
                   <FaFacebookF className="text-blue-800" size={18} />
-                </Button>
+                </Botao>
               </div>
             </div>
 
