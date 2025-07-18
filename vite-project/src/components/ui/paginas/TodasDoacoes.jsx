@@ -231,7 +231,7 @@ export default function TodasDoacoes() {
 							key={item.id}
 							className="w-full max-w-[400px] mx-auto h-[370px] flex"
 						>
-							<div className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full">
+							<div className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full cursor-pointer">
 								{/* Imagem */}
 								<div className="relative">
 									<img
