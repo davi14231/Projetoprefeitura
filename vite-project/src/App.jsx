@@ -1,7 +1,9 @@
-import { Header } from "@/components/ui/layouts/Header";
+import DetalheDoacao from "./components/ui/paginas/DetalheDoacao";
 
-function App(){
-  return <Header />;
+
+
+function App() {
+  return <DetalheDoacao />;
 }
 
 export default App;
