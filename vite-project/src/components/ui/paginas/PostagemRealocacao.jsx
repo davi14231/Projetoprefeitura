@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Botao } from "@/components/ui/botao";
@@ -9,6 +10,11 @@ import { Upload, Facebook, Instagram } from "lucide-react";
 export function PostagemRealocacao() {
   const [facebook, setFacebook] = useState(false);
   const [instagram, setInstagram] = useState(false);
+  const navigate = useNavigate();
+
+  function handleCancel() {
+    navigate(-1);
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-900 p-4">
@@ -94,6 +100,7 @@ export function PostagemRealocacao() {
               <button
                 type="button"
                 className="px-6 py-2 rounded-lg bg-neutral-200 text-neutral-700 font-medium hover:bg-neutral-300 transition"
+                onClick={handleCancel}
               >
                 Cancelar
               </button>

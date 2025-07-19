@@ -3,6 +3,14 @@ import { Botao } from "../botao";
 import { AlertTriangle } from "lucide-react";
 
 export default function ConfirmacaoEncerrarSolicitacao({ onCancel, onConfirm }) {
+  const handleCancel = () => {
+    if (onCancel) onCancel();
+  };
+  
+  const handleConfirm = () => {
+    if (onConfirm) onConfirm();
+  };
+  
   return (
     <div
       style={{
@@ -21,10 +29,10 @@ export default function ConfirmacaoEncerrarSolicitacao({ onCancel, onConfirm }) 
           <h2 className="text-2xl font-semibold mb-2">Tem certeza?</h2>
           <p className="text-gray-600 mb-6">Você realmente deseja encerrar esta solicitação</p>
           <div className="flex gap-4 justify-center">
-            <Botao variant="outline" className="px-6 py-2 text-gray-700 border-gray-300 cursor-pointer" onClick={onCancel}>
+            <Botao variant="outline" className="px-6 py-2 text-gray-700 border-gray-300 cursor-pointer" onClick={handleCancel}>
               Cancelar
             </Botao>
-            <Botao variant="destructive" className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 cursor-pointer" onClick={onConfirm}>
+            <Botao variant="destructive" className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 cursor-pointer" onClick={handleConfirm}>
               Encerrar
             </Botao>
           </div>
