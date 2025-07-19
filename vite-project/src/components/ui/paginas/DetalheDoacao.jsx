@@ -1,134 +1,72 @@
-// src/paginas/DetalheDoacao.jsx
-import React from "react";
+import React from 'react';
+import { VscClose } from 'react-icons/vsc';
+import { FaWhatsapp, FaInstagram, FaFacebookF } from 'react-icons/fa';
+import { MdOutlineMailOutline, MdOutlinePhone } from 'react-icons/md';
 
-// Componentes reutilizáveis do seu projeto
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Botao } from "@/components/ui/botao";
-
-// Ícones
-import { VscClose } from "react-icons/vsc";
-import { FaWhatsapp, FaInstagram, FaFacebookF } from "react-icons/fa";
-import { MdOutlineMailOutline, MdOutlinePhone } from "react-icons/md";
-
-// Dados temporários (simulação de backend)
-const dadosDaDoacao = {
-  instituto: "Instituto Viver Mais",
-  publicadoEm: "07/04/25",
-  titulo: "Kits de toalhas de banho",
-  categoria: "Roupas e Calçados",
-  diasRestantes: 17,
-  imagemUrl: "https://i.imgur.com/gE2x9s8.png",
-  descricao:
-    "Solicitamos a doação de toalhas para atender uma demanda urgente em nossos abrigos temporários, que acolhem famílias em situação de vulnerabilidade.",
-  email: "kellysayonara854@gmail.com",
-  telefone: "(81) 8446-5009",
-};
-
-export default function DetalheDoacao() {
+export default function DetalheDoacao({ dados }) {
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
-      <Card className="w-full max-w-4xl shadow-2xl animate-in fade-in-0 zoom-in-95 overflow-hidden">
+      <div className="w-full max-w-4xl bg-white text-slate-900 flex flex-col rounded-xl border shadow-2xl animate-in fade-in-0 zoom-in-95 overflow-hidden">
+        
         {/* Cabeçalho */}
-        <CardHeader className="bg-slate-800 text-white p-6">
-          <div className="flex justify-between items-start">
-            <div>
-              <CardTitle className="text-2xl font-bold">
-                {dadosDaDoacao.instituto}
-              </CardTitle>
-              <CardDescription className="text-slate-300 pt-1">
-                Publicado: {dadosDaDoacao.publicadoEm}
-              </CardDescription>
-            </div>
-            <Botao
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-slate-700 rounded-full"
-            >
-              <VscClose size={24} />
-            </Botao>
+        <header className="bg-slate-800 text-white p-5 flex justify-between items-start">
+          <div>
+            <h2 className="text-2xl font-bold leading-none">{dados.instituto}</h2>
+            <p className="text-sm text-slate-300 pt-1">Publicado: {dados.publicadoEm}</p>
           </div>
-        </CardHeader>
+          <button className="inline-flex items-center justify-center rounded-full size-9 text-white hover:bg-slate-700">
+            <VscClose size={24} />
+          </button>
+        </header>
 
         {/* Conteúdo */}
-        <CardContent className="p-6">
-          <h1 className="text-3xl font-bold text-slate-900">
-            {dadosDaDoacao.titulo}
-          </h1>
-
-          <div className="flex flex-wrap gap-3 my-4">
-            <Badge variant="default" className="bg-blue-100 text-blue-800">
-              {dadosDaDoacao.categoria}
-            </Badge>
-            <Badge
-              variant="outline"
-              className="border-orange-500 text-orange-600"
-            >
-              {dadosDaDoacao.diasRestantes} dias restantes
-            </Badge>
+        <main className="p-6">
+          <h1 className="text-3xl font-bold text-slate-900">{dados.titulo}</h1>
+          <div className="flex flex-wrap items-center gap-3 my-4">
+            <span className="px-3 py-1 rounded-full font-semibold text-sm bg-blue-100 text-blue-800 hover:bg-blue-200">
+              {dados.categoria}
+            </span>
+            <span className="px-3 py-1 rounded-full font-semibold text-sm border border-orange-500 text-orange-600">
+              {dados.diasRestantes} dias restantes
+            </span>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 items-start">
-            <img
-              src={dadosDaDoacao.imagemUrl}
-              alt={dadosDaDoacao.titulo}
-              className="col-span-1 rounded-lg object-cover w-full h-auto"
-            />
+            <img src={dados.imagemUrl} alt="Imagem da Doação" className="col-span-1 rounded-lg object-cover w-full h-auto" />
             <p className="md:col-span-2 text-slate-700 text-base leading-relaxed">
-              {dadosDaDoacao.descricao}
+              {dados.descricao}
             </p>
           </div>
-        </CardContent>
+        </main>
 
-        {/* Rodapé com contatos e redes */}
-        <CardFooter className="flex-col items-start gap-4 p-6 border-t">
-          <h3 className="text-lg font-semibold text-slate-900">
-            Informações de Contato
-          </h3>
-
+        {/* Rodapé */}
+        <footer className="flex-col items-start gap-4 p-6 border-t">
+          <h3 className="text-lg font-semibold text-slate-900">Informações de Contato</h3>
           <div className="w-full flex justify-between items-center flex-wrap gap-y-4 gap-x-2">
-            {/* Email */}
-            <a
-              href={`mailto:${dadosDaDoacao.email}`}
-              className="flex items-center gap-2 text-blue-700 hover:underline"
-            >
+            <a href={`mailto:${dados.email}`} className="flex items-center gap-2 text-blue-700 hover:underline">
               <MdOutlineMailOutline size={20} />
-              {dadosDaDoacao.email}
+              {dados.email}
             </a>
-
-            {/* Redes Sociais */}
             <div className="flex flex-col items-center">
-              <span className="text-sm text-slate-500 mb-1">
-                Divulgue essa doação
-              </span>
+              <span className="text-sm text-slate-500 mb-1">Divulgue essa doação</span>
               <div className="flex gap-2">
-                <Botao variant="outline" size="icon">
+                <button className="inline-flex items-center justify-center size-9 border rounded-md hover:bg-accent">
                   <FaWhatsapp className="text-green-600" size={18} />
-                </Botao>
-                <Botao variant="outline" size="icon">
+                </button>
+                <button className="inline-flex items-center justify-center size-9 border rounded-md hover:bg-accent">
                   <FaInstagram className="text-pink-600" size={18} />
-                </Botao>
-                <Botao variant="outline" size="icon">
+                </button>
+                <button className="inline-flex items-center justify-center size-9 border rounded-md hover:bg-accent">
                   <FaFacebookF className="text-blue-800" size={18} />
-                </Botao>
+                </button>
               </div>
             </div>
-
-            {/* Telefone */}
             <div className="flex items-center gap-2 text-green-700 font-bold">
               <MdOutlinePhone size={20} />
-              {dadosDaDoacao.telefone}
+              {dados.telefone}
             </div>
           </div>
-        </CardFooter>
-      </Card>
+        </footer>
+      </div>
     </div>
   );
 }
