@@ -1,20 +1,16 @@
 import { Card } from "../card";
 import { Botao } from "../botao";
 import { AlertTriangle } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 export default function ConfirmacaoEncerrarRealocacao({ onCancel, onConfirm }) {
-  const navigate = useNavigate();
-  
   const handleCancel = () => {
     if (onCancel) onCancel();
-    navigate(-1);
   };
   
   const handleConfirm = () => {
     if (onConfirm) onConfirm();
-    navigate("/home-realocacao");
   };
+  
   return (
     <div
       style={{

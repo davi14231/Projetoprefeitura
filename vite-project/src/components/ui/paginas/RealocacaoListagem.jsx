@@ -1,8 +1,10 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Headerrealocacao } from "@/components/ui/layouts/Headerrealocacao";
 import { Footer } from "@/components/ui/layouts/Footer";
+import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
+
 // import "./MyNewScreen.css";
 
 const badgeColors = {
@@ -22,6 +24,37 @@ export function RealocacaoListagem({ itens = [] }) {
   const [busca, setBusca] = useState("");
   const [categoria, setCategoria] = useState("");
   const navigate = useNavigate();
+  const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
+
+  // Prevent background scroll when modal is open
+  React.useEffect(() => {
+    if (showConfirmacaoModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showConfirmacaoModal]);
+
+  // Abrir modal ConfirmacaoEncerrarRealocacao
+  const handleOpenConfirmacaoModal = () => {
+    setShowConfirmacaoModal(true);
+  };
+
+  // Fechar modal ConfirmacaoEncerrarRealocacao
+  const handleCloseConfirmacaoModal = () => {
+    setShowConfirmacaoModal(false);
+  };
+
+  // Confirmar encerramento da realocação
+  const handleConfirmEncerramento = () => {
+    // Aqui você pode adicionar a lógica para encerrar a realocação
+    setShowConfirmacaoModal(false);
+    // Exemplo: remover o item da lista ou atualizar status
+  };
+
 
   const categoriasUnicas = [...new Set(itens.map((i) => i.categoria))];
 
@@ -202,6 +235,15 @@ export function RealocacaoListagem({ itens = [] }) {
                       </div>
                     )}
                   </div>
+                  {/* Botão Encerrar Realocação */}
+                  <div className="mt-3 pt-3 border-t border-gray-100">
+                    <button
+                      className="w-full bg-[#172233] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md text-sm"
+                      onClick={handleOpenConfirmacaoModal}
+                    >
+                      Encerrar Realocação
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -264,6 +306,14 @@ export function RealocacaoListagem({ itens = [] }) {
         </section>
       </main>
       <Footer />
+
+      {/* Modal ConfirmacaoEncerrarRealocacao */}
+      {showConfirmacaoModal && (
+        <ConfirmacaoEncerrarRealocacao 
+          onCancel={handleCloseConfirmacaoModal}
+          onConfirm={handleConfirmEncerramento}
+        />
+      )}
     </div>
   );
 }

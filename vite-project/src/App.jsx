@@ -91,7 +91,6 @@ function App() {
         <Route path="/home-ong" element={<TelahomeONG imagensCarrossel={imagensCarrossel} itens={itens} />} />
         <Route path="/realocacao-listagem" element={<RealocacaoListagem itens={itens} />} />
         <Route path="/confirmar-encerrar-solicitacao" element={<ConfirmacaoEncerrarSolicitacao />} />
-        <Route path="/confirmar-encerrar-realocacao" element={<ConfirmacaoEncerrarRealocacao />} />
       </Routes>
     </BrowserRouter>
   );

@@ -6,6 +6,7 @@ import { Edit2, Save, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SolicitarDoacao } from "./SolicitarDoacao";
+import ConfirmacaoEncerrarSolicitacao from "./ConfirmacaoEncerrarSolicitacao";
 
 const footerColor = "#172233";
 
@@ -50,11 +51,12 @@ export function EditDoacoes(props) {
 	const [editId, setEditId] = useState(null);
 	const [editData, setEditData] = useState({});
 	const [showSolicitarModal, setShowSolicitarModal] = useState(false);
+	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const navigate = useNavigate();
 
 	// Prevent background scroll when modal is open
 	React.useEffect(() => {
-		if (showSolicitarModal) {
+		if (showSolicitarModal || showConfirmacaoModal) {
 			document.body.style.overflow = "hidden";
 		} else {
 			document.body.style.overflow = "auto";
@@ -62,7 +64,7 @@ export function EditDoacoes(props) {
 		return () => {
 			document.body.style.overflow = "auto";
 		};
-	}, [showSolicitarModal]);
+	}, [showSolicitarModal, showConfirmacaoModal]);
 
 	const handleEdit = (pedido) => {
 		setEditId(pedido.id);
@@ -99,6 +101,23 @@ export function EditDoacoes(props) {
 	// Fechar modal SolicitarDoacao
 	const handleCloseSolicitarModal = () => {
 		setShowSolicitarModal(false);
+	};
+
+	// Abrir modal ConfirmacaoEncerrarSolicitacao
+	const handleOpenConfirmacaoModal = () => {
+		setShowConfirmacaoModal(true);
+	};
+
+	// Fechar modal ConfirmacaoEncerrarSolicitacao
+	const handleCloseConfirmacaoModal = () => {
+		setShowConfirmacaoModal(false);
+	};
+
+	// Confirmar encerramento da solicitação
+	const handleConfirmEncerramento = () => {
+		// Aqui você pode adicionar a lógica para encerrar a solicitação
+		setShowConfirmacaoModal(false);
+		// Exemplo: remover o pedido da lista ou atualizar status
 	};
 
 	return (
@@ -305,7 +324,7 @@ export function EditDoacoes(props) {
 <button
 	className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4 w-56 cursor-pointer shadow-md hover:scale-[1.03]"
 	style={{ backgroundColor: footerColor, minWidth: "14rem" }}
-	onClick={() => navigate("/confirmar-encerrar-solicitacao", { state: { from: "/edit-doacoes" } })}
+	onClick={handleOpenConfirmacaoModal}
 >
 	Encerrar Solicitação
 </button>
@@ -377,6 +396,14 @@ export function EditDoacoes(props) {
 						}
 					`}</style>
 				</div>
+			)}
+
+			{/* Modal ConfirmacaoEncerrarSolicitacao */}
+			{showConfirmacaoModal && (
+				<ConfirmacaoEncerrarSolicitacao 
+					onCancel={handleCloseConfirmacaoModal}
+					onConfirm={handleConfirmEncerramento}
+				/>
 			)}
 		</div>
 	);
