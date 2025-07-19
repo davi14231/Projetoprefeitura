@@ -1,12 +1,14 @@
 
 import React, { useState } from "react";
-import { Header } from "@/components/ui/layouts/Header";
+import { useNavigate } from "react-router-dom";
+import { Headerrealocacao } from "@/components/ui/layouts/Headerrealocacao";
 import { Footer } from "@/components/ui/layouts/Footer";
-import "./MyNewScreen.css";
+// import "./MyNewScreen.css";
 
 export function RealocacaoListagem({ itens = [] }) {
   const [busca, setBusca] = useState("");
   const [categoria, setCategoria] = useState("");
+  const navigate = useNavigate();
 
   const itensFiltrados = itens.filter(
     (item) =>
@@ -16,7 +18,7 @@ export function RealocacaoListagem({ itens = [] }) {
 
   return (
     <div className="my-new-screen" style={{ background: "#b9d2f7", minHeight: "100vh" }}>
-      <Header searchAlign="center" />
+      <Headerrealocacao searchAlign="center" />
       <main>
         <div className="rounded-xl bg-[#b9d2f7] py-6 px-2">
           <h1 style={{ fontSize: "2rem", fontWeight: "bold", color: "#22304d", textAlign: "center", marginBottom: 24 }}>

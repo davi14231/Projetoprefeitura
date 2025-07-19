@@ -1,4 +1,5 @@
 import { Search, Phone, ShieldCheck, Building2, Boxes, Gift } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function BlocoDoador() {
   return (
@@ -11,13 +12,13 @@ export function BlocoDoador() {
           Doar nunca foi tão direto e transparente
         </p>
         <div className="flex flex-wrap justify-center gap-8">
-          <div className="bg-white rounded-lg shadow-md p-6 w-64 flex flex-col items-center">
+          <Link to="/todas-doacoes" className="bg-white rounded-lg shadow-md p-6 w-64 flex flex-col items-center hover:shadow-lg transition-shadow cursor-pointer">
             <Search className="w-8 h-8 text-blue-600 mb-2" />
             <span className="font-semibold text-gray-800 mb-1">Encontre necessidades</span>
             <span className="text-gray-500 text-sm text-center">
               Use nossos filtros para encontrar causas específicas na sua região
             </span>
-          </div>
+          </Link>
           <div className="bg-white rounded-lg shadow-md p-6 w-64 flex flex-col items-center">
             <Phone className="w-8 h-8 text-blue-600 mb-2" />
             <span className="font-semibold text-gray-800 mb-1">Entre em contato</span>

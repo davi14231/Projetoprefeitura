@@ -1,6 +1,7 @@
-import { Header } from "@/components/ui/layouts/Header";
+import { Headernecessidade } from "@/components/ui/layouts/Headernecessidade";
 import { Footer } from "@/components/ui/layouts/Footer";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const badgeColors = {
 	Alimentos: "bg-[#34C759] text-white", // verde
@@ -17,12 +18,13 @@ const badgeColors = {
 export default function TodasDoacoes({ itens }) {
 	const [busca, setBusca] = useState("");
 	const [categoria, setCategoria] = useState("");
+	const navigate = useNavigate();
 
 	const categoriasUnicas = [...new Set(itens.map((i) => i.categoria))];
 
 	return (
 		<div className="bg-[#F7F9FB] min-h-screen flex flex-col font-sans">
-			<Header />
+			<Headernecessidade />
 			<main className="flex-1">
 				{/* Título e subtítulo */}
 				<section className="max-w-[900px] mx-auto text-center mt-10 mb-6 px-2">

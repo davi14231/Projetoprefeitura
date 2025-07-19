@@ -1,4 +1,4 @@
-import { Header } from "@/components/ui/layouts/Header";
+import { Headerrealocacao } from "@/components/ui/layouts/Headerrealocacao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit2, X } from "lucide-react";
@@ -55,7 +55,7 @@ function HomeRealocacao(props) {
 	const navigate = useNavigate();
 	return (
 		<div className="bg-[#fafbfc] min-h-screen flex flex-col">
-			<Header />
+	<Headerrealocacao />
 			<main className="flex-1">
 				{/* Título e CTA */}
 				<section className="max-w-6xl mx-auto py-10 px-4 text-center">

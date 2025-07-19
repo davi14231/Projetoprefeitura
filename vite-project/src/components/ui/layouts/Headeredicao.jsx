@@ -1,7 +1,9 @@
 import { Input } from "@/components/ui/input";
 import { Botao } from "@/components/ui/botao";
+import { Link, useNavigate } from "react-router-dom";
 
-export function Header() {
+export function Headeredicao() {
+  const navigate = useNavigate();
   return (
     <header className="bg-gray-800 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
@@ -37,10 +39,10 @@ export function Header() {
 
           {/* Navegação */}
           <nav className="flex items-center gap-4 min-w-fit justify-end">
-            <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Início</a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Realocação</a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Necessidades</a>
-            <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors text-sm border-b-2 border-blue-400 pb-1">Edição</a>
+            <Link to="/home-ong" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Início</Link>
+            <Link to="/realocacao-listagem" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Realocação</Link>
+            <Link to="/todas-doacoes" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Necessidades</Link>
+            <Link to="/edit-doacoes" className="text-blue-400 hover:text-blue-300 transition-colors text-sm border-b-2 border-blue-400 pb-1">Minha ONG</Link>
           </nav>
         </div>
       </div>

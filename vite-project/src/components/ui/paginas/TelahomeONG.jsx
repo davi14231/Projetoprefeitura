@@ -1,29 +1,29 @@
   import React from "react";
-  import { useNavigate } from "react-router-dom";
-  import { BlocoDoador } from "@/components/ui/BlocoInformativoDoador";
-  import { BlocoONG } from "@/components/ui/BlocoInformativoONG";
-  import ListagemHome from "@/components/ui/ListagemHome";
-  import ListagemHome2 from "@/components/ui/ListagemHome2";
-  import Footer from "@/components/ui/layouts/Footer";
-  import { HeaderTelainicial } from "../layouts/Headertelainicial";
+import { useNavigate } from "react-router-dom";
+import { BlocoDoador } from "@/components/ui/BlocoInformativoDoador";
+import { BlocoONG2 } from "@/components/ui/BlocoInformativoONG2";
+import ListagemHome from "@/components/ui/ListagemHome";
+import ListagemHome2 from "@/components/ui/ListagemHome2";
+import Footer from "@/components/ui/layouts/Footer";
+import { Headerinicio } from "@/components/ui/layouts/Headerinicio";
 
-export default function Tela_Home({ imagensCarrossel, itens }) {
+export default function TelahomeONG({ imagensCarrossel, itens }) {
   // As imagens do carrossel agora vêm separadas
   const [imgIndex, setImgIndex] = React.useState(0);
   const navigate = useNavigate();
   const imagens = imagensCarrossel || [];
 
-    React.useEffect(() => {
-      if (imagens.length === 0) return;
-      const timer = setInterval(() => {
-        setImgIndex(prev => (prev + 1) % imagens.length);
-      }, 5000);
-      return () => clearInterval(timer);
-    }, [imagens.length]);
+  React.useEffect(() => {
+    if (imagens.length === 0) return;
+    const timer = setInterval(() => {
+      setImgIndex(prev => (prev + 1) % imagens.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [imagens.length]);
 
-    return (
-      <div>
-        <HeaderTelainicial />
+  return (
+    <div>
+      <Headerinicio />
         <header className="text-center py-8 bg-white">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 text-gray-900">Conecte-se com quem precisa.</h1>
           <p className="text-gray-600 text-base md:text-lg mb-6">Encontre ONGs que precisam de doações. Entre em contato diretamente e faça a diferença na vida dessas pessoas.</p>
@@ -66,19 +66,24 @@ export default function Tela_Home({ imagensCarrossel, itens }) {
             </div>
 
             {/* Carrossel 2: Todas as Necessidades */}
-            <div className="mb-4z">
+            <div className="mb-4">
               <div className="flex items-center gap-2 mb-6">
                 <span className="text-purple-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20m10-10H2"/></svg></span>
                 <span className="font-bold text-lg">Todas as Necessidades</span>
               </div>
               <ListagemHome2 itens={itens} carrosselId="carousel-todas" />
               <div className="flex justify-end mt-6">
-                <a href="#" className="text-blue-600 font-semibold flex items-center gap-1 hover:underline">Ver todas <span className="ml-1">→</span></a>
+                <button 
+                  onClick={() => navigate("/todas-doacoes")}
+                  className="text-blue-600 font-semibold flex items-center gap-1 hover:underline"
+                >
+                  Ver todas <span className="ml-1">→</span>
+                </button>
               </div>
             </div>
           </div>
         </section>
-        <BlocoONG />
+        <BlocoONG2 />
 
         {/* Seção Você sabia? */}
         <section className="py-16 bg-white">
@@ -95,56 +100,4 @@ export default function Tela_Home({ imagensCarrossel, itens }) {
         <Footer />
       </div>
     );
-  }
-
-  /*
-
-App.jsx
-import Tela_Home from "@/components/ui/paginas/Tela_Home";
-
-// Dados dos cards - futuramente virão do backend
-const itens = [
-  { 
-    id: 1,
-    imageUrl: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80",
-    categoria: "Alimentos",
-    urgencia: "Urgente",
-    ong: "Instituto Criança Feliz",
-    titulo: "Cestas Básicas Completas",
-    descricao: "Cestas básicas completas com arroz, feijão, macarrão, óleo, açúcar, sal e outros itens essenciais."
-  },
-  {
-    id: 2,
-    imageUrl: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80",
-    categoria: "Roupas",
-    urgencia: "Média",
-    ong: "Casa de Apoio Esperança",
-    titulo: "Roupas de Inverno",
-    descricao: "Casacos, blusas e calças para o período de inverno. Todas as idades e tamanhos."
-  },
-  {
-    id: 3,
-    imageUrl: "https://images.unsplash.com/photo-1577563908411-5077b6dc7624?auto=format&fit=crop&w=400&q=80",
-    categoria: "Educação",
-    urgencia: "Baixa",
-    ong: "Projeto Educar",
-    titulo: "Material Escolar",
-    descricao: "Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes."
-  },
-  {
-    id: 4,
-    imageUrl: "https://images.unsplash.com/photo-1577563908411-5077b6dc7624?auto=format&fit=crop&w=400&q=80",
-    categoria: "Educação",
-    urgencia: "Baixa",
-    ong: "Projeto Educar",
-    titulo: "Material Escolar",
-    descricao: "Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes."
-  }
-];
-
-function App() {
-  return <Tela_Home itens={itens} />;
 }
-
-export default App;
-*/

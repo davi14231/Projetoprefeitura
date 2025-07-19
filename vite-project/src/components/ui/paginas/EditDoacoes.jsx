@@ -1,5 +1,5 @@
 import React from "react";
-import { Header } from "@/components/ui/layouts/Header";
+import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit2, Save, X } from "lucide-react";
@@ -103,7 +103,7 @@ export function EditDoacoes(props) {
 
 	return (
 		<div className="bg-[#fafbfc] min-h-screen flex flex-col relative">
-			<Header />
+			<Headeredicao />
 			<main className="flex-1">
 				{/* Título */}
 				<section className="max-w-6xl mx-auto py-10 px-4 text-center">
