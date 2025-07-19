@@ -1,4 +1,4 @@
-import { Headerrealocacao } from "@/components/ui/layouts/Headerrealocacao";
+import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit2, X } from "lucide-react";
@@ -55,7 +55,7 @@ function HomeRealocacao(props) {
 	const navigate = useNavigate();
 	return (
 		<div className="bg-[#fafbfc] min-h-screen flex flex-col">
-	<Headerrealocacao />
+		<Headeredicao />
 			<main className="flex-1">
 				{/* Título e CTA */}
 				<section className="max-w-6xl mx-auto py-10 px-4 text-center">
@@ -69,6 +69,7 @@ function HomeRealocacao(props) {
 					<button
 						className="bg-[#172233] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#22304d] transition"
 						style={{ backgroundColor: footerColor }}
+						onClick={() => navigate("/realocacao-listagem")}
 					>
 						Ver todos os itens para realocação
 					</button>
@@ -177,12 +178,13 @@ function HomeRealocacao(props) {
 											</div>
 											<div className="mt-2 text-gray-700 text-base flex items-center justify-between">
 												<span>{pedido.descricao}</span>
-												<button
-													className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4"
-													style={{ backgroundColor: footerColor }}
-												>
-													{pedido.botao}
-												</button>
+					<button
+						className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4"
+						style={{ backgroundColor: footerColor }}
+						onClick={() => navigate("/confirmar-encerrar-realocacao", { state: { from: "/realocacao-listagem" } })}
+					>
+						{pedido.botao}
+					</button>
 											</div>
 										</div>
 									</div>
@@ -204,10 +206,10 @@ function HomeRealocacao(props) {
 								</button>
 								<span className="px-2 text-neutral-500 font-bold">...</span>
 								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
-									67
+									7
 								</button>
 								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
-									68
+									8
 								</button>
 							</div>
 						</CardContent>

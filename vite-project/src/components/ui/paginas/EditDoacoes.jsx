@@ -305,6 +305,7 @@ export function EditDoacoes(props) {
 <button
 	className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4 w-56 cursor-pointer shadow-md hover:scale-[1.03]"
 	style={{ backgroundColor: footerColor, minWidth: "14rem" }}
+	onClick={() => navigate("/confirmar-encerrar-solicitacao", { state: { from: "/edit-doacoes" } })}
 >
 	Encerrar Solicitação
 </button>
