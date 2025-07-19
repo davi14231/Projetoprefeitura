@@ -1,6 +1,9 @@
 import { Teladelogin } from "./components/ui/paginas/Teladelogin";
 import Tela_Home from "./components/ui/paginas/Tela_Home";
+import { EditDoacoes } from "./components/ui/paginas/EditDoacoes";
+import { HomeRealocacao } from "./components/ui/paginas/HomeRealocacao";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SolicitarDoacao } from "./components/ui/paginas/SolicitarDoacao";
 
 
 function App() {
@@ -75,6 +78,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Tela_Home imagensCarrossel={imagensCarrossel} itens={itens} />} />
         <Route path="/login" element={<Teladelogin />} />
+        <Route path="/edit-doacoes" element={<EditDoacoes />} />
+        <Route path="/home-realocacao" element={<HomeRealocacao />} />
+        <Route path="/solicitar-doacao" element={<SolicitarDoacao />} />
       </Routes>
     </BrowserRouter>
   );

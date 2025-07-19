@@ -3,6 +3,7 @@ import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit2, Save, X } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const footerColor = "#172233";
 
@@ -42,10 +43,11 @@ const statusColors = {
 	média: "bg-yellow-400 text-white",
 };
 
-export function EditDonation(props) {
+export function EditDoacoes(props) {
 	const [pedidos, setPedidos] = useState(initialPedidos);
 	const [editId, setEditId] = useState(null);
 	const [editData, setEditData] = useState({});
+	const navigate = useNavigate();
 
 	const handleEdit = (pedido) => {
 		setEditId(pedido.id);
@@ -67,6 +69,11 @@ export function EditDonation(props) {
 	const handleCancel = () => {
 		setEditId(null);
 		setEditData({});
+	};
+
+	// Navegação para HomeRealocacao
+	const handleRealocacoesClick = () => {
+		navigate("/home-realocacao");
 	};
 
 	return (
@@ -145,8 +152,8 @@ export function EditDonation(props) {
 								Solicitações postadas
 							</button>
 							<button
-								className="w-1/2 text-center text-sm font-medium bg-neutral-100 py-2 rounded-r-lg hover:bg-neutral-200 transition"
-								onClick={props.onRealocacoesClick}
+								className="w-1/2 text-center text-sm font-medium bg-neutral-100 py-2 rounded-r-lg hover:bg-neutral-200 transition cursor-pointer"
+								onClick={handleRealocacoesClick}
 							>
 								Realocações postadas
 							</button>
@@ -213,26 +220,26 @@ export function EditDonation(props) {
 												</span>
 												{editId === pedido.id ? (
 													<>
-														<button
-															className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100"
-															onClick={handleSave}
-														>
-															<Save className="w-4 h-4" /> Salvar
-														</button>
-														<button
-															className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100"
-															onClick={handleCancel}
-														>
-															<X className="w-4 h-4" /> Cancelar
-														</button>
+<button
+	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
+	onClick={handleSave}
+>
+	<Save className="w-4 h-4" /> Salvar
+</button>
+<button
+	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
+	onClick={handleCancel}
+>
+	<X className="w-4 h-4" /> Cancelar
+</button>
 													</>
 												) : (
-													<button
-														className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100"
-														onClick={() => handleEdit(pedido)}
-													>
-														<Edit2 className="w-4 h-4" /> Editar
-													</button>
+<button
+	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
+	onClick={() => handleEdit(pedido)}
+>
+	<Edit2 className="w-4 h-4" /> Editar
+</button>
 												)}
 											</div>
 											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
@@ -269,12 +276,12 @@ export function EditDonation(props) {
 														</span>
 													)}
 												</div>
-												<button
-													className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4 w-56"
-													style={{ backgroundColor: footerColor, minWidth: "14rem" }}
-												>
-													Encerrar Solicitação
-												</button>
+<button
+	className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4 w-56 cursor-pointer shadow-md hover:scale-[1.03]"
+	style={{ backgroundColor: footerColor, minWidth: "14rem" }}
+>
+	Encerrar Solicitação
+</button>
 											</div>
 										</div>
 									</div>
@@ -282,10 +289,10 @@ export function EditDonation(props) {
 							</div>
 							{/* Paginação */}
 							<div className="flex justify-center items-center gap-2 mt-8">
-								<button className="w-8 h-8 rounded bg-[#172233] text-white font-bold" style={{ backgroundColor: footerColor }}>
+<button className="w-8 h-8 rounded bg-[#172233] text-white font-bold cursor-pointer shadow hover:scale-[1.08]" style={{ backgroundColor: footerColor }}>
 									1
 								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
 									2
 								</button>
 								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
@@ -293,10 +300,10 @@ export function EditDonation(props) {
 								</button>
 								<span className="px-2 text-neutral-500 font-bold">...</span>
 								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
-									67
+									7
 								</button>
 								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
-									68
+									8
 								</button>
 							</div>
 						</CardContent>

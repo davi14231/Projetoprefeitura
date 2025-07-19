@@ -2,7 +2,7 @@
   import { BlocoDoador } from "@/components/ui/BlocoInformativoDoador";
   import { BlocoONG } from "@/components/ui/BlocoInformativoONG";
   import ListagemHome from "@/components/ui/ListagemHome";
-import ListagemHome2 from "@/components/ui/ListagemHome2";
+  import ListagemHome2 from "@/components/ui/ListagemHome2";
   import Footer from "@/components/ui/layouts/Footer";
   import { HeaderTelainicial } from "../layouts/Headertelainicial";
 
