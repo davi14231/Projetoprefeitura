@@ -126,7 +126,7 @@ function HomeRealocacao(props) {
 							<button
 								className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition flex items-center gap-2"
 								style={{ backgroundColor: footerColor }}
-								onClick={() => navigate("/solicitar-doacao")}
+								onClick={() => navigate("/postagem-realocacao")}
 							>
 								+ Adicionar Nova Realocação
 							</button>
@@ -219,4 +219,5 @@ function HomeRealocacao(props) {
 	);
 }
 
+export { HomeRealocacao };
 export default HomeRealocacao;

@@ -4,7 +4,7 @@ import { EditDoacoes } from "./components/ui/paginas/EditDoacoes";
 import { HomeRealocacao } from "./components/ui/paginas/HomeRealocacao";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SolicitarDoacao } from "./components/ui/paginas/SolicitarDoacao";
-
+import { PostagemRealocacao } from "./components/ui/paginas/PostagemRealocacao";
 
 function App() {
   // Imagens do carrossel (separadas)
@@ -81,6 +81,7 @@ function App() {
         <Route path="/edit-doacoes" element={<EditDoacoes />} />
         <Route path="/home-realocacao" element={<HomeRealocacao />} />
         <Route path="/solicitar-doacao" element={<SolicitarDoacao />} />
+        <Route path="/postagem-realocacao" element={<PostagemRealocacao />} />
       </Routes>
     </BrowserRouter>
   );

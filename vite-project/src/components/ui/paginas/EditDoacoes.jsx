@@ -1,9 +1,11 @@
+import React from "react";
 import { Header } from "@/components/ui/layouts/Header";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit2, Save, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SolicitarDoacao } from "./SolicitarDoacao";
 
 const footerColor = "#172233";
 
@@ -47,7 +49,20 @@ export function EditDoacoes(props) {
 	const [pedidos, setPedidos] = useState(initialPedidos);
 	const [editId, setEditId] = useState(null);
 	const [editData, setEditData] = useState({});
+	const [showSolicitarModal, setShowSolicitarModal] = useState(false);
 	const navigate = useNavigate();
+
+	// Prevent background scroll when modal is open
+	React.useEffect(() => {
+		if (showSolicitarModal) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "auto";
+		}
+		return () => {
+			document.body.style.overflow = "auto";
+		};
+	}, [showSolicitarModal]);
 
 	const handleEdit = (pedido) => {
 		setEditId(pedido.id);
@@ -76,8 +91,18 @@ export function EditDoacoes(props) {
 		navigate("/home-realocacao");
 	};
 
+	// Abrir modal SolicitarDoacao
+	const handleOpenSolicitarModal = () => {
+		setShowSolicitarModal(true);
+	};
+
+	// Fechar modal SolicitarDoacao
+	const handleCloseSolicitarModal = () => {
+		setShowSolicitarModal(false);
+	};
+
 	return (
-		<div className="bg-[#fafbfc] min-h-screen flex flex-col">
+		<div className="bg-[#fafbfc] min-h-screen flex flex-col relative">
 			<Header />
 			<main className="flex-1">
 				{/* Título */}
@@ -176,6 +201,7 @@ export function EditDoacoes(props) {
 							<button
 								className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition flex items-center gap-2"
 								style={{ backgroundColor: footerColor }}
+								onClick={handleOpenSolicitarModal}
 							>
 								+ Adicionar Nova Necessidade
 							</button>
@@ -311,6 +337,46 @@ export function EditDoacoes(props) {
 				</section>
 			</main>
 			<Footer />
+
+			{/* Modal SolicitarDoacao */}
+			{showSolicitarModal && (
+				<div className="fixed inset-0 z-50 flex items-center justify-center">
+					{/* Overlay escurecido */}
+					<div className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300" onClick={handleCloseSolicitarModal}></div>
+					{/* Modal */}
+					<div className="relative z-10 bg-white rounded-2xl shadow-2xl p-0 w-full max-w-xl mx-2 animate-fadeIn">
+						{/* Close button */}
+						<button
+							className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold z-20"
+							onClick={handleCloseSolicitarModal}
+							aria-label="Fechar"
+						>
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<div className="p-6">
+							{SolicitarDoacao ? (
+								<SolicitarDoacao onClose={handleCloseSolicitarModal} />
+							) : (
+								<div>
+									<h2 className="text-lg font-bold mb-4">Solicitar Doação</h2>
+									<p>Conteúdo da tela de solicitação de doação não encontrado.</p>
+									<button className="mt-4 px-4 py-2 bg-[#172233] text-white rounded" onClick={handleCloseSolicitarModal}>Fechar</button>
+								</div>
+							)}
+						</div>
+					</div>
+					{/* Animation keyframes */}
+					<style>{`
+						@keyframes fadeIn {
+							from { opacity: 0; transform: scale(0.95); }
+							to { opacity: 1; transform: scale(1); }
+						}
+						.animate-fadeIn {
+							animation: fadeIn 0.3s ease;
+						}
+					`}</style>
+				</div>
+			)}
 		</div>
 	);
 }
