@@ -77,7 +77,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Tela_Home imagensCarrossel={imagensCarrossel} itens={itens} />} />
-        <Route path="/login" element={<Teladelogin />} />
+        //<Route path="/login" element={<Teladelogin />} />
         <Route path="/edit-doacoes" element={<EditDoacoes />} />
         <Route path="/home-realocacao" element={<HomeRealocacao />} />
         <Route path="/solicitar-doacao" element={<SolicitarDoacao />} />
