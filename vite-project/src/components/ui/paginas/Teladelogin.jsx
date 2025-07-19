@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Botao } from "@/components/ui/botao";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,10 +9,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 export function Teladelogin() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    alert(`Login enviado!\nE-mail: ${email}\nSenha: ${senha}`);
+    // Aqui você pode validar o login, se quiser
+    navigate('/edit-doacoes');
   };
 
   const handleCriarConta = () => {

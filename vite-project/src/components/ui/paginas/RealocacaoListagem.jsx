@@ -1,4 +1,3 @@
-// src/components/MyNewScreen.js
 
 import React, { useState } from "react";
 import { Header } from "@/components/ui/layouts/Header";

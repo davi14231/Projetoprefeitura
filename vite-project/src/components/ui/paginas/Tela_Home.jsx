@@ -2,14 +2,14 @@
   import { BlocoDoador } from "@/components/ui/BlocoInformativoDoador";
   import { BlocoONG } from "@/components/ui/BlocoInformativoONG";
   import ListagemHome from "@/components/ui/ListagemHome";
-import ListagemHome2 from "@/components/ui/ListagemHome2";
+  import ListagemHome2 from "@/components/ui/ListagemHome2";
   import Footer from "@/components/ui/layouts/Footer";
   import { HeaderTelainicial } from "../layouts/Headertelainicial";
 
-  export default function Tela_Home({ itens }) {
-    // As imagens do carrossel devem ser recebidas via props ou contexto do backend
-    const [imgIndex, setImgIndex] = React.useState(0);
-    const imagens = itens && itens.length > 0 ? itens.map(item => item.imageUrl) : [];
+export default function Tela_Home({ imagensCarrossel, itens }) {
+  // As imagens do carrossel agora vêm separadas
+  const [imgIndex, setImgIndex] = React.useState(0);
+  const imagens = imagensCarrossel || [];
 
     React.useEffect(() => {
       if (imagens.length === 0) return;
@@ -27,11 +27,11 @@ import ListagemHome2 from "@/components/ui/ListagemHome2";
           <p className="text-gray-600 text-base md:text-lg mb-6">Encontre ONGs que precisam de doações. Entre em contato diretamente e faça a diferença na vida dessas pessoas.</p>
           {/* Carrossel de imagens funcional com profundidade */}
           <div className="relative flex flex-col items-center">
-            <div className="mx-auto mb-2 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-gradient-to-b from-white to-gray-100" style={{ maxWidth: 600 }}>
+            <div className="mx-auto mb-2 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-gradient-to-b from-white to-gray-100" style={{ maxWidth: 900 }}>
               <img
                 src={imagens[imgIndex]}
                 alt="Banner"
-                className="w-full h-auto object-cover"
+                className="w-full h-[400px] object-cover"
                 style={{ display: 'block' }}
               />
             </div>

@@ -1,8 +1,11 @@
+import React from "react";
 import { Header } from "@/components/ui/layouts/Header";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit2, Save, X } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { SolicitarDoacao } from "./SolicitarDoacao";
 
 const footerColor = "#172233";
 
@@ -42,10 +45,24 @@ const statusColors = {
 	média: "bg-yellow-400 text-white",
 };
 
-export function EditDonation(props) {
+export function EditDoacoes(props) {
 	const [pedidos, setPedidos] = useState(initialPedidos);
 	const [editId, setEditId] = useState(null);
 	const [editData, setEditData] = useState({});
+	const [showSolicitarModal, setShowSolicitarModal] = useState(false);
+	const navigate = useNavigate();
+
+	// Prevent background scroll when modal is open
+	React.useEffect(() => {
+		if (showSolicitarModal) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "auto";
+		}
+		return () => {
+			document.body.style.overflow = "auto";
+		};
+	}, [showSolicitarModal]);
 
 	const handleEdit = (pedido) => {
 		setEditId(pedido.id);
@@ -69,8 +86,23 @@ export function EditDonation(props) {
 		setEditData({});
 	};
 
+	// Navegação para HomeRealocacao
+	const handleRealocacoesClick = () => {
+		navigate("/home-realocacao");
+	};
+
+	// Abrir modal SolicitarDoacao
+	const handleOpenSolicitarModal = () => {
+		setShowSolicitarModal(true);
+	};
+
+	// Fechar modal SolicitarDoacao
+	const handleCloseSolicitarModal = () => {
+		setShowSolicitarModal(false);
+	};
+
 	return (
-		<div className="bg-[#fafbfc] min-h-screen flex flex-col">
+		<div className="bg-[#fafbfc] min-h-screen flex flex-col relative">
 			<Header />
 			<main className="flex-1">
 				{/* Título */}
@@ -145,8 +177,8 @@ export function EditDonation(props) {
 								Solicitações postadas
 							</button>
 							<button
-								className="w-1/2 text-center text-sm font-medium bg-neutral-100 py-2 rounded-r-lg hover:bg-neutral-200 transition"
-								onClick={props.onRealocacoesClick}
+								className="w-1/2 text-center text-sm font-medium bg-neutral-100 py-2 rounded-r-lg hover:bg-neutral-200 transition cursor-pointer"
+								onClick={handleRealocacoesClick}
 							>
 								Realocações postadas
 							</button>
@@ -169,6 +201,7 @@ export function EditDonation(props) {
 							<button
 								className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition flex items-center gap-2"
 								style={{ backgroundColor: footerColor }}
+								onClick={handleOpenSolicitarModal}
 							>
 								+ Adicionar Nova Necessidade
 							</button>
@@ -213,26 +246,26 @@ export function EditDonation(props) {
 												</span>
 												{editId === pedido.id ? (
 													<>
-														<button
-															className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100"
-															onClick={handleSave}
-														>
-															<Save className="w-4 h-4" /> Salvar
-														</button>
-														<button
-															className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100"
-															onClick={handleCancel}
-														>
-															<X className="w-4 h-4" /> Cancelar
-														</button>
+<button
+	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
+	onClick={handleSave}
+>
+	<Save className="w-4 h-4" /> Salvar
+</button>
+<button
+	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
+	onClick={handleCancel}
+>
+	<X className="w-4 h-4" /> Cancelar
+</button>
 													</>
 												) : (
-													<button
-														className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100"
-														onClick={() => handleEdit(pedido)}
-													>
-														<Edit2 className="w-4 h-4" /> Editar
-													</button>
+<button
+	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
+	onClick={() => handleEdit(pedido)}
+>
+	<Edit2 className="w-4 h-4" /> Editar
+</button>
 												)}
 											</div>
 											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
@@ -269,12 +302,12 @@ export function EditDonation(props) {
 														</span>
 													)}
 												</div>
-												<button
-													className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4 w-56"
-													style={{ backgroundColor: footerColor, minWidth: "14rem" }}
-												>
-													Encerrar Solicitação
-												</button>
+<button
+	className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4 w-56 cursor-pointer shadow-md hover:scale-[1.03]"
+	style={{ backgroundColor: footerColor, minWidth: "14rem" }}
+>
+	Encerrar Solicitação
+</button>
 											</div>
 										</div>
 									</div>
@@ -282,10 +315,10 @@ export function EditDonation(props) {
 							</div>
 							{/* Paginação */}
 							<div className="flex justify-center items-center gap-2 mt-8">
-								<button className="w-8 h-8 rounded bg-[#172233] text-white font-bold" style={{ backgroundColor: footerColor }}>
+<button className="w-8 h-8 rounded bg-[#172233] text-white font-bold cursor-pointer shadow hover:scale-[1.08]" style={{ backgroundColor: footerColor }}>
 									1
 								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
 									2
 								</button>
 								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
@@ -293,10 +326,10 @@ export function EditDonation(props) {
 								</button>
 								<span className="px-2 text-neutral-500 font-bold">...</span>
 								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
-									67
+									7
 								</button>
 								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
-									68
+									8
 								</button>
 							</div>
 						</CardContent>
@@ -304,6 +337,46 @@ export function EditDonation(props) {
 				</section>
 			</main>
 			<Footer />
+
+			{/* Modal SolicitarDoacao */}
+			{showSolicitarModal && (
+				<div className="fixed inset-0 z-50 flex items-center justify-center">
+					{/* Overlay escurecido */}
+					<div className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300" onClick={handleCloseSolicitarModal}></div>
+					{/* Modal */}
+					<div className="relative z-10 bg-white rounded-2xl shadow-2xl p-0 w-full max-w-xl mx-2 animate-fadeIn">
+						{/* Close button */}
+						<button
+							className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold z-20"
+							onClick={handleCloseSolicitarModal}
+							aria-label="Fechar"
+						>
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<div className="p-6">
+							{SolicitarDoacao ? (
+								<SolicitarDoacao onClose={handleCloseSolicitarModal} />
+							) : (
+								<div>
+									<h2 className="text-lg font-bold mb-4">Solicitar Doação</h2>
+									<p>Conteúdo da tela de solicitação de doação não encontrado.</p>
+									<button className="mt-4 px-4 py-2 bg-[#172233] text-white rounded" onClick={handleCloseSolicitarModal}>Fechar</button>
+								</div>
+							)}
+						</div>
+					</div>
+					{/* Animation keyframes */}
+					<style>{`
+						@keyframes fadeIn {
+							from { opacity: 0; transform: scale(0.95); }
+							to { opacity: 1; transform: scale(1); }
+						}
+						.animate-fadeIn {
+							animation: fadeIn 0.3s ease;
+						}
+					`}</style>
+				</div>
+			)}
 		</div>
 	);
 }
