@@ -8,18 +8,29 @@ export function CardHome({
   ong,
   titulo,
   descricao,
+  onClick, // Recebe a função de clique como uma propriedade
 }) {
+  // Define a cor do badge de urgência conforme o valor
+  let urgenciaColor = "bg-red-400/90 text-white";
+  if (urgencia === "Média") urgenciaColor = "bg-yellow-400/90 text-yellow-900";
+  if (urgencia === "Baixa") urgenciaColor = "bg-green-400/90 text-white";
+
   return (
-    <Card className="max-w-sm w-full bg-white rounded-2xl border border-blue-200 shadow-lg overflow-hidden transition hover:shadow-xl p-0">
-      <div className="relative">
+    <Card 
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      className="w-[300px] h-[420px] bg-white rounded-2xl border border-blue-200 shadow-lg overflow-hidden transition hover:shadow-xl p-0 flex flex-col cursor-pointer"
+    >
+      <div className="relative flex-shrink-0">
         <img
           src={imageUrl}
           alt={titulo}
-          className="w-full h-44 object-cover rounded-t-2xl m-0"
+          className="w-full h-48 object-cover rounded-t-2xl m-0"
         />
         {/* Badges sobre a imagem */}
         <div className="absolute top-4 left-4 flex gap-2 z-10">
-          <span className="bg-red-400/90 text-white text-xs px-3 py-1 rounded-full font-semibold shadow-sm drop-shadow">
+          <span className={`${urgenciaColor} text-xs px-3 py-1 rounded-full font-semibold shadow-sm drop-shadow`}>
             {urgencia}
           </span>
           <span className="bg-white/90 text-gray-800 text-xs px-3 py-1 rounded-full font-semibold shadow-sm border border-gray-200">
@@ -32,10 +43,18 @@ export function CardHome({
           </span>
         </div>
       </div>
-      <CardContent className="py-6 px-6">
-        <CardTitle className="text-3xl font-bold mb-2 leading-tight">{titulo}</CardTitle>
-        <a href="#" className="text-blue-600 text-base font-medium hover:underline mb-3 block">{ong}</a>
-        <CardDescription className="text-gray-600 text-base mt-2 leading-relaxed">
+      <CardContent className="py-5 px-5 flex-1 flex flex-col">
+        <CardTitle className="text-lg font-bold mb-2 leading-tight line-clamp-2 min-h-[3.5rem]">
+          {titulo}
+        </CardTitle>
+        <a 
+          href="#" 
+          onClick={(e) => e.stopPropagation()}
+          className="text-blue-600 text-sm font-medium hover:underline mb-3 block truncate"
+        >
+          {ong}
+        </a>
+        <CardDescription className="text-gray-600 text-sm leading-relaxed flex-1 line-clamp-4">
           {descricao}
         </CardDescription>
       </CardContent>

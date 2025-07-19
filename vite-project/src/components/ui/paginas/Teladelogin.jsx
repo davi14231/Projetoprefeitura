@@ -24,6 +24,7 @@ export function Teladelogin() {
       <Card className="w-full max-w-md">
         <CardHeader className="items-center text-center">
           <img src="/logo-hub-doacoes.png" alt="Logo do Hub de Doações" className="w-28 h-auto mb-4" />
+          <img src="/imagens/logo_recife.png" alt="Logo do Hub de Doações" className="w-28 h-auto mb-4" />
           <CardTitle className="text-2xl font-bold">Entrar como ONG</CardTitle>
           <CardDescription>Acesse sua conta para continuar</CardDescription>
         </CardHeader>
@@ -61,7 +62,7 @@ export function Teladelogin() {
                 Esqueceu a senha?
               </a>
             </div>
-            <Botao type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+            <Botao type="submit" className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer">
               Entrar
             </Botao>
             {/* Divisor "ou" */}
@@ -75,7 +76,7 @@ export function Teladelogin() {
                 </span>
               </div>
             </div>
-            <Botao variant="outline" type="button" className="w-full" onClick={handleCriarConta}>
+            <Botao variant="outline" type="button" className="w-full cursor-pointer" onClick={handleCriarConta}>
               Criar Conta
             </Botao>
           </form>
