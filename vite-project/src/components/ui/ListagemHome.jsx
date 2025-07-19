@@ -1,7 +1,7 @@
 import { CardHome } from "@/components/ui/CardHome";
 import { useState } from "react";
 
-function ListagemHome({ itens, carrosselId = 'carousel-container' }) {
+function ListagemHome({ itens, carrosselId = 'carousel-container', onCardClick }) {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const scrollLeft = () => {
@@ -42,6 +42,7 @@ function ListagemHome({ itens, carrosselId = 'carousel-container' }) {
               ong={item.ong}
               titulo={item.titulo}
               descricao={item.descricao}
+              onClick={() => onCardClick && onCardClick(item)}
             />
           </div>
         ))}

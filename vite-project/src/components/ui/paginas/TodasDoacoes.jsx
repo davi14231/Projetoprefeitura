@@ -2,6 +2,7 @@ import { Headernecessidade } from "@/components/ui/layouts/Headernecessidade";
 import { Footer } from "@/components/ui/layouts/Footer";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DetalheDoacao from "./DetalheDoacao";
 
 const badgeColors = {
 	Alimentos: "bg-[#34C759] text-white", // verde
@@ -18,7 +19,44 @@ const badgeColors = {
 export default function TodasDoacoes({ itens }) {
 	const [busca, setBusca] = useState("");
 	const [categoria, setCategoria] = useState("");
+	const [showDetalheModal, setShowDetalheModal] = useState(false);
+	const [dadosDetalhe, setDadosDetalhe] = useState(null);
 	const navigate = useNavigate();
+
+	// Prevent background scroll when modal is open
+	React.useEffect(() => {
+		if (showDetalheModal) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "auto";
+		}
+		return () => {
+			document.body.style.overflow = "auto";
+		};
+	}, [showDetalheModal]);
+
+	// Abrir modal DetalheDoacao
+	const handleOpenDetalheModal = (item) => {
+		const dadosFormatados = {
+			instituto: item.ong,
+			publicadoEm: item.publicado,
+			titulo: item.titulo,
+			categoria: item.categoria,
+			diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
+			imagemUrl: item.imageUrl,
+			descricao: item.descricao,
+			email: "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
+			telefone: "(81) 9999-9999"
+		};
+		setDadosDetalhe(dadosFormatados);
+		setShowDetalheModal(true);
+	};
+
+	// Fechar modal DetalheDoacao
+	const handleCloseDetalheModal = () => {
+		setShowDetalheModal(false);
+		setDadosDetalhe(null);
+	};
 
 	const categoriasUnicas = [...new Set(itens.map((i) => i.categoria))];
 
@@ -110,7 +148,10 @@ export default function TodasDoacoes({ itens }) {
 							key={item.id}
 							className="w-full max-w-[400px] mx-auto h-[370px] flex"
 						>
-							<div className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full cursor-pointer">
+							<div 
+								className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full cursor-pointer"
+								onClick={() => handleOpenDetalheModal(item)}
+							>
 								{/* Imagem */}
 								<div className="relative">
 									<img
@@ -244,6 +285,14 @@ export default function TodasDoacoes({ itens }) {
 				</section>
 			</main>
 			<Footer />
+
+			{/* Modal DetalheDoacao */}
+			{showDetalheModal && dadosDetalhe && (
+				<DetalheDoacao 
+					dados={dadosDetalhe}
+					onClose={handleCloseDetalheModal}
+				/>
+			)}
 		</div>
 	);
 }

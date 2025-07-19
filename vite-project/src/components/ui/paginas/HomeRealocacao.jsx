@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Edit2, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
+import { PostagemRealocacao } from "./PostagemRealocacao";
 
 const footerColor = "#172233";
 
@@ -56,10 +57,11 @@ const pedidos = [
 function HomeRealocacao(props) {
 	const navigate = useNavigate();
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
+	const [showPostagemModal, setShowPostagemModal] = useState(false);
 
 	// Prevent background scroll when modal is open
 	React.useEffect(() => {
-		if (showConfirmacaoModal) {
+		if (showConfirmacaoModal || showPostagemModal) {
 			document.body.style.overflow = "hidden";
 		} else {
 			document.body.style.overflow = "auto";
@@ -67,7 +69,7 @@ function HomeRealocacao(props) {
 		return () => {
 			document.body.style.overflow = "auto";
 		};
-	}, [showConfirmacaoModal]);
+	}, [showConfirmacaoModal, showPostagemModal]);
 
 	// Abrir modal ConfirmacaoEncerrarRealocacao
 	const handleOpenConfirmacaoModal = () => {
@@ -84,6 +86,16 @@ function HomeRealocacao(props) {
 		// Aqui você pode adicionar a lógica para encerrar a realocação
 		setShowConfirmacaoModal(false);
 		// Exemplo: remover o item da lista ou atualizar status
+	};
+
+	// Abrir modal PostagemRealocacao
+	const handleOpenPostagemModal = () => {
+		setShowPostagemModal(true);
+	};
+
+	// Fechar modal PostagemRealocacao
+	const handleClosePostagemModal = () => {
+		setShowPostagemModal(false);
 	};
 
 	return (
@@ -160,7 +172,7 @@ function HomeRealocacao(props) {
 							<button
 								className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition flex items-center gap-2"
 								style={{ backgroundColor: footerColor }}
-								onClick={() => navigate("/postagem-realocacao")}
+								onClick={handleOpenPostagemModal}
 							>
 								+ Adicionar Nova Realocação
 							</button>
@@ -256,6 +268,13 @@ function HomeRealocacao(props) {
 				<ConfirmacaoEncerrarRealocacao 
 					onCancel={handleCloseConfirmacaoModal}
 					onConfirm={handleConfirmEncerramento}
+				/>
+			)}
+
+			{/* Modal PostagemRealocacao */}
+			{showPostagemModal && (
+				<PostagemRealocacao 
+					onClose={handleClosePostagemModal}
 				/>
 			)}
 		</div>

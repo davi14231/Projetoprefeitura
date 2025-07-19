@@ -23,7 +23,7 @@ export default function ConfirmacaoEncerrarRealocacao({ onCancel, onConfirm }) {
         zIndex: 50,
       }}
     >
-      <Card className="w-full max-w-xs sm:max-w-sm bg-white rounded-xl shadow-xl p-8 text-center border-2 border-blue-400">
+      <Card className="w-full max-w-xs sm:max-w-sm bg-white rounded-xl shadow-xl p-8 text-center border-2">
         <div className="flex flex-col items-center gap-4">
           <AlertTriangle className="w-12 h-12 text-gray-700 mb-2" />
           <h2 className="text-2xl font-semibold mb-2">Tem certeza?</h2>

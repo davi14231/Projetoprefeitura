@@ -6,12 +6,50 @@ import ListagemHome from "@/components/ui/ListagemHome";
 import ListagemHome2 from "@/components/ui/ListagemHome2";
 import Footer from "@/components/ui/layouts/Footer";
 import { Headerinicio } from "@/components/ui/layouts/Headerinicio";
+import DetalheDoacao from "./DetalheDoacao";
 
 export default function TelahomeONG({ imagensCarrossel, itens }) {
   // As imagens do carrossel agora vêm separadas
   const [imgIndex, setImgIndex] = React.useState(0);
+  const [showDetalheModal, setShowDetalheModal] = React.useState(false);
+  const [dadosDetalhe, setDadosDetalhe] = React.useState(null);
   const navigate = useNavigate();
   const imagens = imagensCarrossel || [];
+
+  // Prevent background scroll when modal is open
+  React.useEffect(() => {
+    if (showDetalheModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showDetalheModal]);
+
+  // Abrir modal DetalheDoacao
+  const handleOpenDetalheModal = (item) => {
+    const dadosFormatados = {
+      instituto: item.ong,
+      publicadoEm: item.publicado || "Data não informada",
+      titulo: item.titulo,
+      categoria: item.categoria,
+      diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
+      imagemUrl: item.imageUrl,
+      descricao: item.descricao,
+      email: "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
+      telefone: "(81) 9999-9999"
+    };
+    setDadosDetalhe(dadosFormatados);
+    setShowDetalheModal(true);
+  };
+
+  // Fechar modal DetalheDoacao
+  const handleCloseDetalheModal = () => {
+    setShowDetalheModal(false);
+    setDadosDetalhe(null);
+  };
 
   React.useEffect(() => {
     if (imagens.length === 0) return;
@@ -62,7 +100,7 @@ export default function TelahomeONG({ imagensCarrossel, itens }) {
                 <span className="text-red-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
                 <span className="font-bold text-lg">Prestes a Vencer</span>
               </div>
-              <ListagemHome itens={itens} carrosselId="carousel-prestes" />
+              <ListagemHome itens={itens} carrosselId="carousel-prestes" onCardClick={handleOpenDetalheModal} />
             </div>
 
             {/* Carrossel 2: Todas as Necessidades */}
@@ -71,7 +109,7 @@ export default function TelahomeONG({ imagensCarrossel, itens }) {
                 <span className="text-purple-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20m10-10H2"/></svg></span>
                 <span className="font-bold text-lg">Todas as Necessidades</span>
               </div>
-              <ListagemHome2 itens={itens} carrosselId="carousel-todas" />
+              <ListagemHome2 itens={itens} carrosselId="carousel-todas" onCardClick={handleOpenDetalheModal} />
               <div className="flex justify-end mt-6">
                 <button 
                   onClick={() => navigate("/todas-doacoes")}
@@ -98,6 +136,14 @@ export default function TelahomeONG({ imagensCarrossel, itens }) {
         </section>
 
         <Footer />
+
+        {/* Modal DetalheDoacao */}
+        {showDetalheModal && dadosDetalhe && (
+          <DetalheDoacao 
+            dados={dadosDetalhe}
+            onClose={handleCloseDetalheModal}
+          />
+        )}
       </div>
     );
 }

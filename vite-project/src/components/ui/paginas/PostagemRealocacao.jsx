@@ -7,20 +7,32 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Upload, Facebook, Instagram } from "lucide-react";
 
-export function PostagemRealocacao() {
+export function PostagemRealocacao({ onClose }) {
   const [facebook, setFacebook] = useState(false);
   const [instagram, setInstagram] = useState(false);
   const navigate = useNavigate();
 
   function handleCancel() {
-    navigate(-1);
+    if (onClose) {
+      onClose();
+    } else {
+      navigate(-1);
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    // Aqui você pode adicionar a lógica de envio do formulário
+    if (onClose) {
+      onClose();
+    }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-900 p-4">
-      <Card className="w-full max-w-3xl rounded-2xl shadow-lg">
+    <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
+      <Card className="w-full max-w-3xl rounded-2xl shadow-lg bg-white max-h-[90vh] overflow-y-auto">
         <CardContent className="p-10">
-          <form className="space-y-8">
+          <form className="space-y-8" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Imagem */}
               <div className="col-span-1">

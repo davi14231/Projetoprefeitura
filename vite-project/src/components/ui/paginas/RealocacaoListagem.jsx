@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Headerrealocacao } from "@/components/ui/layouts/Headerrealocacao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
+import DetalheDoacao from "./DetalheDoacao";
+import { PostagemRealocacao } from "./PostagemRealocacao";
 
 // import "./MyNewScreen.css";
 
@@ -25,10 +27,13 @@ export function RealocacaoListagem({ itens = [] }) {
   const [categoria, setCategoria] = useState("");
   const navigate = useNavigate();
   const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
+  const [showDetalheModal, setShowDetalheModal] = useState(false);
+  const [dadosDetalhe, setDadosDetalhe] = useState(null);
+  const [showPostagemModal, setShowPostagemModal] = useState(false);
 
   // Prevent background scroll when modal is open
   React.useEffect(() => {
-    if (showConfirmacaoModal) {
+    if (showConfirmacaoModal || showDetalheModal || showPostagemModal) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -36,7 +41,7 @@ export function RealocacaoListagem({ itens = [] }) {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [showConfirmacaoModal]);
+  }, [showConfirmacaoModal, showDetalheModal, showPostagemModal]);
 
   // Abrir modal ConfirmacaoEncerrarRealocacao
   const handleOpenConfirmacaoModal = () => {
@@ -53,6 +58,39 @@ export function RealocacaoListagem({ itens = [] }) {
     // Aqui você pode adicionar a lógica para encerrar a realocação
     setShowConfirmacaoModal(false);
     // Exemplo: remover o item da lista ou atualizar status
+  };
+
+  // Abrir modal DetalheDoacao
+  const handleOpenDetalheModal = (item) => {
+    const dadosFormatados = {
+      instituto: item.ong,
+      publicadoEm: item.publicado || "Data não informada",
+      titulo: item.titulo,
+      categoria: item.categoria,
+      diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
+      imagemUrl: item.imageUrl,
+      descricao: item.descricao,
+      email: "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
+      telefone: "(81) 9999-9999"
+    };
+    setDadosDetalhe(dadosFormatados);
+    setShowDetalheModal(true);
+  };
+
+  // Fechar modal DetalheDoacao
+  const handleCloseDetalheModal = () => {
+    setShowDetalheModal(false);
+    setDadosDetalhe(null);
+  };
+
+  // Abrir modal PostagemRealocacao
+  const handleOpenPostagemModal = () => {
+    setShowPostagemModal(true);
+  };
+
+  // Fechar modal PostagemRealocacao
+  const handleClosePostagemModal = () => {
+    setShowPostagemModal(false);
   };
 
 
@@ -150,7 +188,10 @@ export function RealocacaoListagem({ itens = [] }) {
               key={item.id}
               className="w-full max-w-[400px] mx-auto h-[370px] flex"
             >
-              <div className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full cursor-pointer">
+              <div 
+                className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full cursor-pointer"
+                onClick={() => handleOpenDetalheModal(item)}
+              >
                 {/* Imagem */}
                 <div className="relative">
                   <img
@@ -298,7 +339,7 @@ export function RealocacaoListagem({ itens = [] }) {
                 fontWeight: 600,
                 cursor: "pointer"
               }}
-              onClick={() => navigate("/postagem-realocacao")}
+              onClick={handleOpenPostagemModal}
             >
               Cadastrar Itens
             </button>
@@ -312,6 +353,21 @@ export function RealocacaoListagem({ itens = [] }) {
         <ConfirmacaoEncerrarRealocacao 
           onCancel={handleCloseConfirmacaoModal}
           onConfirm={handleConfirmEncerramento}
+        />
+      )}
+
+      {/* Modal DetalheDoacao */}
+      {showDetalheModal && dadosDetalhe && (
+        <DetalheDoacao 
+          dados={dadosDetalhe}
+          onClose={handleCloseDetalheModal}
+        />
+      )}
+
+      {/* Modal PostagemRealocacao */}
+      {showPostagemModal && (
+        <PostagemRealocacao 
+          onClose={handleClosePostagemModal}
         />
       )}
     </div>

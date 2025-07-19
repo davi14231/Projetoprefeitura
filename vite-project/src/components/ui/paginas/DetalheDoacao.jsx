@@ -3,7 +3,7 @@ import { VscClose } from 'react-icons/vsc';
 import { FaWhatsapp, FaInstagram, FaFacebookF } from 'react-icons/fa';
 import { MdOutlineMailOutline, MdOutlinePhone } from 'react-icons/md';
 
-export default function DetalheDoacao({ dados }) {
+export default function DetalheDoacao({ dados, onClose }) {
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
       <div className="w-full max-w-4xl bg-white text-slate-900 flex flex-col rounded-xl border shadow-2xl animate-in fade-in-0 zoom-in-95 overflow-hidden">
@@ -14,7 +14,10 @@ export default function DetalheDoacao({ dados }) {
             <h2 className="text-2xl font-bold leading-none">{dados.instituto}</h2>
             <p className="text-sm text-slate-300 pt-1">Publicado: {dados.publicadoEm}</p>
           </div>
-          <button className="inline-flex items-center justify-center rounded-full size-9 text-white hover:bg-slate-700">
+          <button 
+            className="inline-flex items-center justify-center rounded-full size-9 text-white hover:bg-slate-700"
+            onClick={onClose}
+          >
             <VscClose size={24} />
           </button>
         </header>
