@@ -185,121 +185,90 @@ function HomeRealocacao() {
 					<div className="mb-4 text-sm text-gray-600 font-medium">
 						{paginatedData.total} itens encontrados - Página {currentPage} de {paginatedData.totalPages}
 					</div>
-					
-					{/* Grid de cards */}
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						{paginatedData.items.map((pedido) => (
-							<div
-								key={pedido.id}
-								className="w-full max-w-[400px] mx-auto h-[370px] flex"
-							>
-								<div className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full">
-									{/* Imagem */}
-									<div className="relative">
+					<Card className="w-full bg-white border">
+						<CardContent className="py-6 px-8">
+							<div className="flex flex-col gap-6">
+								{paginatedData.items.map((pedido) => (
+									<div
+										key={pedido.id}
+										className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
+									>
 										<img
 											src={pedido.imageUrl}
 											alt={pedido.titulo}
-											className="w-full h-40 object-cover object-center bg-white rounded-t-2xl"
-											style={{
-												imageRendering: "auto",
-												borderBottom: "1px solid #f3f4f6",
-												backgroundColor: "#fff",
-											}}
-											loading="lazy"
-											draggable={false}
+											className="w-16 h-16 object-cover rounded-lg border mt-1"
 										/>
-										{/* Badge categoria */}
-										<span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold shadow bg-blue-500 text-white">
-											{pedido.categoria}
-										</span>
-									</div>
-									
-									{/* Conteúdo */}
-									<div className="flex flex-col flex-1 px-5 py-4">
-										<a
-											href="#"
-											className="text-[#007AFF] text-xs font-semibold mb-1 hover:underline"
-											style={{ fontFamily: "Inter, sans-serif" }}
-										>
-											{pedido.ong}
-										</a>
-										<div
-											className="text-[1.15rem] font-bold mb-1 leading-tight text-[#222] flex items-center gap-2"
-											style={{ fontFamily: "Inter, sans-serif" }}
-										>
-											{pedido.titulo}
-											<button className="flex items-center gap-1 px-3 py-1 border rounded-lg text-xs font-medium hover:bg-neutral-100 cursor-pointer">
-												<Edit2 className="w-3 h-3" /> Editar
-											</button>
-										</div>
-										<div
-											className="text-[#666] text-xs mb-2 line-clamp-3"
-											style={{ fontFamily: "Inter, sans-serif" }}
-										>
-											{pedido.descricao}
-										</div>
-										
-										{/* Redes sociais */}
-										{pedido.facebook && (
-											<div className="flex items-center gap-2 mb-2">
-												<a 
-													href={pedido.facebook} 
-													target="_blank" 
-													rel="noopener noreferrer"
-													className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800"
+										<div className="flex-1">
+											<div className="flex items-center gap-2">
+												<span className="font-semibold text-lg text-gray-800">
+													{pedido.titulo}
+												</span>
+												<span className="px-3 py-1 rounded-full text-xs font-semibold shadow bg-blue-500 text-white">
+													{pedido.categoria}
+												</span>
+												<button
+													className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
 												>
-													<Facebook className="w-3 h-3" />
-													Facebook
-												</a>
+													<Edit2 className="w-4 h-4" /> Editar
+												</button>
 											</div>
-										)}
-
-										<div className="mt-auto flex flex-col gap-1 text-[11px] text-[#888]">
-											<div className="flex items-center gap-1">
-												<svg
-													width="16"
-													height="16"
-													fill="none"
-													stroke="currentColor"
-													strokeWidth="1.5"
-													className="inline-block w-4 h-4"
-												>
-													<circle cx="8" cy="8" r="7" />
-													<path d="M8 4v4l2 2" />
-												</svg>
+											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
 												<span>Publicado: {pedido.publicado}</span>
+												<span className="flex items-center gap-1">
+													<svg
+														width="16"
+														height="16"
+														fill="none"
+														stroke="currentColor"
+														strokeWidth="1.5"
+														className="inline-block"
+													>
+														<circle cx="8" cy="8" r="7" />
+														<path d="M8 4v4l2 2" />
+													</svg>
+													Tempo restante: {pedido.tempoRestante}
+												</span>
 											</div>
-											<div className="flex items-center gap-1">
-												<svg
-													width="16"
-													height="16"
-													fill="none"
-													stroke="currentColor"
-													strokeWidth="1.5"
-													className="inline-block w-4 h-4"
+											<div className="mt-2 text-gray-700 text-base">
+												<span className="block w-full break-words">
+													{pedido.descricao}
+												</span>
+											</div>
+											
+											{/* Parte inferior: redes sociais e encerrar solicitação */}
+											<div className="mt-4 flex items-center justify-between">
+												<div className="flex items-center gap-3">
+													{/* Redes sociais */}
+													{pedido.facebook && (
+														<div className="flex items-center gap-2">
+															<a 
+																href={pedido.facebook} 
+																target="_blank" 
+																rel="noopener noreferrer"
+																className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800"
+															>
+																<Facebook className="w-3 h-3" />
+																Facebook
+															</a>
+														</div>
+													)}
+												</div>
+												
+												{/* Botão Encerrar Solicitação */}
+												<button
+													className="bg-[#172233] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
+													style={{ backgroundColor: footerColor }}
+													onClick={handleOpenConfirmacaoModal}
 												>
-													<circle cx="8" cy="8" r="7" />
-													<path d="M8 4v4l2 2" />
-												</svg>
-												<span>Tempo restante: {pedido.tempoRestante}</span>
+													Encerrar Solicitação
+												</button>
 											</div>
-										</div>
-										
-										{/* Botão Encerrar solicitação */}
-										<div className="mt-3 pt-3 border-t border-gray-100">
-											<button
-												className="w-full bg-[#172233] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md text-sm"
-												style={{ backgroundColor: footerColor }}
-												onClick={handleOpenConfirmacaoModal}
-											>
-												Encerrar solicitação
-											</button>
 										</div>
 									</div>
-								</div>
+								))}
 							</div>
-						))}
-					</div>
+						</CardContent>
+					</Card>
 				</section>
 
 				{/* Paginação */}
