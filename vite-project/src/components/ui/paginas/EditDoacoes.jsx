@@ -4,7 +4,7 @@ import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit2, Save, X } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { SolicitarDoacao } from "./SolicitarDoacao";
 import ConfirmacaoEncerrarSolicitacao from "./ConfirmacaoEncerrarSolicitacao";
 
@@ -47,6 +47,7 @@ const statusColors = {
 };
 
 export function EditDoacoes(props) {
+	const location = useLocation();
 	const [pedidos, setPedidos] = useState(initialPedidos);
 	const [editId, setEditId] = useState(null);
 	const [editData, setEditData] = useState({});
@@ -190,14 +191,22 @@ export function EditDoacoes(props) {
 						</div>
 						<div className="flex justify-between items-center mt-2">
 							<button
-								className="w-1/2 text-center text-sm font-medium bg-neutral-100 py-2 rounded-l-lg hover:bg-neutral-200 transition"
-								onClick={props.onSolicitacoesClick}
+								className={`w-1/2 text-center text-sm font-medium py-2 rounded-l-lg transition cursor-pointer ${
+									location.pathname === "/edit-doacoes"
+										? "bg-[#22304d] text-white"
+										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+								}`}
+								onClick={() => navigate("/edit-doacoes")}
 							>
 								Solicitações postadas
 							</button>
 							<button
-								className="w-1/2 text-center text-sm font-medium bg-neutral-100 py-2 rounded-r-lg hover:bg-neutral-200 transition cursor-pointer"
-								onClick={handleRealocacoesClick}
+								className={`w-1/2 text-center text-sm font-medium py-2 rounded-r-lg transition cursor-pointer ${
+									location.pathname === "/home-realocacao"
+										? "bg-[#22304d] text-white"
+										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+								}`}
+								onClick={() => navigate("/home-realocacao")}
 							>
 								Realocações postadas
 							</button>
@@ -218,7 +227,7 @@ export function EditDoacoes(props) {
 								pedido e contribuir com o que for possível.
 							</p>
 							<button
-								className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition flex items-center gap-2"
+								className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition flex items-center gap-2 cursor-pointer shadow-md hover:scale-[1.03]"
 								style={{ backgroundColor: footerColor }}
 								onClick={handleOpenSolicitarModal}
 							>
@@ -341,14 +350,14 @@ export function EditDoacoes(props) {
 <button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
 									2
 								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
 									3
 								</button>
 								<span className="px-2 text-neutral-500 font-bold">...</span>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
 									7
 								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
 									8
 								</button>
 							</div>

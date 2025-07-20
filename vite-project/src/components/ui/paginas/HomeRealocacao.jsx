@@ -3,7 +3,7 @@ import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit2, X } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
 import { PostagemRealocacao } from "./PostagemRealocacao";
 
@@ -56,6 +56,7 @@ const pedidos = [
 
 function HomeRealocacao(props) {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
 
@@ -112,7 +113,7 @@ function HomeRealocacao(props) {
 						que está precisando.
 					</p>
 					<button
-						className="bg-[#172233] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#22304d] transition"
+						className="bg-[#172233] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
 						style={{ backgroundColor: footerColor }}
 						onClick={() => navigate("/realocacao-listagem")}
 					>
@@ -142,14 +143,22 @@ function HomeRealocacao(props) {
 						</div>
 						<div className="flex justify-between items-center mt-2">
 							<button
-								className="w-1/2 text-center text-sm font-medium bg-neutral-100 py-2 rounded-l-lg hover:bg-neutral-200 transition cursor-pointer"
+								className={`w-1/2 text-center text-sm font-medium py-2 rounded-l-lg transition cursor-pointer ${
+									location.pathname === "/edit-doacoes"
+										? "bg-[#22304d] text-white"
+										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+								}`}
 								onClick={() => navigate("/edit-doacoes")}
 							>
 								Solicitações postadas
 							</button>
 							<button
-								className="w-1/2 text-center text-sm font-medium bg-neutral-100 py-2 rounded-r-lg hover:bg-neutral-200 transition"
-								onClick={props.onRealocacoesClick}
+								className={`w-1/2 text-center text-sm font-medium py-2 rounded-r-lg transition cursor-pointer ${
+									location.pathname === "/home-realocacao"
+										? "bg-[#22304d] text-white"
+										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+								}`}
+								onClick={() => navigate("/home-realocacao")}
 							>
 								Realocações postadas
 							</button>
@@ -170,7 +179,7 @@ function HomeRealocacao(props) {
 								solidariedade.
 							</p>
 							<button
-								className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition flex items-center gap-2"
+								className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition flex items-center gap-2 cursor-pointer shadow-md hover:scale-[1.03]"
 								style={{ backgroundColor: footerColor }}
 								onClick={handleOpenPostagemModal}
 							>
@@ -200,7 +209,7 @@ function HomeRealocacao(props) {
 												<span className="font-semibold text-lg text-gray-800">
 													{pedido.titulo}
 												</span>
-												<button className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100">
+												<button className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer ">
 													<Edit2 className="w-4 h-4" /> Editar
 												</button>
 											</div>
@@ -224,7 +233,7 @@ function HomeRealocacao(props) {
 											<div className="mt-2 text-gray-700 text-base flex items-center justify-between">
 												<span>{pedido.descricao}</span>
 					<button
-						className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4"
+						className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4 cursor-pointer shadow-md hover:scale-[1.03]"
 						style={{ backgroundColor: footerColor }}
 						onClick={handleOpenConfirmacaoModal}
 					>
@@ -238,22 +247,22 @@ function HomeRealocacao(props) {
 							{/* Paginação */}
 							<div className="flex justify-center items-center gap-2 mt-8">
 								<button
-									className="w-8 h-8 rounded bg-[#172233] text-white font-bold"
+									className="w-8 h-8 rounded bg-[#172233] text-white font-bold cursor-pointer shadow hover:scale-[1.08]"
 									style={{ backgroundColor: footerColor }}
 								>
 									1
 								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
 									2
 								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
 									3
 								</button>
 								<span className="px-2 text-neutral-500 font-bold">...</span>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
 									7
 								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
 									8
 								</button>
 							</div>
