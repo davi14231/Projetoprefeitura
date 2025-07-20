@@ -10,6 +10,7 @@ import TelahomeONG from "./components/ui/paginas/TelahomeONG";
 import { RealocacaoListagem } from "./components/ui/paginas/RealocacaoListagem";
 import ConfirmacaoEncerrarSolicitacao from "./components/ui/paginas/ConfirmacaoEncerrarSolicitacao";
 import ConfirmacaoEncerrarRealocacao from "./components/ui/paginas/ConfirmacaoEncerrarRealocacao";
+import { DataProvider } from "./context/DataContext";
 
 function App() {
   // Imagens do carrossel (separadas)
@@ -79,19 +80,21 @@ function App() {
   ];
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Tela_Home imagensCarrossel={imagensCarrossel} itens={itens} />} />
-        <Route path="/login" element={<Teladelogin />} />
-        <Route path="/edit-doacoes" element={<EditDoacoes />} />
-        <Route path="/home-realocacao" element={<HomeRealocacao />} />
-        <Route path="/solicitar-doacao" element={<SolicitarDoacao />} />
-        <Route path="/todas-doacoes" element={<TodasDoacoes itens={itens} />} />
-        <Route path="/home-ong" element={<TelahomeONG imagensCarrossel={imagensCarrossel} itens={itens} />} />
-        <Route path="/realocacao-listagem" element={<RealocacaoListagem itens={itens} />} />
-        <Route path="/confirmar-encerrar-solicitacao" element={<ConfirmacaoEncerrarSolicitacao />} />
-      </Routes>
-    </BrowserRouter>
+    <DataProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Tela_Home imagensCarrossel={imagensCarrossel} itens={itens} />} />
+          <Route path="/login" element={<Teladelogin />} />
+          <Route path="/edit-doacoes" element={<EditDoacoes />} />
+          <Route path="/home-realocacao" element={<HomeRealocacao />} />
+          <Route path="/solicitar-doacao" element={<SolicitarDoacao />} />
+          <Route path="/todas-doacoes" element={<TodasDoacoes />} />
+          <Route path="/home-ong" element={<TelahomeONG imagensCarrossel={imagensCarrossel} itens={itens} />} />
+          <Route path="/realocacao-listagem" element={<RealocacaoListagem />} />
+          <Route path="/confirmar-encerrar-solicitacao" element={<ConfirmacaoEncerrarSolicitacao />} />
+        </Routes>
+      </BrowserRouter>
+    </DataProvider>
   );
 
 }

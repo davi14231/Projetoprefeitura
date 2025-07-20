@@ -1,64 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit2, X } from "lucide-react";
+import { Edit2, X, Facebook } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
 import { PostagemRealocacao } from "./PostagemRealocacao";
+import { useData } from "@/context/DataContext";
+import { Pagination } from "@/components/ui/Pagination";
 
 const footerColor = "#172233";
 
 const destaques = [
-	{ id: 1, titulo: "", img: "/imagens/medicamentos.jpg" },
-	{ id: 2, titulo: "", img: "/imagens/roupas.jpg" },
-	{ id: 3, titulo: "", img: "/imagens/moveis.jpg" },
-	{ id: 4, titulo: "", img: "/imagens/ferramentas.jpg" },
-	{ id: 5, titulo: "", img: "/imagens/alimentos.jpg" },
-	{ id: 6, titulo: "", img: "/imagens/outros.jpg" },
+	{ id: 1, titulo: "Medicamentos", img: "/imagens/medicamentos.jpg", categoria: "Medicamentos" },
+	{ id: 2, titulo: "Roupas", img: "/imagens/roupas.jpg", categoria: "Roupas" },
+	{ id: 3, titulo: "Móveis", img: "/imagens/moveis.jpg", categoria: "Móveis" },
+	{ id: 4, titulo: "Equipamento", img: "/imagens/ferramentas.jpg", categoria: "Equipamento" },
+	{ id: 5, titulo: "Alimentos", img: "/imagens/alimentos.jpg", categoria: "Alimentos" },
+	{ id: 6, titulo: "Outros", img: "/imagens/outros.jpg", categoria: "Outros" },
 ];
 
-const pedidos = [
-	{
-		id: 1,
-		imageUrl: "/imagens/medf.jpg",
-		titulo: "Medicamentos e Fraldas",
-		publicado: "19/12/24",
-		tempoRestante: "1 dia",
-		descricao: "Possuímos medicamentos e fraldas disponíveis para realocar.",
-		botao: "Encerrar Solicitação",
-		editar: true,
-		excluir: false,
-	},
-	{
-		id: 2,
-		imageUrl: "/imagens/prodhig.jpg",
-		titulo: "Produtos de Higiene",
-		publicado: "11/03/24",
-		tempoRestante: "30 dias",
-		descricao: "Temos diversos produtos de higiene prontos para realocação.",
-		botao: "Encerrar Solicitação",
-		editar: true,
-		excluir: false,
-	},
-	{
-		id: 3,
-		imageUrl: "/imagens/roupas.jpg",
-		titulo: "Camisetas",
-		publicado: "12/06/24",
-		tempoRestante: "47 dias",
-		descricao: "Possuímos camisetas para doar.",
-		botao: "Encerrar Solicitação",
-		editar: false,
-		excluir: true,
-	},
-];
-
-function HomeRealocacao(props) {
+function HomeRealocacao() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
+	const { getRealocacoesPaginadas } = useData();
+
+	const itemsPerPage = 6;
+
+	// Efeito para ler parâmetros da URL e definir página atual
+	useEffect(() => {
+		const searchParams = new URLSearchParams(location.search);
+		const page = parseInt(searchParams.get('page')) || 1;
+		setCurrentPage(page);
+	}, [location.search]);
+
+	// Obter dados paginados usando Context
+	const paginatedData = getRealocacoesPaginadas({
+		page: currentPage,
+		limit: itemsPerPage,
+		filters: {}
+	});
 
 	// Prevent background scroll when modal is open
 	React.useEffect(() => {
@@ -99,6 +83,11 @@ function HomeRealocacao(props) {
 		setShowPostagemModal(false);
 	};
 
+	// Função para navegar para RealocacaoListagem com filtro de categoria
+	const navigateToCategory = (categoria) => {
+		navigate(`/realocacao-listagem?categoria=${encodeURIComponent(categoria)}`);
+	};
+
 	return (
 		<div className="bg-[#fafbfc] min-h-screen flex flex-col">
 		<Headeredicao />
@@ -126,9 +115,10 @@ function HomeRealocacao(props) {
 					<div className="flex flex-col">
 						<div className="flex gap-6 justify-between pb-2">
 							{destaques.map((item) => (
-								<div
+								<button
 									key={item.id}
-									className="flex flex-col items-center flex-1"
+									className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+									onClick={() => navigateToCategory(item.categoria)}
 								>
 									<img
 										src={item.img}
@@ -138,7 +128,7 @@ function HomeRealocacao(props) {
 									<span className="mt-2 text-sm font-medium text-gray-700 text-center">
 										{item.titulo}
 									</span>
-								</div>
+								</button>
 							))}
 						</div>
 						<div className="flex justify-between items-center mt-2">
@@ -191,84 +181,133 @@ function HomeRealocacao(props) {
 
 				{/* Listagem de pedidos */}
 				<section className="max-w-6xl mx-auto px-4 mb-8">
-					<Card className="w-full bg-white border">
-						<CardContent className="py-6 px-8">
-							<div className="flex flex-col gap-6">
-								{pedidos.map((pedido) => (
-									<div
-										key={pedido.id}
-										className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
-									>
+					{/* Contador de itens */}
+					<div className="mb-4 text-sm text-gray-600 font-medium">
+						{paginatedData.total} itens encontrados - Página {currentPage} de {paginatedData.totalPages}
+					</div>
+					
+					{/* Grid de cards */}
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+						{paginatedData.items.map((pedido) => (
+							<div
+								key={pedido.id}
+								className="w-full max-w-[400px] mx-auto h-[370px] flex"
+							>
+								<div className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full">
+									{/* Imagem */}
+									<div className="relative">
 										<img
 											src={pedido.imageUrl}
 											alt={pedido.titulo}
-											className="w-16 h-16 object-cover rounded-lg border mt-1"
+											className="w-full h-40 object-cover object-center bg-white rounded-t-2xl"
+											style={{
+												imageRendering: "auto",
+												borderBottom: "1px solid #f3f4f6",
+												backgroundColor: "#fff",
+											}}
+											loading="lazy"
+											draggable={false}
 										/>
-										<div className="flex-1">
-											<div className="flex items-center gap-2">
-												<span className="font-semibold text-lg text-gray-800">
-													{pedido.titulo}
-												</span>
-												<button className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer ">
-													<Edit2 className="w-4 h-4" /> Editar
-												</button>
+										{/* Badge categoria */}
+										<span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold shadow bg-blue-500 text-white">
+											{pedido.categoria}
+										</span>
+									</div>
+									
+									{/* Conteúdo */}
+									<div className="flex flex-col flex-1 px-5 py-4">
+										<a
+											href="#"
+											className="text-[#007AFF] text-xs font-semibold mb-1 hover:underline"
+											style={{ fontFamily: "Inter, sans-serif" }}
+										>
+											{pedido.ong}
+										</a>
+										<div
+											className="text-[1.15rem] font-bold mb-1 leading-tight text-[#222] flex items-center gap-2"
+											style={{ fontFamily: "Inter, sans-serif" }}
+										>
+											{pedido.titulo}
+											<button className="flex items-center gap-1 px-3 py-1 border rounded-lg text-xs font-medium hover:bg-neutral-100 cursor-pointer">
+												<Edit2 className="w-3 h-3" /> Editar
+											</button>
+										</div>
+										<div
+											className="text-[#666] text-xs mb-2 line-clamp-3"
+											style={{ fontFamily: "Inter, sans-serif" }}
+										>
+											{pedido.descricao}
+										</div>
+										
+										{/* Redes sociais */}
+										{pedido.facebook && (
+											<div className="flex items-center gap-2 mb-2">
+												<a 
+													href={pedido.facebook} 
+													target="_blank" 
+													rel="noopener noreferrer"
+													className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800"
+												>
+													<Facebook className="w-3 h-3" />
+													Facebook
+												</a>
 											</div>
-											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
+										)}
+
+										<div className="mt-auto flex flex-col gap-1 text-[11px] text-[#888]">
+											<div className="flex items-center gap-1">
+												<svg
+													width="16"
+													height="16"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth="1.5"
+													className="inline-block w-4 h-4"
+												>
+													<circle cx="8" cy="8" r="7" />
+													<path d="M8 4v4l2 2" />
+												</svg>
 												<span>Publicado: {pedido.publicado}</span>
-												<span className="flex items-center gap-1">
-													<svg
-														width="16"
-														height="16"
-														fill="none"
-														stroke="currentColor"
-														strokeWidth="1.5"
-														className="inline-block"
-													>
-														<circle cx="8" cy="8" r="7" />
-														<path d="M8 4v4l2 2" />
-													</svg>
-													Tempo restante: {pedido.tempoRestante}
-												</span>
 											</div>
-											<div className="mt-2 text-gray-700 text-base flex items-center justify-between">
-												<span>{pedido.descricao}</span>
-					<button
-						className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4 cursor-pointer shadow-md hover:scale-[1.03]"
-						style={{ backgroundColor: footerColor }}
-						onClick={handleOpenConfirmacaoModal}
-					>
-						{pedido.botao}
-					</button>
+											<div className="flex items-center gap-1">
+												<svg
+													width="16"
+													height="16"
+													fill="none"
+													stroke="currentColor"
+													strokeWidth="1.5"
+													className="inline-block w-4 h-4"
+												>
+													<circle cx="8" cy="8" r="7" />
+													<path d="M8 4v4l2 2" />
+												</svg>
+												<span>Tempo restante: {pedido.tempoRestante}</span>
 											</div>
 										</div>
+										
+										{/* Botão Encerrar solicitação */}
+										<div className="mt-3 pt-3 border-t border-gray-100">
+											<button
+												className="w-full bg-[#172233] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md text-sm"
+												style={{ backgroundColor: footerColor }}
+												onClick={handleOpenConfirmacaoModal}
+											>
+												Encerrar solicitação
+											</button>
+										</div>
 									</div>
-								))}
+								</div>
 							</div>
-							{/* Paginação */}
-							<div className="flex justify-center items-center gap-2 mt-8">
-								<button
-									className="w-8 h-8 rounded bg-[#172233] text-white font-bold cursor-pointer shadow hover:scale-[1.08]"
-									style={{ backgroundColor: footerColor }}
-								>
-									1
-								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
-									2
-								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
-									3
-								</button>
-								<span className="px-2 text-neutral-500 font-bold">...</span>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
-									7
-								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
-									8
-								</button>
-							</div>
-						</CardContent>
-					</Card>
+						))}
+					</div>
 				</section>
+
+				{/* Paginação */}
+				<Pagination 
+					currentPage={currentPage}
+					totalPages={paginatedData.totalPages}
+					baseUrl="/home-realocacao"
+				/>
 			</main>
 			<Footer />
 

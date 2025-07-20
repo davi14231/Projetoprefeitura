@@ -1,8 +1,11 @@
 import { Headernecessidade } from "@/components/ui/layouts/Headernecessidade";
 import { Footer } from "@/components/ui/layouts/Footer";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import DetalheDoacao from "./DetalheDoacao";
+import { useData } from "@/context/DataContext";
+import { Pagination } from "@/components/ui/Pagination";
+import { Facebook } from "lucide-react";
 
 const badgeColors = {
 	Alimentos: "bg-[#34C759] text-white", // verde
@@ -16,12 +19,79 @@ const badgeColors = {
 	default: "bg-gray-300 text-gray-800",
 };
 
-export default function TodasDoacoes({ itens }) {
+export default function TodasDoacoes() {
 	const [busca, setBusca] = useState("");
 	const [categoria, setCategoria] = useState("");
 	const [showDetalheModal, setShowDetalheModal] = useState(false);
 	const [dadosDetalhe, setDadosDetalhe] = useState(null);
+	const [currentPage, setCurrentPage] = useState(1);
 	const navigate = useNavigate();
+	const location = useLocation();
+	const { filterDoacoes, getDoacoesPaginadas } = useData();
+
+	const itemsPerPage = 6;
+
+	// Lista completa de categorias disponíveis
+	const todasCategorias = [
+		"Alimentos",
+		"Roupas", 
+		"Eletrônicos",
+		"Equipamento",
+		"Móveis",
+		"Brinquedos",
+		"Medicamentos",
+		"Material Escolar",
+		"Livros",
+		"Educação"
+	];
+
+	// Ler parâmetros da URL
+	useEffect(() => {
+		const urlParams = new URLSearchParams(location.search);
+		const categoriaParam = urlParams.get('categoria');
+		const pageParam = urlParams.get('page');
+		
+		if (categoriaParam) {
+			console.log('Categoria da URL em TodasDoacoes:', categoriaParam);
+			setCategoria(categoriaParam);
+		}
+		
+		if (pageParam) {
+			setCurrentPage(parseInt(pageParam, 10));
+		}
+	}, [location.search]);
+
+	// Aplicar filtros aos dados
+	const filteredDoacoes = filterDoacoes({
+		categoria,
+		busca
+	});
+
+	// Obter dados paginados dos itens filtrados
+	const getPaginatedData = () => {
+		const startIndex = (currentPage - 1) * itemsPerPage;
+		const endIndex = startIndex + itemsPerPage;
+		const items = filteredDoacoes.slice(startIndex, endIndex);
+		const totalPages = Math.ceil(filteredDoacoes.length / itemsPerPage);
+		
+		return {
+			items,
+			currentPage,
+			totalPages,
+			totalItems: filteredDoacoes.length,
+			itemsPerPage
+		};
+	};
+
+	const paginatedData = getPaginatedData();
+
+	// Função para mudar página
+	const handlePageChange = (page) => {
+		setCurrentPage(page);
+		const urlParams = new URLSearchParams(location.search);
+		urlParams.set('page', page);
+		navigate(`/todas-doacoes?${urlParams.toString()}`);
+	};
 
 	// Prevent background scroll when modal is open
 	React.useEffect(() => {
@@ -45,8 +115,8 @@ export default function TodasDoacoes({ itens }) {
 			diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
 			imagemUrl: item.imageUrl,
 			descricao: item.descricao,
-			email: "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
-			telefone: "(81) 9999-9999"
+			email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
+			telefone: item.whatsapp || "(81) 9999-9999"
 		};
 		setDadosDetalhe(dadosFormatados);
 		setShowDetalheModal(true);
@@ -58,7 +128,8 @@ export default function TodasDoacoes({ itens }) {
 		setDadosDetalhe(null);
 	};
 
-	const categoriasUnicas = [...new Set(itens.map((i) => i.categoria))];
+	// Use a lista completa de categorias ao invés das categorias dos itens
+	const categoriasUnicas = todasCategorias;
 
 	return (
 		<div className="bg-[#F7F9FB] min-h-screen flex flex-col font-sans">
@@ -138,12 +209,12 @@ export default function TodasDoacoes({ itens }) {
 					className="max-w-[900px] mx-auto mb-4 px-2 text-gray-400 text-xs text-left"
 					style={{ fontFamily: "Inter, sans-serif" }}
 				>
-					{itens.length} itens encontrados
+					{paginatedData.totalItems} itens encontrados - Página {currentPage} de {paginatedData.totalPages}
 				</div>
 
 				{/* Grid de cards */}
 				<section className="max-w-[900px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 px-2">
-					{itens.map((item) => (
+					{paginatedData.items.map((item) => (
 						<div
 							key={item.id}
 							className="w-full max-w-[400px] mx-auto h-[370px] flex"
@@ -196,22 +267,29 @@ export default function TodasDoacoes({ itens }) {
 									>
 										{item.titulo}
 									</div>
-									<div className="flex items-center gap-2 text-[#444] text-xs mb-2">
-										<img
-											src="/imagens/Emoji Box.png"
-											alt="Quantidade"
-											className="w-4 h-4"
-											style={{ filter: "grayscale(60%)" }}
-											draggable={false}
-										/>
-										<span className="font-medium">{item.quantidade}</span>
-									</div>
 									<div
 										className="text-[#666] text-xs mb-2 line-clamp-3"
 										style={{ fontFamily: "Inter, sans-serif" }}
 									>
 										{item.descricao}
 									</div>
+									
+									{/* Redes sociais */}
+									{item.facebook && (
+										<div className="flex items-center gap-2 mb-2">
+											<a 
+												href={item.facebook} 
+												target="_blank" 
+												rel="noopener noreferrer"
+												className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800"
+												onClick={(e) => e.stopPropagation()}
+											>
+												<Facebook className="w-3 h-3" />
+												Facebook
+											</a>
+										</div>
+									)}
+
 									<div className="mt-auto flex flex-col gap-1 text-[11px] text-[#888]">
 										<div className="flex items-center gap-1">
 											<img
@@ -244,27 +322,13 @@ export default function TodasDoacoes({ itens }) {
 				</section>
 
 				{/* Paginação */}
-				<div className="max-w-[1200px] mx-auto flex justify-center mb-12">
-					<nav className="flex gap-2">
-						<button className="w-8 h-8 rounded bg-blue-600 text-white font-semibold text-[0.97rem]">
-							1
-						</button>
-						<button className="w-8 h-8 rounded bg-white border text-gray-700 hover:bg-gray-100 text-[0.97rem]">
-							2
-						</button>
-						<button className="w-8 h-8 rounded bg-white border text-gray-700 hover:bg-gray-100 text-[0.97rem]">
-							3
-						</button>
-						<span className="w-8 h-8 flex items-center justify-center text-[0.97rem]">
-							...
-						</span>
-						<button className="w-8 h-8 rounded bg-white border text-gray-700 hover:bg-gray-100 text-[0.97rem]">
-							67
-						</button>
-						<button className="w-8 h-8 rounded bg-white border text-gray-700 hover:bg-gray-100 text-[0.97rem]">
-							68
-						</button>
-					</nav>
+				<div className="max-w-[900px] mx-auto flex justify-center mb-12">
+					<Pagination
+						currentPage={currentPage}
+						totalPages={paginatedData.totalPages}
+						onPageChange={handlePageChange}
+						baseUrl="/todas-doacoes"
+					/>
 				</div>
 
 				{/* "Você sabia?" */}

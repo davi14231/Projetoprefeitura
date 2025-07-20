@@ -15,10 +15,9 @@ export function Footer() {
         {/* Portal */}
         <div className="min-w-[220px] flex flex-col gap-2">
           <span className="font-bold text-lg mb-1">Portal</span>
-          <a href="#" className="text-white/90 text-sm hover:underline">Início</a>
-          <a href="#" className="text-white/90 text-sm hover:underline">ONG</a>
-          <a href="#" className="text-white/90 text-sm hover:underline">Conecta Recife</a>
-          <a href="#" className="text-white/90 text-sm hover:underline">Sobre as ONGs</a>
+          <a href="/" className="text-white/90 text-sm hover:underline">Início</a>
+          <a href="https://conecta.recife.pe.gov.br" target="_blank" rel="noopener noreferrer" className="text-white/90 text-sm hover:underline">Conecta Recife</a>
+          <a href="https://boraimpactar.recife.pe.gov.br/ngos" target="_blank" rel="noopener noreferrer" className="text-white/90 text-sm hover:underline">Sobre as ONGs</a>
         </div>
       </div>
     </footer>

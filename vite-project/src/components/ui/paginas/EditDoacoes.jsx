@@ -2,43 +2,15 @@ import React from "react";
 import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit2, Save, X } from "lucide-react";
-import { useState } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
+import { Edit2, Save, X, Facebook } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { SolicitarDoacao } from "./SolicitarDoacao";
 import ConfirmacaoEncerrarSolicitacao from "./ConfirmacaoEncerrarSolicitacao";
+import { useData } from "@/context/DataContext";
+import { Pagination } from "@/components/ui/Pagination";
 
 const footerColor = "#172233";
-
-const initialPedidos = [
-	{
-		id: 1,
-		imageUrl: "/imagens/medf.jpg",
-		titulo: "Remédios",
-		publicado: "19/12/24",
-		tempoRestante: "1 dia",
-		descricao: "Solicitamos doação de medicamentos para atender uma demanda urgente em nosso abrigo temporário, que acolhem famílias em situação de vulnerabilidade.",
-		status: "alta",
-	},
-	{
-		id: 2,
-		imageUrl: "/imagens/roupas.jpg",
-		titulo: "Cobertores",
-		publicado: "11/03/24",
-		tempoRestante: "30 dias",
-		descricao: "Necessitamos urgentemente de cobertores para o período de inverno. Famílias estão precisando de aquecimento.",
-		status: "urgente",
-	},
-	{
-		id: 3,
-		imageUrl: "/imagens/roupas.jpg",
-		titulo: "Camisetas",
-		publicado: "12/06/24",
-		tempoRestante: "47 dias",
-		descricao: "Doação de camisetas em diversos tamanhos para distribuição nas comunidades carentes.",
-		status: "média",
-	},
-];
 
 const statusColors = {
 	alta: "bg-orange-400 text-white",
@@ -46,14 +18,31 @@ const statusColors = {
 	média: "bg-yellow-400 text-white",
 };
 
-export function EditDoacoes(props) {
+export function EditDoacoes() {
 	const location = useLocation();
-	const [pedidos, setPedidos] = useState(initialPedidos);
 	const [editId, setEditId] = useState(null);
 	const [editData, setEditData] = useState({});
 	const [showSolicitarModal, setShowSolicitarModal] = useState(false);
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
+	const { getDoacoesPaginadas, updateDoacao, deleteDoacao } = useData();
 	const navigate = useNavigate();
+
+	const itemsPerPage = 6;
+
+	// Efeito para ler parâmetros da URL e definir página atual
+	useEffect(() => {
+		const searchParams = new URLSearchParams(location.search);
+		const page = parseInt(searchParams.get('page')) || 1;
+		setCurrentPage(page);
+	}, [location.search]);
+
+	// Obter dados paginados usando Context
+	const paginatedData = getDoacoesPaginadas({
+		page: currentPage,
+		limit: itemsPerPage,
+		filters: {}
+	});
 
 	// Prevent background scroll when modal is open
 	React.useEffect(() => {
@@ -77,9 +66,7 @@ export function EditDoacoes(props) {
 	};
 
 	const handleSave = () => {
-		setPedidos(
-			pedidos.map((p) => (p.id === editId ? { ...editData } : p))
-		);
+		updateDoacao(editId, editData);
 		setEditId(null);
 		setEditData({});
 	};
@@ -121,6 +108,11 @@ export function EditDoacoes(props) {
 		// Exemplo: remover o pedido da lista ou atualizar status
 	};
 
+	// Função para navegar para TodasDoacoes com filtro de categoria
+	const navigateToCategory = (categoria) => {
+		navigate(`/todas-doacoes?categoria=${encodeURIComponent(categoria)}`);
+	};
+
 	return (
 		<div className="bg-[#fafbfc] min-h-screen flex flex-col relative">
 			<Headeredicao />
@@ -140,54 +132,72 @@ export function EditDoacoes(props) {
 				<section className="max-w-6xl mx-auto px-4 mb-2">
 					<div className="flex flex-col">
 						<div className="flex gap-6 justify-between pb-2">
-							<div className="flex flex-col items-center flex-1">
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Medicamentos")}
+							>
 								<img
 									src="/imagens/medicamentos.jpg"
 									alt="Medicamentos"
 									className="w-52 h-32 object-contain rounded-lg"
 								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center"></span>
-							</div>
-							<div className="flex flex-col items-center flex-1">
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Medicamentos</span>
+							</button>
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Roupas")}
+							>
 								<img
 									src="/imagens/roupas.jpg"
 									alt="Roupas"
 									className="w-52 h-32 object-contain rounded-lg"
 								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center"></span>
-							</div>
-							<div className="flex flex-col items-center flex-1">
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Roupas</span>
+							</button>
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Móveis")}
+							>
 								<img
 									src="/imagens/moveis.jpg"
 									alt="Móveis"
 									className="w-52 h-32 object-contain rounded-lg"
 								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center"></span>
-							</div>
-							<div className="flex flex-col items-center flex-1">
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Móveis</span>
+							</button>
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Equipamento")}
+							>
 								<img
 									src="/imagens/ferramentas.jpg"
 									alt="Ferramentas"
 									className="w-52 h-32 object-contain rounded-lg"
 								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center"></span>
-							</div>
-							<div className="flex flex-col items-center flex-1">
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Equipamento</span>
+							</button>
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Alimentos")}
+							>
 								<img
 									src="/imagens/alimentos.jpg"
 									alt="Alimentos"
 									className="w-52 h-32 object-contain rounded-lg"
 								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center"></span>
-							</div>
-							<div className="flex flex-col items-center flex-1">
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Alimentos</span>
+							</button>
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Outros")}
+							>
 								<img
 									src="/imagens/outros.jpg"
 									alt="Outros"
 									className="w-52 h-32 object-contain rounded-lg"
 								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center"></span>
-							</div>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Outros</span>
+							</button>
 						</div>
 						<div className="flex justify-between items-center mt-2">
 							<button
@@ -239,10 +249,14 @@ export function EditDoacoes(props) {
 
 				{/* Listagem de pedidos editáveis */}
 				<section className="max-w-6xl mx-auto px-4 mb-8">
+					{/* Contador de itens */}
+					<div className="mb-4 text-sm text-gray-600 font-medium">
+						{paginatedData.totalItems} itens encontrados - Página {currentPage} de {paginatedData.totalPages}
+					</div>
 					<Card className="w-full bg-white border">
 						<CardContent className="py-6 px-8">
 							<div className="flex flex-col gap-6">
-								{pedidos.map((pedido) => (
+								{paginatedData.items.map((pedido) => (
 									<div
 										key={pedido.id}
 										className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
@@ -313,57 +327,96 @@ export function EditDoacoes(props) {
 													Tempo restante: {pedido.tempoRestante}
 												</span>
 											</div>
-											<div className="mt-2 text-gray-700 text-base flex items-center justify-between">
-												<div className="w-[500px]">
-													{editId === pedido.id ? (
-														<textarea
-															name="descricao"
-															value={editData.descricao}
-															onChange={handleChange}
-															className="border rounded px-2 py-1 w-full"
-															rows={3}
-															style={{ minHeight: "3rem", maxHeight: "none" }}
-														/>
-													) : (
-														<span className="block w-full break-words">
-															{pedido.descricao}
-														</span>
+											<div className="mt-2 text-gray-700 text-base">
+												{editId === pedido.id ? (
+													<textarea
+														name="descricao"
+														value={editData.descricao}
+														onChange={handleChange}
+														className="border rounded px-2 py-1 w-full"
+														rows={3}
+														style={{ minHeight: "3rem", maxHeight: "none" }}
+													/>
+												) : (
+													<span className="block w-full break-words">
+														{pedido.descricao}
+													</span>
+												)}
+											</div>
+											
+											{/* Parte inferior: botões de urgência, redes sociais e encerrar solicitação */}
+											<div className="mt-4 flex items-center justify-between">
+												<div className="flex items-center gap-3">
+													{/* Botões de urgência */}
+													<div className="flex gap-2">
+														<button 
+															className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
+																pedido.urgencia === 'Urgente' || pedido.status === 'urgente'
+																	? 'bg-red-100 border-red-200 text-red-700' 
+																	: 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200'
+															}`}
+														>
+															Urgente
+														</button>
+														<button 
+															className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
+																pedido.urgencia === 'Média' || pedido.status === 'média'
+																	? 'bg-yellow-100 border-yellow-200 text-yellow-700' 
+																	: 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200'
+															}`}
+														>
+															Média
+														</button>
+														<button 
+															className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
+																pedido.urgencia === 'Alta' || pedido.status === 'alta'
+																	? 'bg-orange-100 border-orange-200 text-orange-700' 
+																	: 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200'
+															}`}
+														>
+															Alta
+														</button>
+													</div>
+													
+													{/* Redes sociais */}
+													{pedido.facebook && (
+														<div className="flex items-center gap-2 ml-4">
+															<a 
+																href={pedido.facebook} 
+																target="_blank" 
+																rel="noopener noreferrer"
+																className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800"
+															>
+																<Facebook className="w-3 h-3" />
+																Facebook
+															</a>
+														</div>
 													)}
 												</div>
-<button
-	className="bg-[#172233] text-white px-5 py-2 rounded-lg font-medium hover:bg-[#22304d] transition ml-4 w-56 cursor-pointer shadow-md hover:scale-[1.03]"
-	style={{ backgroundColor: footerColor, minWidth: "14rem" }}
-	onClick={handleOpenConfirmacaoModal}
->
-	Encerrar Solicitação
-</button>
+												
+												{/* Botão Encerrar Solicitação */}
+												<button
+													className="bg-[#172233] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
+													style={{ backgroundColor: footerColor }}
+													onClick={handleOpenConfirmacaoModal}
+												>
+													Encerrar Solicitação
+												</button>
 											</div>
 										</div>
 									</div>
 								))}
 							</div>
-							{/* Paginação */}
-							<div className="flex justify-center items-center gap-2 mt-8">
-<button className="w-8 h-8 rounded bg-[#172233] text-white font-bold cursor-pointer shadow hover:scale-[1.08]" style={{ backgroundColor: footerColor }}>
-									1
-								</button>
-<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
-									2
-								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
-									3
-								</button>
-								<span className="px-2 text-neutral-500 font-bold">...</span>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
-									7
-								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200 cursor-pointer shadow hover:scale-[1.08]">
-									8
-								</button>
-							</div>
 						</CardContent>
 					</Card>
 				</section>
+
+				{/* Paginação */}
+				<Pagination 
+					currentPage={currentPage}
+					totalPages={paginatedData.totalPages}
+					baseUrl="/edit-doacoes"
+				/>
 			</main>
 			<Footer />
 

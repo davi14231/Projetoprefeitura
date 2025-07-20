@@ -1,39 +1,73 @@
 
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Headerrealocacao } from "@/components/ui/layouts/Headerrealocacao";
 import { Footer } from "@/components/ui/layouts/Footer";
-import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
 import DetalheDoacao from "./DetalheDoacao";
 import { PostagemRealocacao } from "./PostagemRealocacao";
+import { useData } from "@/context/DataContext";
+import { Pagination } from "@/components/ui/Pagination";
+import { Facebook } from "lucide-react";
 
 // import "./MyNewScreen.css";
 
 const badgeColors = {
-	Alimentos: "bg-[#34C759] text-white", // verde
-	Roupas: "bg-[#007AFF] text-white", // azul
-	Eletrônicos: "bg-[#5856D6] text-white", // roxo
-	Móveis: "bg-[#FF9500] text-white", // laranja
-	Brinquedos: "bg-[#FFCC00] text-gray-900", // amarelo
-	Medicamentos: "bg-[#FF3B30] text-white", // vermelho
-	"Material Escolar": "bg-[#8E8E93] text-white", // cinza
-	Livros: "bg-[#AF52DE] text-white", // lilás
-	Educação: "bg-[#8E8E93] text-white", // cinza
-	default: "bg-gray-300 text-gray-800",
+  Alimentos: "bg-[#34C759] text-white", // verde
+  Roupas: "bg-[#007AFF] text-white", // azul
+  Eletrônicos: "bg-[#5856D6] text-white", // roxo
+  Móveis: "bg-[#FF9500] text-white", // laranja
+  Brinquedos: "bg-[#FFCC00] text-gray-900", // amarelo
+  Medicamentos: "bg-[#FF3B30] text-white", // vermelho
+  "Material Escolar": "bg-[#8E8E93] text-white", // cinza
+  Livros: "bg-[#AF52DE] text-white", // lilás
+  Educação: "bg-[#8E8E93] text-white", // cinza
+  default: "bg-gray-300 text-gray-800",
 };
 
-export function RealocacaoListagem({ itens = [] }) {
+export function RealocacaoListagem() {
+  const location = useLocation();
   const [busca, setBusca] = useState("");
   const [categoria, setCategoria] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
   const [showDetalheModal, setShowDetalheModal] = useState(false);
   const [dadosDetalhe, setDadosDetalhe] = useState(null);
   const [showPostagemModal, setShowPostagemModal] = useState(false);
+  const { filterRealocacoes, getRealocacoesPaginadas } = useData();
+
+  const itemsPerPage = 6;
+
+  // Efeito para ler parâmetros da URL e definir página atual
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const page = parseInt(searchParams.get('page')) || 1;
+    setCurrentPage(page);
+  }, [location.search]);
+
+  // Obter dados paginados usando Context
+  const paginatedData = getRealocacoesPaginadas({
+    page: currentPage,
+    limit: itemsPerPage,
+    filters: { categoria, termo: busca }
+  });
+
+  // Lista completa de categorias disponíveis
+  const todasCategorias = [
+    "Alimentos",
+    "Roupas", 
+    "Eletrônicos",
+    "Equipamento",
+    "Móveis",
+    "Brinquedos",
+    "Medicamentos",
+    "Material Escolar",
+    "Livros",
+    "Educação"
+  ];
 
   // Prevent background scroll when modal is open
   React.useEffect(() => {
-    if (showConfirmacaoModal || showDetalheModal || showPostagemModal) {
+    if (showDetalheModal || showPostagemModal) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -41,24 +75,18 @@ export function RealocacaoListagem({ itens = [] }) {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [showConfirmacaoModal, showDetalheModal, showPostagemModal]);
+  }, [showDetalheModal, showPostagemModal]);
 
-  // Abrir modal ConfirmacaoEncerrarRealocacao
-  const handleOpenConfirmacaoModal = () => {
-    setShowConfirmacaoModal(true);
-  };
-
-  // Fechar modal ConfirmacaoEncerrarRealocacao
-  const handleCloseConfirmacaoModal = () => {
-    setShowConfirmacaoModal(false);
-  };
-
-  // Confirmar encerramento da realocação
-  const handleConfirmEncerramento = () => {
-    // Aqui você pode adicionar a lógica para encerrar a realocação
-    setShowConfirmacaoModal(false);
-    // Exemplo: remover o item da lista ou atualizar status
-  };
+  // Efeito para ler parâmetros da URL e aplicar filtros
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const categoriaUrl = urlParams.get('categoria');
+    
+    if (categoriaUrl) {
+      console.log('Categoria da URL:', categoriaUrl);
+      setCategoria(categoriaUrl);
+    }
+  }, [location.search]);
 
   // Abrir modal DetalheDoacao
   const handleOpenDetalheModal = (item) => {
@@ -93,14 +121,8 @@ export function RealocacaoListagem({ itens = [] }) {
     setShowPostagemModal(false);
   };
 
-
-  const categoriasUnicas = [...new Set(itens.map((i) => i.categoria))];
-
-  const itensFiltrados = itens.filter(
-    (item) =>
-      (!busca || item.titulo.toLowerCase().includes(busca.toLowerCase()) || item.ong.toLowerCase().includes(busca.toLowerCase())) &&
-      (!categoria || item.categoria === categoria)
-  );
+  // Use a lista completa de categorias ao invés das categorias dos itens
+  const categoriasUnicas = todasCategorias;
 
   return (
     <div className="bg-[#b9d2f7] min-h-screen flex flex-col font-sans">
@@ -178,12 +200,12 @@ export function RealocacaoListagem({ itens = [] }) {
           className="max-w-[900px] mx-auto mb-4 px-2 text-[#22304d] text-xs text-left"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
-          {itensFiltrados.length} itens encontrados
+          {paginatedData.total} itens encontrados - Página {currentPage} de {paginatedData.totalPages}
         </div>
 
         {/* Grid de cards */}
         <section className="max-w-[900px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 px-2">
-          {itensFiltrados.map((item) => (
+          {paginatedData.items.map((item) => (
             <div
               key={item.id}
               className="w-full max-w-[400px] mx-auto h-[370px] flex"
@@ -214,12 +236,6 @@ export function RealocacaoListagem({ itens = [] }) {
                   >
                     {item.categoria}
                   </span>
-                  {/* Badge urgência */}
-                  {(item.urgencia === "Urgente" || item.urgencia === true) && (
-                    <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-[#FF3B30] text-white shadow">
-                      Urgente
-                    </span>
-                  )}
                 </div>
                 {/* Conteúdo */}
                 <div className="flex flex-col flex-1 px-5 py-4">
@@ -236,22 +252,29 @@ export function RealocacaoListagem({ itens = [] }) {
                   >
                     {item.titulo}
                   </div>
-                  <div className="flex items-center gap-2 text-[#444] text-xs mb-2">
-                    <img
-                      src="/imagens/Emoji Box.png"
-                      alt="Quantidade"
-                      className="w-4 h-4"
-                      style={{ filter: "grayscale(60%)" }}
-                      draggable={false}
-                    />
-                    <span className="font-medium">{item.quantidade || "Não informado"}</span>
-                  </div>
                   <div
                     className="text-[#666] text-xs mb-2 line-clamp-3"
                     style={{ fontFamily: "Inter, sans-serif" }}
                   >
                     {item.descricao}
                   </div>
+                  
+                  {/* Redes sociais */}
+                  {item.facebook && (
+                    <div className="flex items-center gap-2 mb-2">
+                      <a 
+                        href={item.facebook} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Facebook className="w-3 h-3" />
+                        Facebook
+                      </a>
+                    </div>
+                  )}
+
                   <div className="mt-auto flex flex-col gap-1 text-[11px] text-[#888]">
                     <div className="flex items-center gap-1">
                       <img
@@ -276,43 +299,18 @@ export function RealocacaoListagem({ itens = [] }) {
                       </div>
                     )}
                   </div>
-                  {/* Botão Encerrar Realocação */}
-                  <div className="mt-3 pt-3 border-t border-gray-100">
-                    <button
-                      className="w-full bg-[#172233] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md text-sm"
-                      onClick={handleOpenConfirmacaoModal}
-                    >
-                      Encerrar Realocação
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
           ))}
         </section>
         {/* Paginação */}
-        <div className="max-w-[1200px] mx-auto flex justify-center mb-12">
-          <nav className="flex gap-2">
-            <button className="w-8 h-8 rounded bg-blue-600 text-white font-semibold text-[0.97rem]">
-              1
-            </button>
-            <button className="w-8 h-8 rounded bg-white border text-gray-700 hover:bg-gray-100 text-[0.97rem]">
-              2
-            </button>
-            <button className="w-8 h-8 rounded bg-white border text-gray-700 hover:bg-gray-100 text-[0.97rem]">
-              3
-            </button>
-            <span className="w-8 h-8 flex items-center justify-center text-[0.97rem]">
-              ...
-            </span>
-            <button className="w-8 h-8 rounded bg-white border text-gray-700 hover:bg-gray-100 text-[0.97rem]">
-              67
-            </button>
-            <button className="w-8 h-8 rounded bg-white border text-gray-700 hover:bg-gray-100 text-[0.97rem]">
-              68
-            </button>
-          </nav>
-        </div>
+        {/* Mantém apenas o componente Pagination para evitar duplicidade e garantir lógica dinâmica */}
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={paginatedData.totalPages}
+          baseUrl="/realocacao-listagem"
+        />
 
         {/* Bloco CTA */}
         <section className="max-w-[900px] mx-auto mb-20 px-2">
@@ -347,14 +345,6 @@ export function RealocacaoListagem({ itens = [] }) {
         </section>
       </main>
       <Footer />
-
-      {/* Modal ConfirmacaoEncerrarRealocacao */}
-      {showConfirmacaoModal && (
-        <ConfirmacaoEncerrarRealocacao 
-          onCancel={handleCloseConfirmacaoModal}
-          onConfirm={handleConfirmEncerramento}
-        />
-      )}
 
       {/* Modal DetalheDoacao */}
       {showDetalheModal && dadosDetalhe && (
