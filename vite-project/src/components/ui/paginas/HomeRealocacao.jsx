@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
-import { Footer } from "@/components/ui/layouts/Footer";
-import { Card, CardContent } from "@/components/ui/card";
+import { Headeredicao } from "../layouts/Headeredicao";
+import { Footer } from "../layouts/Footer";
+import { Card, CardContent } from "../card";
 import { Edit2, X, Facebook } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
 import { PostagemRealocacao } from "./PostagemRealocacao";
-import { useData } from "@/context/DataContext";
-import { Pagination } from "@/components/ui/Pagination";
+import { useData } from "../../../context/DataContext";
+import { Pagination } from "../Pagination";
 
 const footerColor = "#172233";
 

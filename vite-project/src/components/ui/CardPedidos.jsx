@@ -1,4 +1,5 @@
-import { Card, CardContent } from "@/components/ui/card";
+import React from "react";
+import { Card } from "./card";
 import { CalendarDays, Package } from "lucide-react";
 
 export function CardPedidos({
