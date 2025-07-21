@@ -1,0 +1,134 @@
+# Page snapshot
+
+```yaml
+- banner:
+  - img "Recife Prefeitura"
+  - link "Entrar como ONG":
+    - /url: /login
+- banner:
+  - heading "Conecte-se com quem precisa." [level=1]
+  - paragraph: Encontre ONGs que precisam de doações. Entre em contato diretamente e faça a diferença na vida dessas pessoas.
+  - img "Banner"
+  - button "Selecionar imagem 1"
+  - button "Selecionar imagem 2"
+  - button "Selecionar imagem 3"
+- heading "Como o Doador Ajuda?" [level=2]
+- paragraph: Doar nunca foi tão direto e transparente
+- link "Encontre necessidades Use nossos filtros para encontrar causas específicas na sua região":
+  - /url: /todas-doacoes
+- text: Entre em contato Conecte-se diretamente com as ONGs através de WhatsApp ou telefone Faça a diferença Doe itens específicos que realmente fazem diferença na vida das pessoas
+- heading "Necessidades" [level=2]
+- paragraph: ONGs que precisam da sua doação agora.
+- img
+- text: Prestes a Vencer
+- button:
+  - img
+- button "Cestas Básicas Completas Urgente Alimentos Cestas Básicas Completas Instituto Criança Feliz Cestas básicas completas com arroz, feijão, etc.":
+  - img "Cestas Básicas Completas"
+  - text: Urgente Alimentos Cestas Básicas Completas
+  - link "Instituto Criança Feliz":
+    - /url: "#"
+  - text: Cestas básicas completas com arroz, feijão, etc.
+- button "Cestas Básicas Completas Urgente Alimentos Cestas Básicas Completas Instituto Criança Feliz Cestas básicas completas com arroz, feijão, macarrão, óleo, açúcar, sal e outros itens essenciais.":
+  - img "Cestas Básicas Completas"
+  - text: Urgente Alimentos Cestas Básicas Completas
+  - link "Instituto Criança Feliz":
+    - /url: "#"
+  - text: Cestas básicas completas com arroz, feijão, macarrão, óleo, açúcar, sal e outros itens essenciais.
+- button "Roupas de Inverno Média Roupas Roupas de Inverno Casa de Apoio Esperança Casacos, blusas e calças para o período de inverno. Todas as idades e tamanhos.":
+  - img "Roupas de Inverno"
+  - text: Média Roupas Roupas de Inverno
+  - link "Casa de Apoio Esperança":
+    - /url: "#"
+  - text: Casacos, blusas e calças para o período de inverno. Todas as idades e tamanhos.
+- button "Material Escolar Baixa Educação Material Escolar Projeto Educar Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.":
+  - img "Material Escolar"
+  - text: Baixa Educação Material Escolar
+  - link "Projeto Educar":
+    - /url: "#"
+  - text: Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.
+- button "Material Escolar Baixa Educação Material Escolar Projeto Educar Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.":
+  - img "Material Escolar"
+  - text: Baixa Educação Material Escolar
+  - link "Projeto Educar":
+    - /url: "#"
+  - text: Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.
+- button "Material Escolar Baixa Educação Material Escolar Projeto Educar Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.":
+  - img "Material Escolar"
+  - text: Baixa Educação Material Escolar
+  - link "Projeto Educar":
+    - /url: "#"
+  - text: Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.
+- button:
+  - img
+- img
+- text: Todas as Necessidades
+- button:
+  - img
+- button "Cestas Básicas Completas Urgente Alimentos Cestas Básicas Completas Instituto Criança Feliz Cestas básicas completas com arroz, feijão, etc.":
+  - img "Cestas Básicas Completas"
+  - text: Urgente Alimentos Cestas Básicas Completas
+  - link "Instituto Criança Feliz":
+    - /url: "#"
+  - text: Cestas básicas completas com arroz, feijão, etc.
+- button "Cestas Básicas Completas Urgente Alimentos Cestas Básicas Completas Instituto Criança Feliz Cestas básicas completas com arroz, feijão, macarrão, óleo, açúcar, sal e outros itens essenciais.":
+  - img "Cestas Básicas Completas"
+  - text: Urgente Alimentos Cestas Básicas Completas
+  - link "Instituto Criança Feliz":
+    - /url: "#"
+  - text: Cestas básicas completas com arroz, feijão, macarrão, óleo, açúcar, sal e outros itens essenciais.
+- button "Roupas de Inverno Média Roupas Roupas de Inverno Casa de Apoio Esperança Casacos, blusas e calças para o período de inverno. Todas as idades e tamanhos.":
+  - img "Roupas de Inverno"
+  - text: Média Roupas Roupas de Inverno
+  - link "Casa de Apoio Esperança":
+    - /url: "#"
+  - text: Casacos, blusas e calças para o período de inverno. Todas as idades e tamanhos.
+- button "Material Escolar Baixa Educação Material Escolar Projeto Educar Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.":
+  - img "Material Escolar"
+  - text: Baixa Educação Material Escolar
+  - link "Projeto Educar":
+    - /url: "#"
+  - text: Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.
+- button "Material Escolar Baixa Educação Material Escolar Projeto Educar Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.":
+  - img "Material Escolar"
+  - text: Baixa Educação Material Escolar
+  - link "Projeto Educar":
+    - /url: "#"
+  - text: Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.
+- button "Material Escolar Baixa Educação Material Escolar Projeto Educar Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.":
+  - img "Material Escolar"
+  - text: Baixa Educação Material Escolar
+  - link "Projeto Educar":
+    - /url: "#"
+  - text: Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.
+- button:
+  - img
+- link "Ver todas →":
+  - /url: "#"
+- heading "Como a ONG solicita itens?" [level=2]
+- paragraph: Solicite itens de forma rápida e transparente
+- link "Cadastre sua ONG Faça o cadastro e seja validado pela equipe da plataforma":
+  - /url: /login
+  - img
+  - text: Cadastre sua ONG
+  - paragraph: Faça o cadastro e seja validado pela equipe da plataforma
+- img
+- text: Adicione necessidades
+- paragraph: Publique os itens que sua ONG precisa e mantenha atualizado
+- img
+- text: Receba doações
+- paragraph: Receba contato direto dos doadores e organize a entrega
+- link "Solicite Itens":
+  - /url: /login
+- heading "Você sabia?" [level=2]
+- paragraph: O Brasil possui mais de 820 mil ONGs registradas, atuando em áreas como educação, saúde, meio ambiente e assistência social — muitas delas dependem exclusivamente de doações e editais públicos para manter seus projetos vivos.
+- contentinfo:
+  - img "Recife Prefeitura"
+  - text: Bora Impactar A união que transforma vidas Portal
+  - link "Início":
+    - /url: /
+  - link "Conecta Recife":
+    - /url: https://conecta.recife.pe.gov.br
+  - link "Sobre as ONGs":
+    - /url: https://boraimpactar.recife.pe.gov.br/ngos
+```
