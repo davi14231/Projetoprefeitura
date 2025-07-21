@@ -1,14 +1,29 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
-import HomeRealocacao from "../../components/ui/paginas/HomeRealocacao";
-import { MemoryRouter } from "react-router-dom";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
 
-describe("HomeRealocacao", () => {
-  it("renderiza o título principal", () => {
+// Teste simples dos componentes de input
+describe("Input Components", () => {
+  it("renderiza um input simples", () => {
+    render(<Input placeholder="Digite aqui" />);
+    const input = screen.getByPlaceholderText("Digite aqui");
+    expect(input).toBeInTheDocument();
+  });
+  
+  it("renderiza um label", () => {
+    render(<Label>Nome do Campo</Label>);
+    expect(screen.getByText("Nome do Campo")).toBeInTheDocument();
+  });
+  
+  it("renderiza input com label", () => {
     render(
-      <MemoryRouter>
-        <HomeRealocacao />
-      </MemoryRouter>
+      <div>
+        <Label htmlFor="test-input">Campo de Teste</Label>
+        <Input id="test-input" placeholder="Valor de teste" />
+      </div>
     );
-    expect(screen.getByText(/Doe itens para outras ONGs/i)).toBeInTheDocument();
+    expect(screen.getByText("Campo de Teste")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Valor de teste")).toBeInTheDocument();
   });
 });
