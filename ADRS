@@ -1,0 +1,110 @@
+Escolha da Biblioteca de UI (React) e Ferramenta de Build (Vite)
+Date: 2025-07-20
+
+Status
+
+Aceito
+
+Context
+
+Para o desenvolvimento do projeto isolado na pasta vite-project/, era necessária uma base tecnológica que permitisse a criação de interfaces de usuário componentizadas e um ambiente de desenvolvimento ágil. A prioridade era ter um feedback visual rápido durante a codificação e utilizar uma biblioteca de UI com um ecossistema robusto e popular, sem a complexidade de ferramentas mais pesadas.
+
+Decision
+
+A decisão técnica foi adotar a seguinte combinação de ferramentas:
+
+Biblioteca de UI: React, para a criação de componentes de interface de forma declarativa e reutilizável.
+
+Ferramenta de Build: Vite, escolhido para gerenciar o projeto e por seu ambiente de desenvolvimento extremamente rápido.
+
+Consequences
+
+Impactos Positivos:
+
+Velocidade de Desenvolvimento: O Vite oferece um servidor de desenvolvimento com Hot Module Replacement (HMR) quase instantâneo, tornando o ciclo de criar um componente e ver o resultado na tela extremamente ágil.
+
+Arquitetura de Componentes: O React permite que a interface seja quebrada em partes menores e reutilizáveis, o que facilita a manutenção e a escalabilidade da UI.
+
+Ecossistema Robusto: A escolha do React garante acesso a uma vasta gama de bibliotecas, hooks e soluções criadas pela comunidade para resolver problemas comuns.
+
+Impactos Negativos e Riscos:
+
+SEO Limitado: A configuração padrão de React com Vite resulta em uma Single-Page Application (SPA), onde o conteúdo é renderizado no navegador. Isso pode impactar negativamente a indexação por mecanismos de busca.
+
+Gerenciamento de Estado: Conforme a aplicação cresce, pode ser necessário adicionar uma biblioteca de gerenciamento de estado (como Redux ou Zustand), adicionando uma nova complexidade ao projeto.
+
+Alternatives Considered
+
+Alternativa 1: Usar outra biblioteca de UI (ex: Vue.js, Svelte).
+
+Descrição: Desenvolver o projeto utilizando uma biblioteca de componentes concorrente ao React.
+
+Motivo da Rejeição: O React foi escolhido devido à sua imensa popularidade, vasta documentação e ao grande ecossistema de ferramentas e bibliotecas de terceiros disponíveis.
+
+Alternativa 2: Usar outra ferramenta de build (ex: Create React App/Webpack).
+
+Descrição: Utilizar a ferramenta de configuração mais tradicional para projetos React.
+
+Motivo da Rejeição: O Vite oferece uma experiência de desenvolvimento superior em termos de velocidade do servidor e tempo de build em comparação com o Webpack, que é a base do Create React App.
+
+Related Decisions
+
+ADR 5: Escolha da Linguagem (JavaScript) e Sintaxe (JSX)
+
+References
+
+Documentação Oficial do React
+
+Documentação Oficial do Vite
+
+
+
+
+Escolha da Linguagem (JavaScript) e Sintaxe (JSX)
+Date: 2025-07-20
+
+Status
+
+Aceito
+
+Context
+
+Com a decisão de usar a biblioteca React (conforme ADR 4), foi necessário definir a linguagem de programação para a implementação dos componentes. A escolha principal era entre a simplicidade e flexibilidade do JavaScript tradicional ou a robustez e segurança de tipos do TypeScript. Para este projeto, que visa agilidade e prototipagem rápida, a complexidade de um sistema de tipos foi um fator chave na decisão.
+
+Decision
+
+A decisão foi utilizar JavaScript como a linguagem de programação principal, em conjunto com a sintaxe JSX (JavaScript XML) para a declaração dos componentes React de forma descritiva e similar ao HTML.
+
+Consequences
+
+Impactos Positivos:
+
+Simplicidade e Flexibilidade: O uso de JavaScript puro remove a necessidade de uma etapa de compilação de tipos, o que pode simplificar o fluxo de trabalho e acelerar o desenvolvimento inicial.
+
+Curva de Aprendizagem Menor: Para desenvolvedores menos familiarizados com sistemas de tipos, o JavaScript puro é mais direto e rápido de começar a usar.
+
+Sintaxe Declarativa: O JSX torna o código do componente extremamente legível, pois a estrutura da UI se assemelha muito ao HTML final.
+
+Impactos Negativos e Riscos:
+
+Ausência de Segurança de Tipo: A principal desvantagem é que erros relacionados a tipos de dados (ex: passar um número para uma função que espera um texto) só serão descobertos em tempo de execução, podendo causar bugs inesperados em produção.
+
+Manutenção em Larga Escala: Para projetos que crescem muito, a falta de tipagem estática pode dificultar a refatoração e o entendimento do código por novos membros da equipe.
+
+Alternatives Considered
+
+Alternativa 1: Usar TypeScript com a sintaxe TSX.
+
+Descrição: Implementar os componentes utilizando TypeScript para adicionar verificação de tipos estáticos ao código.
+
+Motivo da Rejeição: Foi rejeitada para manter a máxima simplicidade e velocidade na prototipagem, evitando a "sobrecarga" de ter que definir tipos para todas as variáveis, funções e propriedades dos componentes neste escopo de projeto.
+
+Related Decisions
+
+ADR 4: Escolha da Biblioteca de UI (React) e Ferramenta de Build (Vite)
+
+References
+
+Guia sobre JSX do React
+
+Documentação do JavaScript na MDN
