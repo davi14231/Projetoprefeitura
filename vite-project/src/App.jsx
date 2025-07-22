@@ -88,10 +88,12 @@ function App() {
           <Route path="/edit-doacoes" element={<EditDoacoes />} />
           <Route path="/home-realocacao" element={<HomeRealocacao />} />
           <Route path="/solicitar-doacao" element={<SolicitarDoacao />} />
+          <Route path="/postagem-realocacao" element={<PostagemRealocacao />} />
           <Route path="/todas-doacoes" element={<TodasDoacoes />} />
           <Route path="/home-ong" element={<TelahomeONG imagensCarrossel={imagensCarrossel} itens={itens} />} />
           <Route path="/realocacao-listagem" element={<RealocacaoListagem />} />
           <Route path="/confirmar-encerrar-solicitacao" element={<ConfirmacaoEncerrarSolicitacao />} />
+          <Route path="/confirmar-encerrar-realocacao" element={<ConfirmacaoEncerrarRealocacao />} />
         </Routes>
       </BrowserRouter>
     </DataProvider>

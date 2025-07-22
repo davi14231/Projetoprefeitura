@@ -111,7 +111,12 @@ export default function Tela_Home({ imagensCarrossel, itens }) {
               </div>
               <ListagemHome2 itens={itens} carrosselId="carousel-todas" onCardClick={handleOpenDetalheModal} />
               <div className="flex justify-end mt-6">
-                <a href="#" className="text-blue-600 font-semibold flex items-center gap-1 hover:underline">Ver todas <span className="ml-1">→</span></a>
+                <button 
+                  onClick={() => navigate('/todas-doacoes?from=home')} 
+                  className="text-blue-600 font-semibold flex items-center gap-1 hover:underline"
+                >
+                  Ver todas <span className="ml-1">→</span>
+                </button>
               </div>
             </div>
           </div>

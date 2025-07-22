@@ -1,22 +1,21 @@
 import { Input } from "@/components/ui/input";
 import { Botao } from "@/components/ui/botao";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export function Headernecessidade() {
-  const navigate = useNavigate();
   return (
     <header className="bg-gray-800 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between py-3">
           {/* Logo */}
-          <div className="flex items-center min-w-[140px]">
+          <Link to="/" className="flex items-center min-w-[140px] cursor-pointer">
             <img
               src="/imagens/logo-recife.png"
               alt="Recife Prefeitura"
               className="h-10 w-auto"
               draggable={false}
             />
-          </div>
+          </Link>
 
           {/* Campo de busca */}
           <div className="flex-1 flex justify-center md:justify-center my-2 md:my-0">

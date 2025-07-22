@@ -1,4 +1,5 @@
 import { Headernecessidade } from "@/components/ui/layouts/Headernecessidade";
+import { HeaderTelainicial } from "@/components/ui/layouts/Headertelainicial";
 import { Footer } from "@/components/ui/layouts/Footer";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -27,7 +28,7 @@ export default function TodasDoacoes() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { filterDoacoes, getDoacoesPaginadas } = useData();
+	const { filterDoacoes } = useData();
 
 	const itemsPerPage = 6;
 
@@ -46,10 +47,18 @@ export default function TodasDoacoes() {
 	];
 
 	// Ler parâmetros da URL
+	const [isFromHome, setIsFromHome] = useState(false);
+	
 	useEffect(() => {
 		const urlParams = new URLSearchParams(location.search);
 		const categoriaParam = urlParams.get('categoria');
 		const pageParam = urlParams.get('page');
+		const fromParam = urlParams.get('from');
+		
+		// Verificar se veio da home
+		if (fromParam === 'home') {
+			setIsFromHome(true);
+		}
 		
 		if (categoriaParam) {
 			console.log('Categoria da URL em TodasDoacoes:', categoriaParam);
@@ -133,7 +142,7 @@ export default function TodasDoacoes() {
 
 	return (
 		<div className="bg-[#F7F9FB] min-h-screen flex flex-col font-sans">
-			<Headernecessidade />
+			{isFromHome ? <HeaderTelainicial /> : <Headernecessidade />}
 			<main className="flex-1">
 				{/* Título e subtítulo */}
 				<section className="max-w-[900px] mx-auto text-center mt-10 mb-6 px-2">
