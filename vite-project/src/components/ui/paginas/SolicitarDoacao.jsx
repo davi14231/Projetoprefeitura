@@ -248,7 +248,7 @@ export function SolicitarDoacao({ onClose }) {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="prazo" className="text-base font-medium">Prazo (opcional)</Label>
+                  <Label htmlFor="prazo" className="text-base font-medium">Prazo</Label>
                   <Input 
                     id="prazo" 
                     name="prazo"
@@ -278,40 +278,6 @@ export function SolicitarDoacao({ onClose }) {
                     name="instagram"
                     placeholder="https://instagram.com/seuusuario" 
                     className="mt-1"
-                    value={formData.instagram}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-            </div>
-            {/* Redes sociais */}
-            <div>
-              <Label className="block mb-2 text-base font-medium">Redes Sociais (opcional)</Label>
-              <div className="flex flex-row items-center gap-8">
-                {/* Facebook */}
-                <div className="flex items-center gap-1">
-                  <Facebook className="w-5 h-5 text-neutral-500" />
-                  <Label htmlFor="facebook" className="text-neutral-700 text-base font-medium ml-1">Facebook</Label>
-                  <Input
-                    id="facebook"
-                    name="facebook"
-                    placeholder="Nome do Facebook"
-                    className="w-44 ml-2"
-                    style={{ marginTop: 0 }}
-                    value={formData.facebook}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                {/* Instagram */}
-                <div className="flex items-center gap-1 ml-6">
-                  <Instagram className="w-5 h-5 text-neutral-500" />
-                  <Label htmlFor="instagram" className="text-neutral-700 text-base font-medium ml-1">Instagram</Label>
-                  <Input
-                    id="instagram"
-                    name="instagram"
-                    placeholder="Nome do Instagram"
-                    className="w-44 ml-2"
-                    style={{ marginTop: 0 }}
                     value={formData.instagram}
                     onChange={handleInputChange}
                   />

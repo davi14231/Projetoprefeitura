@@ -215,11 +215,8 @@ export default function TodasDoacoes() {
 				{/* Grid de cards */}
 				<section className="max-w-[900px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 px-2">
 					{paginatedData.items.map((item) => (
-						<div
-							key={item.id}
-							className="w-full max-w-[400px] mx-auto h-[370px] flex"
-						>
-							<div 
+						<div key={item.id}>
+							<div
 								className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full cursor-pointer"
 								onClick={() => handleOpenDetalheModal(item)}
 							>
@@ -245,12 +242,6 @@ export default function TodasDoacoes() {
 									>
 										{item.categoria}
 									</span>
-									{/* Badge urgência */}
-									{item.urgencia && (
-										<span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-[#FF3B30] text-white shadow">
-											{item.urgencia}
-										</span>
-									)}
 								</div>
 								{/* Conteúdo */}
 								<div className="flex flex-col flex-1 px-5 py-4">
@@ -258,6 +249,7 @@ export default function TodasDoacoes() {
 										href="#"
 										className="text-[#007AFF] text-xs font-semibold mb-1 hover:underline"
 										style={{ fontFamily: "Inter, sans-serif" }}
+										onClick={e => e.preventDefault()}
 									>
 										{item.ong}
 									</a>
@@ -282,7 +274,7 @@ export default function TodasDoacoes() {
 												target="_blank" 
 												rel="noopener noreferrer"
 												className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800"
-												onClick={(e) => e.stopPropagation()}
+												onClick={e => e.stopPropagation()}
 											>
 												<Facebook className="w-3 h-3" />
 												Facebook
@@ -299,10 +291,9 @@ export default function TodasDoacoes() {
 												style={{ filter: "grayscale(60%)" }}
 												draggable={false}
 											/>
-											<span>Publicado em {item.publicado}</span>
+											<span>Publicado em {item.publicado || "Data não informada"}</span>
 										</div>
-										{(item.categoria === "Alimentos" ||
-											item.categoria === "Medicamentos") && (
+										{item.validade && (
 											<div className="flex items-center gap-1 text-[#FF3B30] font-semibold">
 												<img
 													src="/imagens/Emoji Calendario.png"
@@ -320,8 +311,6 @@ export default function TodasDoacoes() {
 						</div>
 					))}
 				</section>
-
-				{/* Paginação */}
 				<div className="max-w-[900px] mx-auto flex justify-center mb-12">
 					<Pagination
 						currentPage={currentPage}
