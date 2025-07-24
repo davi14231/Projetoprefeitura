@@ -267,7 +267,7 @@ export function EditDoacoes() {
 											className="w-16 h-16 object-cover rounded-lg border mt-1"
 										/>
 										<div className="flex-1">
-											<div className="flex items-center gap-2">
+											<div className="flex items-center gap-2 md:gap-4">
 												{editId === pedido.id ? (
 													<input
 														type="text"
@@ -281,6 +281,10 @@ export function EditDoacoes() {
 														{pedido.titulo}
 													</span>
 												)}
+												{/* Badge de categoria */}
+												<span className="px-3 py-1 rounded-full text-xs font-semibold shadow bg-blue-500 text-white">
+													{pedido.categoria}
+												</span>
 												<span
 													className={`px-2 py-1 rounded text-xs font-bold ${statusColors[pedido.status]}`}
 												>
