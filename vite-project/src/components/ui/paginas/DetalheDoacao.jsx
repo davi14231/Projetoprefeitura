@@ -15,7 +15,7 @@ export default function DetalheDoacao({ dados, onClose }) {
             <p className="text-sm text-slate-300 pt-1">Publicado: {dados.publicadoEm}</p>
           </div>
           <button 
-            className="inline-flex items-center justify-center rounded-full size-9 text-white hover:bg-slate-700"
+            className="inline-flex items-center justify-center rounded-full size-9 text-white hover:bg-slate-700 cursor-pointer"
             onClick={onClose}
           >
             <VscClose size={24} />
