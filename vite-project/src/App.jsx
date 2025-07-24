@@ -29,7 +29,9 @@ function App() {
       ong: "Instituto Criança Feliz",
       categoria: "Alimentos",
       urgencia: "Urgente",
-      descricao: "Cestas básicas completas com arroz, feijão, etc."
+      descricao: "Cestas básicas completas com arroz, feijão, etc.",
+      quantidade: 30,
+      validade: "20/08/2024"
     },
     {
       id: 2,
@@ -38,7 +40,9 @@ function App() {
       urgencia: "Urgente",
       ong: "Instituto Criança Feliz",
       titulo: "Cestas Básicas Completas",
-      descricao: "Cestas básicas completas com arroz, feijão, macarrão, óleo, açúcar, sal e outros itens essenciais."
+      descricao: "Cestas básicas completas com arroz, feijão, macarrão, óleo, açúcar, sal e outros itens essenciais.",
+      quantidade: 25,
+      validade: "15/09/2024"
     },
     {
       id: 3,
@@ -47,7 +51,9 @@ function App() {
       urgencia: "Média",
       ong: "Casa de Apoio Esperança",
       titulo: "Roupas de Inverno",
-      descricao: "Casacos, blusas e calças para o período de inverno. Todas as idades e tamanhos."
+      descricao: "Casacos, blusas e calças para o período de inverno. Todas as idades e tamanhos.",
+      quantidade: 50,
+      validade: "31/12/2024"
     },
     {
       id: 4,
@@ -56,7 +62,9 @@ function App() {
       urgencia: "Baixa",
       ong: "Projeto Educar",
       titulo: "Material Escolar",
-      descricao: "Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes."
+      descricao: "Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.",
+      quantidade: 100,
+      validade: "01/03/2025"
     },
     {
       id: 5,
@@ -65,7 +73,9 @@ function App() {
       urgencia: "Baixa",
       ong: "Projeto Educar",
       titulo: "Material Escolar",
-      descricao: "Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes."
+      descricao: "Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.",
+      quantidade: 75,
+      validade: "15/02/2025"
     },
     {
       id: 6,
@@ -74,7 +84,9 @@ function App() {
       urgencia: "Baixa",
       ong: "Projeto Educar",
       titulo: "Material Escolar",
-      descricao: "Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes."
+      descricao: "Cadernos, lápis, canetas, mochilas e outros materiais escolares para crianças carentes.",
+      quantidade: 60,
+      validade: "10/04/2025"
     }
     // Adicione mais itens conforme necessário
   ];

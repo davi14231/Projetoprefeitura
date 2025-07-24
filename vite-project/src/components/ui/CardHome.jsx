@@ -1,5 +1,5 @@
 import { Card, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Clock } from "lucide-react";
+import { Clock, Package } from "lucide-react";
 
 export function CardHome({
   imageUrl,
@@ -7,7 +7,9 @@ export function CardHome({
   urgencia,
   ong,
   titulo,
+  validade,
   descricao,
+  quantidade,
   onClick, // Recebe a função de clique como uma propriedade
 }) {
   // Define a cor do badge de urgência conforme o valor
@@ -43,20 +45,33 @@ export function CardHome({
           </span>
         </div>
       </div>
-      <CardContent className="py-5 px-5 flex-1 flex flex-col">
-        <CardTitle className="text-lg font-bold mb-2 leading-tight line-clamp-2 min-h-[3.5rem]">
+      <CardContent className="py-2 px-4 flex-1 flex flex-col">
+        <CardTitle className="text-lg font-bold mb-1 leading-tight line-clamp-2 min-h-[2rem]">
           {titulo}
         </CardTitle>
         <a 
           href="#" 
           onClick={(e) => e.stopPropagation()}
-          className="text-blue-600 text-sm font-medium hover:underline mb-3 block truncate"
+          className="text-blue-600 text-sm font-medium hover:underline mb-1 block truncate"
         >
           {ong}
         </a>
-        <CardDescription className="text-gray-600 text-sm leading-relaxed flex-1 line-clamp-4">
+        
+        {/* Quantidade de unidades */}
+        <div className="flex items-center gap-1 text-gray-600 text-sm font-medium mb-1">
+          <Package className="w-4 h-4" />
+          <span>{quantidade} unidades</span>
+        </div>
+        
+        <CardDescription className="text-gray-600 text-sm leading-relaxed flex-1 line-clamp-3 mb-1">
           {descricao}
         </CardDescription>
+        
+        {/* Data de validade na parte inferior */}
+        <div className="flex items-center gap-1 text-red-500 text-sm font-medium mt-auto">
+          <Clock className="w-4 h-4" />
+          <span>Válido até {validade}</span>
+        </div>
       </CardContent>
     </Card>
   );
