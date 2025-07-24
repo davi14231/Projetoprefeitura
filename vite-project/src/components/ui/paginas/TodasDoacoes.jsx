@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import DetalheDoacao from "./DetalheDoacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
-import { Facebook } from "lucide-react";
+import { Facebook, Package, Clock } from "lucide-react";
 
 const badgeColors = {
 	Alimentos: "bg-[#34C759] text-white", // verde
@@ -17,6 +17,13 @@ const badgeColors = {
 	Medicamentos: "bg-[#FF3B30] text-white", // vermelho
 	"Material Escolar": "bg-[#8E8E93] text-white", // cinza
 	Livros: "bg-[#AF52DE] text-white", // lilás
+	default: "bg-gray-300 text-gray-800",
+};
+
+const urgencyColors = {
+	"Alta": "bg-[#FF3B30] text-white", // vermelho
+	"Média": "bg-[#FF9500] text-white", // laranja  
+	"Baixa": "bg-[#34C759] text-white", // verde
 	default: "bg-gray-300 text-gray-800",
 };
 
@@ -251,6 +258,17 @@ export default function TodasDoacoes() {
 									>
 										{item.categoria}
 									</span>
+									
+									{/* Badge urgência */}
+									{item.urgencia && (
+										<span
+											className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold shadow ${
+												urgencyColors[item.urgencia] || urgencyColors.default
+											}`}
+										>
+											{item.urgencia}
+										</span>
+									)}
 								</div>
 								{/* Conteúdo */}
 								<div className="flex flex-col flex-1 px-5 py-4">
@@ -268,6 +286,13 @@ export default function TodasDoacoes() {
 									>
 										{item.titulo}
 									</div>
+									
+									{/* Quantidade de unidades */}
+									<div className="flex items-center gap-1 text-gray-600 text-sm font-medium mb-1">
+										<Package className="w-4 h-4" />
+										<span>{item.quantidade} unidades</span>
+									</div>
+									
 									<div
 										className="text-[#666] text-xs mb-2 line-clamp-3"
 										style={{ fontFamily: "Inter, sans-serif" }}
@@ -292,28 +317,10 @@ export default function TodasDoacoes() {
 									)}
 
 									<div className="mt-auto flex flex-col gap-1 text-[11px] text-[#888]">
-										<div className="flex items-center gap-1">
-											<img
-												src="/imagens/Emoji relogio.png"
-												alt="Publicado em"
-												className="w-4 h-4"
-												style={{ filter: "grayscale(60%)" }}
-												draggable={false}
-											/>
-											<span>Publicado em {item.publicado || "Data não informada"}</span>
+										<div className="flex items-center gap-1 text-[#FF3B30] font-semibold">
+											<Clock className="w-4 h-4" />
+											<span>Válido até {item.validade || "Data não informada"}</span>
 										</div>
-										{item.validade && (
-											<div className="flex items-center gap-1 text-[#FF3B30] font-semibold">
-												<img
-													src="/imagens/Emoji Calendario.png"
-													alt="Validade"
-													className="w-4 h-4"
-													style={{ filter: "grayscale(0%)" }}
-													draggable={false}
-												/>
-												<span>Válido até {item.validade}</span>
-											</div>
-										)}
 									</div>
 								</div>
 							</div>
