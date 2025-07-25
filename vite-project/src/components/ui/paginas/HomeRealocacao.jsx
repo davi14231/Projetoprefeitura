@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Edit2, X, Facebook, Trash2 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
+import ConfirmacaoDeletar from "./ConfirmacaoDeletar";
 import { PostagemRealocacao } from "./PostagemRealocacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
@@ -23,14 +24,44 @@ const destaques = [
 function HomeRealocacao() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
-	const [showPostagemModal, setShowPostagemModal] = useState(false);
-	const [currentPage, setCurrentPage] = useState(1);
+const [showConfirmacaoDeletar, setShowConfirmacaoDeletar] = useState(false);
+const [showConfirmacaoEncerrar, setShowConfirmacaoEncerrar] = useState(false);
+const [showPostagemModal, setShowPostagemModal] = useState(false);
+const [currentPage, setCurrentPage] = useState(1);
 const { getRealocacoesPaginadas, removeRealocacao } = useData();
-  // Deletar realocação
-  const handleDelete = (id) => {
-	removeRealocacao(id);
-  };
+const [idParaExcluir, setIdParaExcluir] = useState(null);
+
+// Abrir modal de confirmação para deletar
+const handleDelete = (id) => {
+  setIdParaExcluir(id);
+  setShowConfirmacaoDeletar(true);
+};
+
+// Confirma exclusão no modal
+const handleConfirmDelete = () => {
+  if (idParaExcluir) {
+	removeRealocacao(idParaExcluir);
+	setIdParaExcluir(null);
+  }
+  setShowConfirmacaoDeletar(false);
+};
+
+// Abrir modal de confirmação de encerramento
+const handleOpenConfirmacaoEncerrar = () => {
+  setShowConfirmacaoEncerrar(true);
+};
+
+// Fechar modal de confirmação de encerramento
+const handleCloseConfirmacaoEncerrar = () => {
+  setShowConfirmacaoEncerrar(false);
+};
+
+// Confirmar encerramento da realocação
+const handleConfirmEncerramento = () => {
+  // Aqui você pode adicionar a lógica para encerrar a realocação
+  setShowConfirmacaoEncerrar(false);
+  // Exemplo: remover o item da lista ou atualizar status
+};
 
 	const itemsPerPage = 6;
 
@@ -48,34 +79,19 @@ const { getRealocacoesPaginadas, removeRealocacao } = useData();
 		filters: {}
 	});
 
-	// Prevent background scroll when modal is open
-	React.useEffect(() => {
-		if (showConfirmacaoModal || showPostagemModal) {
-			document.body.style.overflow = "hidden";
-		} else {
-			document.body.style.overflow = "auto";
-		}
-		return () => {
-			document.body.style.overflow = "auto";
-		};
-	}, [showConfirmacaoModal, showPostagemModal]);
+// Prevent background scroll when any modal is open
+React.useEffect(() => {
+  if (showConfirmacaoDeletar || showConfirmacaoEncerrar || showPostagemModal) {
+	document.body.style.overflow = "hidden";
+  } else {
+	document.body.style.overflow = "auto";
+  }
+  return () => {
+	document.body.style.overflow = "auto";
+  };
+}, [showConfirmacaoDeletar, showConfirmacaoEncerrar, showPostagemModal]);
 
-	// Abrir modal ConfirmacaoEncerrarRealocacao
-	const handleOpenConfirmacaoModal = () => {
-		setShowConfirmacaoModal(true);
-	};
-
-	// Fechar modal ConfirmacaoEncerrarRealocacao
-	const handleCloseConfirmacaoModal = () => {
-		setShowConfirmacaoModal(false);
-	};
-
-	// Confirmar encerramento da realocação
-	const handleConfirmEncerramento = () => {
-		// Aqui você pode adicionar a lógica para encerrar a realocação
-		setShowConfirmacaoModal(false);
-		// Exemplo: remover o item da lista ou atualizar status
-	};
+// ...existing code...
 
 	// Abrir modal PostagemRealocacao
 	const handleOpenPostagemModal = () => {
@@ -274,7 +290,7 @@ const { getRealocacoesPaginadas, removeRealocacao } = useData();
 												<button
 													className="bg-[#172233] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
 													style={{ backgroundColor: footerColor }}
-													onClick={handleOpenConfirmacaoModal}
+													onClick={handleOpenConfirmacaoEncerrar}
 												>
 													Realocação Concluída
 												</button>
@@ -297,12 +313,22 @@ const { getRealocacoesPaginadas, removeRealocacao } = useData();
 			<Footer />
 
 			{/* Modal ConfirmacaoEncerrarRealocacao */}
-			{showConfirmacaoModal && (
-				<ConfirmacaoEncerrarRealocacao 
-					onCancel={handleCloseConfirmacaoModal}
-					onConfirm={handleConfirmEncerramento}
-				/>
-			)}
+
+	  {/* Modal ConfirmacaoDeletar */}
+	  {showConfirmacaoDeletar && (
+		<ConfirmacaoDeletar
+		  onCancel={() => setShowConfirmacaoDeletar(false)}
+		  onConfirm={handleConfirmDelete}
+		  tipo="realocacao"
+		/>
+	  )}
+	  {/* Modal ConfirmacaoEncerrarRealocacao */}
+	  {showConfirmacaoEncerrar && (
+		<ConfirmacaoEncerrarRealocacao
+		  onCancel={handleCloseConfirmacaoEncerrar}
+		  onConfirm={handleConfirmEncerramento}
+		/>
+	  )}
 
 			{/* Modal PostagemRealocacao */}
 			{showPostagemModal && (

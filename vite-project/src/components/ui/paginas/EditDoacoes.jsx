@@ -7,8 +7,10 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SolicitarDoacao } from "./SolicitarDoacao";
 import ConfirmacaoEncerrarSolicitacao from "./ConfirmacaoEncerrarSolicitacao";
+// import removido: duplicado
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
+import ConfirmacaoDeletar from "./ConfirmacaoDeletar";
 
 const footerColor = "#172233";
 
@@ -23,9 +25,11 @@ export function EditDoacoes() {
 	const [editId, setEditId] = useState(null);
 	const [editData, setEditData] = useState({});
 	const [showSolicitarModal, setShowSolicitarModal] = useState(false);
-	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
+	const [showConfirmacaoDeletar, setShowConfirmacaoDeletar] = useState(false);
+	const [showConfirmacaoEncerrar, setShowConfirmacaoEncerrar] = useState(false);
+	const [idParaExcluir, setIdParaExcluir] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
-const { getDoacoesPaginadas, updateDoacao, removeDoacao } = useData();
+	const { getDoacoesPaginadas, updateDoacao, removeDoacao } = useData();
 	const navigate = useNavigate();
 
 	const itemsPerPage = 6;
@@ -44,9 +48,9 @@ const { getDoacoesPaginadas, updateDoacao, removeDoacao } = useData();
 		filters: {}
 	});
 
-	// Prevent background scroll when modal is open
+	// Prevent background scroll when any modal is open
 	React.useEffect(() => {
-		if (showSolicitarModal || showConfirmacaoModal) {
+		if (showSolicitarModal || showConfirmacaoDeletar || showConfirmacaoEncerrar) {
 			document.body.style.overflow = "hidden";
 		} else {
 			document.body.style.overflow = "auto";
@@ -54,7 +58,7 @@ const { getDoacoesPaginadas, updateDoacao, removeDoacao } = useData();
 		return () => {
 			document.body.style.overflow = "auto";
 		};
-	}, [showSolicitarModal, showConfirmacaoModal]);
+	}, [showSolicitarModal, showConfirmacaoDeletar, showConfirmacaoEncerrar]);
 
 	const handleEdit = (pedido) => {
 		setEditId(pedido.id);
@@ -102,15 +106,35 @@ const { getDoacoesPaginadas, updateDoacao, removeDoacao } = useData();
 	};
 
 
-// Deletar doação
+// Abrir modal de confirmação para deletar
 const handleDelete = (id) => {
-  removeDoacao(id);
+  setIdParaExcluir(id);
+  setShowConfirmacaoDeletar(true);
+};
+
+// Confirma exclusão no modal
+const handleConfirmDelete = () => {
+  if (idParaExcluir) {
+	removeDoacao(idParaExcluir);
+	setIdParaExcluir(null);
+  }
+  setShowConfirmacaoDeletar(false);
+};
+
+// Abrir modal de confirmação de encerramento
+const handleOpenConfirmacaoEncerrar = () => {
+  setShowConfirmacaoEncerrar(true);
+};
+
+// Fechar modal de confirmação de encerramento
+const handleCloseConfirmacaoEncerrar = () => {
+  setShowConfirmacaoEncerrar(false);
 };
 
 // Confirmar encerramento da solicitação
 const handleConfirmEncerramento = () => {
   // Aqui você pode adicionar a lógica para encerrar a solicitação
-  setShowConfirmacaoModal(false);
+  setShowConfirmacaoEncerrar(false);
   // Exemplo: remover o pedido da lista ou atualizar status
 };
 
@@ -369,13 +393,13 @@ const handleConfirmEncerramento = () => {
 												</div>
 												
 												{/* Botão Encerrar Solicitação */}
-												<button
-													className="bg-[#172233] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
-													style={{ backgroundColor: footerColor }}
-													onClick={handleOpenConfirmacaoModal}
-												>
-													Doação Recebida
-												</button>
+  <button
+	className="bg-[#172233] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
+	style={{ backgroundColor: footerColor }}
+	onClick={handleOpenConfirmacaoEncerrar}
+  >
+	Doação Recebida
+  </button>
 											</div>
 										</div>
 									</div>
@@ -434,13 +458,21 @@ const handleConfirmEncerramento = () => {
 				</div>
 			)}
 
-			{/* Modal ConfirmacaoEncerrarSolicitacao */}
-			{showConfirmacaoModal && (
-				<ConfirmacaoEncerrarSolicitacao 
-					onCancel={handleCloseConfirmacaoModal}
-					onConfirm={handleConfirmEncerramento}
-				/>
-			)}
+	  {/* Modal ConfirmacaoDeletar */}
+	  {showConfirmacaoDeletar && (
+		<ConfirmacaoDeletar
+		  onCancel={() => setShowConfirmacaoDeletar(false)}
+		  onConfirm={handleConfirmDelete}
+		  tipo="doacao"
+		/>
+	  )}
+	  {/* Modal ConfirmacaoEncerrarSolicitacao */}
+	  {showConfirmacaoEncerrar && (
+		<ConfirmacaoEncerrarSolicitacao
+		  onCancel={handleCloseConfirmacaoEncerrar}
+		  onConfirm={handleConfirmEncerramento}
+		/>
+	  )}
 		</div>
 	);
 }

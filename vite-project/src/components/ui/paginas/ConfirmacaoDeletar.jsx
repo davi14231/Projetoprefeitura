@@ -3,12 +3,14 @@ import { Botao } from "../botao";
 import { AlertTriangle } from "lucide-react";
 
 // tipo: 'doacao' | 'realocacao'
-export default function ConfirmacaoEncerrarRealocacao({ onCancel, onConfirm, tipo = 'realocacao' }) {
+// onDelete: função para remover do banco
+export default function ConfirmacaoDeletar({ onCancel, onConfirm, onDelete, tipo = 'realocacao' }) {
   const handleCancel = () => {
     if (onCancel) onCancel();
   };
-  
+
   const handleConfirm = () => {
+    if (onDelete) onDelete();
     if (onConfirm) onConfirm();
   };
   

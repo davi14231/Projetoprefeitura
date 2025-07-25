@@ -11,6 +11,7 @@ import { RealocacaoListagem } from "./components/ui/paginas/RealocacaoListagem";
 import ConfirmacaoEncerrarSolicitacao from "./components/ui/paginas/ConfirmacaoEncerrarSolicitacao";
 import ConfirmacaoEncerrarRealocacao from "./components/ui/paginas/ConfirmacaoEncerrarRealocacao";
 import { DataProvider } from "./context/DataContext";
+import ConfirmacaoDeletar from "./components/ui/paginas/ConfirmacaoDeletar";
 
 function App() {
   // Imagens do carrossel (separadas)
@@ -94,6 +95,7 @@ function App() {
           <Route path="/realocacao-listagem" element={<RealocacaoListagem />} />
           <Route path="/confirmar-encerrar-solicitacao" element={<ConfirmacaoEncerrarSolicitacao />} />
           <Route path="/confirmar-encerrar-realocacao" element={<ConfirmacaoEncerrarRealocacao />} />
+          <Route path="/confirmar-deletar" element={<ConfirmacaoDeletar />} />
         </Routes>
       </BrowserRouter>
     </DataProvider>
