@@ -2,7 +2,7 @@ import React from "react";
 import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit2, Save, X, Facebook } from "lucide-react";
+import { Edit2, Save, X, Facebook, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SolicitarDoacao } from "./SolicitarDoacao";
@@ -14,7 +14,7 @@ const footerColor = "#172233";
 
 const statusColors = {
 	alta: "bg-orange-400 text-white",
-	urgente: "bg-red-500 text-white",
+	baixa: "bg-green-500 text-white",
 	média: "bg-yellow-400 text-white",
 };
 
@@ -25,7 +25,7 @@ export function EditDoacoes() {
 	const [showSolicitarModal, setShowSolicitarModal] = useState(false);
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const { getDoacoesPaginadas, updateDoacao, deleteDoacao } = useData();
+const { getDoacoesPaginadas, updateDoacao, removeDoacao } = useData();
 	const navigate = useNavigate();
 
 	const itemsPerPage = 6;
@@ -101,12 +101,18 @@ export function EditDoacoes() {
 		setShowConfirmacaoModal(false);
 	};
 
-	// Confirmar encerramento da solicitação
-	const handleConfirmEncerramento = () => {
-		// Aqui você pode adicionar a lógica para encerrar a solicitação
-		setShowConfirmacaoModal(false);
-		// Exemplo: remover o pedido da lista ou atualizar status
-	};
+
+// Deletar doação
+const handleDelete = (id) => {
+  removeDoacao(id);
+};
+
+// Confirmar encerramento da solicitação
+const handleConfirmEncerramento = () => {
+  // Aqui você pode adicionar a lógica para encerrar a solicitação
+  setShowConfirmacaoModal(false);
+  // Exemplo: remover o pedido da lista ou atualizar status
+};
 
 	// Função para navegar para TodasDoacoes com filtro de categoria
 	const navigateToCategory = (categoria) => {
@@ -251,103 +257,67 @@ export function EditDoacoes() {
 				<section className="max-w-6xl mx-auto px-4 mb-8">
 					{/* Contador de itens */}
 					<div className="mb-4 text-sm text-gray-600 font-medium">
-						{paginatedData.totalItems} itens encontrados - Página {currentPage} de {paginatedData.totalPages}
-					</div>
-					<Card className="w-full bg-white border">
-						<CardContent className="py-6 px-8">
-							<div className="flex flex-col gap-6">
-								{paginatedData.items.map((pedido) => (
-									<div
-										key={pedido.id}
-										className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
-									>
-										<img
-											src={pedido.imageUrl}
-											alt={pedido.titulo}
-											className="w-16 h-16 object-cover rounded-lg border mt-1"
-										/>
-										<div className="flex-1">
-											<div className="flex items-center gap-2 md:gap-4">
-												{editId === pedido.id ? (
-													<input
-														type="text"
-														name="titulo"
-														value={editData.titulo}
-														onChange={handleChange}
-														className="font-semibold text-lg text-gray-800 border rounded px-2 py-1"
-													/>
-												) : (
-													<span className="font-semibold text-lg text-gray-800">
-														{pedido.titulo}
-													</span>
-												)}
-												{/* Badge de categoria */}
-												<span className="px-3 py-1 rounded-full text-xs font-semibold shadow bg-blue-500 text-white">
-													{pedido.categoria}
-												</span>
-												<span
-													className={`px-2 py-1 rounded text-xs font-bold ${statusColors[pedido.status]}`}
-												>
-													{pedido.status}
-												</span>
-												{editId === pedido.id ? (
-													<>
-<button
-	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
-	onClick={handleSave}
->
-	<Save className="w-4 h-4" /> Salvar
-</button>
-<button
-	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
-	onClick={handleCancel}
->
-	<X className="w-4 h-4" /> Cancelar
-</button>
-													</>
-												) : (
-<button
+											{paginatedData.total} itens encontrados - Página {currentPage} de {paginatedData.totalPages}
+										</div>
+										<Card className="w-full bg-white border">
+											<CardContent className="py-6 px-8">
+												<div className="flex flex-col gap-6">
+													{paginatedData.items.map((pedido) => (
+														<div
+															key={pedido.id}
+															className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
+														>
+															<img
+																src={pedido.imageUrl}
+																alt={pedido.titulo}
+																className="w-16 h-16 object-cover rounded-lg border mt-1"
+															/>
+															<div className="flex-1">
+<div className="flex items-center gap-2 w-full">
+  <span className="font-semibold text-lg text-gray-800">
+	{pedido.titulo}
+  </span>
+  <span className="px-3 py-1 rounded-full text-xs font-semibold shadow bg-blue-500 text-white">
+	{pedido.categoria}
+  </span>
+  <button
 	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
 	onClick={() => handleEdit(pedido)}
->
+  >
 	<Edit2 className="w-4 h-4" /> Editar
-</button>
-												)}
-											</div>
-											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
-												<span>Publicado: {pedido.publicado}</span>
-												<span className="flex items-center gap-1">
-													<svg
-														width="16"
-														height="16"
-														fill="none"
-														stroke="currentColor"
-														strokeWidth="1.5"
-														className="inline-block"
-													>
-														<circle cx="8" cy="8" r="7" />
-														<path d="M8 4v4l2 2" />
-													</svg>
-													Tempo restante: {pedido.tempoRestante}
-												</span>
-											</div>
-											<div className="mt-2 text-gray-700 text-base">
-												{editId === pedido.id ? (
-													<textarea
-														name="descricao"
-														value={editData.descricao}
-														onChange={handleChange}
-														className="border rounded px-2 py-1 w-full"
-														rows={3}
-														style={{ minHeight: "3rem", maxHeight: "none" }}
-													/>
-												) : (
-													<span className="block w-full break-words">
-														{pedido.descricao}
-													</span>
-												)}
-											</div>
-											
+  </button>
+  <div className="flex-1"></div>
+  <button
+	className="flex items-center justify-center p-2 rounded-full hover:bg-red-100 transition-colors cursor-pointer ml-2"
+	title="Excluir"
+	onClick={() => handleDelete(pedido.id)}
+	style={{ color: '#e3342f' }}
+  >
+	<Trash2 className="w-5 h-5" />
+  </button>
+</div>
+																<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
+																	<span>Publicado: {pedido.publicado}</span>
+																	<span className="flex items-center gap-1">
+																		<svg
+																			width="16"
+																			height="16"
+																			fill="none"
+																			stroke="currentColor"
+																			strokeWidth="1.5"
+																			className="inline-block"
+																		>
+																			<circle cx="8" cy="8" r="7" />
+																			<path d="M8 4v4l2 2" />
+																		</svg>
+																		Tempo restante: {pedido.tempoRestante}
+																	</span>
+																</div>
+																<div className="mt-2 text-gray-700 text-base">
+																	<span className="block w-full break-words">
+																		{pedido.descricao}
+																	</span>
+																</div>										
 											{/* Parte inferior: botões de urgência, redes sociais e encerrar solicitação */}
 											<div className="mt-4 flex items-center justify-between">
 												<div className="flex items-center gap-3">
@@ -355,12 +325,12 @@ export function EditDoacoes() {
 													<div className="flex gap-2">
 														<button 
 															className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
-																pedido.urgencia === 'Urgente' || pedido.status === 'urgente'
-																	? 'bg-red-100 border-red-200 text-red-700' 
+																pedido.urgencia === 'Baixa' || pedido.status === 'baixa'
+																	? 'bg-green-100 border-green-200 text-green-700' 
 																	: 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200'
 															}`}
 														>
-															Urgente
+															Baixa
 														</button>
 														<button 
 															className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
@@ -374,7 +344,7 @@ export function EditDoacoes() {
 														<button 
 															className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
 																pedido.urgencia === 'Alta' || pedido.status === 'alta'
-																	? 'bg-orange-100 border-orange-200 text-orange-700' 
+																	? 'bg-red-100 border-red-200 text-red-700' 
 																	: 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200'
 															}`}
 														>
@@ -404,7 +374,7 @@ export function EditDoacoes() {
 													style={{ backgroundColor: footerColor }}
 													onClick={handleOpenConfirmacaoModal}
 												>
-													Encerrar Solicitação
+													Doação Recebida
 												</button>
 											</div>
 										</div>

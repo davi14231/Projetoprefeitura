@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit2, X, Facebook } from "lucide-react";
+import { Edit2, X, Facebook, Trash2 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
 import { PostagemRealocacao } from "./PostagemRealocacao";
@@ -26,7 +26,11 @@ function HomeRealocacao() {
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const { getRealocacoesPaginadas } = useData();
+const { getRealocacoesPaginadas, removeRealocacao } = useData();
+  // Deletar realocação
+  const handleDelete = (id) => {
+	removeRealocacao(id);
+  };
 
 	const itemsPerPage = 6;
 
@@ -200,17 +204,29 @@ function HomeRealocacao() {
 										/>
 										<div className="flex-1">
 											<div className="flex items-center gap-2">
-												<span className="font-semibold text-lg text-gray-800">
-													{pedido.titulo}
-												</span>
-												<span className="px-3 py-1 rounded-full text-xs font-semibold shadow bg-blue-500 text-white">
-													{pedido.categoria}
-												</span>
-												<button
-													className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
-												>
-													<Edit2 className="w-4 h-4" /> Editar
-												</button>
+<div className="flex items-center gap-2 w-full">
+  <span className="font-semibold text-lg text-gray-800">
+	{pedido.titulo}
+  </span>
+  <span className="px-3 py-1 rounded-full text-xs font-semibold shadow bg-blue-500 text-white">
+	{pedido.categoria}
+  </span>
+  <button
+	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
+	onClick={() => handleEdit(pedido)}
+  >
+	<Edit2 className="w-4 h-4" /> Editar
+  </button>
+  <div className="flex-1"></div>
+  <button
+	className="flex items-center justify-center p-2 rounded-full hover:bg-red-100 transition-colors cursor-pointer ml-2"
+	title="Excluir"
+	onClick={() => handleDelete(pedido.id)}
+	style={{ color: '#e3342f' }}
+  >
+	<Trash2 className="w-5 h-5" />
+  </button>
+</div>
 											</div>
 											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
 												<span>Publicado: {pedido.publicado}</span>
@@ -260,7 +276,7 @@ function HomeRealocacao() {
 													style={{ backgroundColor: footerColor }}
 													onClick={handleOpenConfirmacaoModal}
 												>
-													Encerrar Solicitação
+													Realocação Concluída
 												</button>
 											</div>
 										</div>
