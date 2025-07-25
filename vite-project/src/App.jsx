@@ -1,12 +1,11 @@
 import { Teladelogin } from "./components/ui/paginas/Teladelogin";
-import Tela_Home from "./components/ui/paginas/Tela_Home";
+import HomeUnificada from "./components/ui/paginas/HomeUnificada";
 import { EditDoacoes } from "./components/ui/paginas/EditDoacoes";
 import { HomeRealocacao } from "./components/ui/paginas/HomeRealocacao";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SolicitarDoacao } from "./components/ui/paginas/SolicitarDoacao";
 import { PostagemRealocacao } from "./components/ui/paginas/PostagemRealocacao";
 import TodasDoacoes from "./components/ui/paginas/TodasDoacoes";
-import TelahomeONG from "./components/ui/paginas/TelahomeONG";
 import { RealocacaoListagem } from "./components/ui/paginas/RealocacaoListagem";
 import ConfirmacaoEncerrarSolicitacao from "./components/ui/paginas/ConfirmacaoEncerrarSolicitacao";
 import ConfirmacaoEncerrarRealocacao from "./components/ui/paginas/ConfirmacaoEncerrarRealocacao";
@@ -83,14 +82,14 @@ function App() {
     <DataProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Tela_Home imagensCarrossel={imagensCarrossel} itens={itens} />} />
+          <Route path="/" element={<HomeUnificada imagensCarrossel={imagensCarrossel} itens={itens} tipo="publica" />} />
           <Route path="/login" element={<Teladelogin />} />
           <Route path="/edit-doacoes" element={<EditDoacoes />} />
           <Route path="/home-realocacao" element={<HomeRealocacao />} />
           <Route path="/solicitar-doacao" element={<SolicitarDoacao />} />
           <Route path="/postagem-realocacao" element={<PostagemRealocacao />} />
           <Route path="/todas-doacoes" element={<TodasDoacoes />} />
-          <Route path="/home-ong" element={<TelahomeONG imagensCarrossel={imagensCarrossel} itens={itens} />} />
+          <Route path="/home-ong" element={<HomeUnificada imagensCarrossel={imagensCarrossel} itens={itens} tipo="ong" />} />
           <Route path="/realocacao-listagem" element={<RealocacaoListagem />} />
           <Route path="/confirmar-encerrar-solicitacao" element={<ConfirmacaoEncerrarSolicitacao />} />
           <Route path="/confirmar-encerrar-realocacao" element={<ConfirmacaoEncerrarRealocacao />} />

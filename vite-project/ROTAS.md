@@ -3,14 +3,14 @@
 ## Rotas Implementadas
 
 ### Páginas Principais
-- `/` - Tela_Home (página inicial)
+ - `/` - HomeUnificada (página inicial)
 - `/login` - Teladelogin 
 - `/edit-doacoes` - EditDoacoes (painel de edição)
 - `/home-realocacao` - HomeRealocacao
 - `/solicitar-doacao` - SolicitarDoacao (modal)
 - `/postagem-realocacao` - PostagemRealocacao
 - `/todas-doacoes` - TodasDoacoes (listagem de necessidades)
-- `/home-ong` - TelahomeONG
+ - `/home-ong` - HomeUnificada (versão ONG)
 - `/realocacao-listagem` - RealocacaoListagem
 - `/confirmar-encerrar-solicitacao` - ConfirmacaoEncerrarSolicitacao
 - `/confirmar-encerrar-realocacao` - ConfirmacaoEncerrarRealocacao
