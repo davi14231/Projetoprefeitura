@@ -25,6 +25,7 @@ export function EditDoacoes() {
 	const [showSolicitarModal, setShowSolicitarModal] = useState(false);
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [itemToDelete, setItemToDelete] = useState(null);
 	const { getDoacoesPaginadas, updateDoacao, deleteDoacao } = useData();
 	const navigate = useNavigate();
 
@@ -91,21 +92,31 @@ export function EditDoacoes() {
 		setShowSolicitarModal(false);
 	};
 
-	// Abrir modal ConfirmacaoEncerrarSolicitacao
-	const handleOpenConfirmacaoModal = () => {
+	// Abrir modal ConfirmacaoEncerrarSolicitacao com o ID do item
+	const handleOpenConfirmacaoModal = (itemId) => {
+		setItemToDelete(itemId);
 		setShowConfirmacaoModal(true);
 	};
 
 	// Fechar modal ConfirmacaoEncerrarSolicitacao
 	const handleCloseConfirmacaoModal = () => {
 		setShowConfirmacaoModal(false);
+		setItemToDelete(null);
 	};
 
 	// Confirmar encerramento da solicitação
 	const handleConfirmEncerramento = () => {
-		// Aqui você pode adicionar a lógica para encerrar a solicitação
-		setShowConfirmacaoModal(false);
-		// Exemplo: remover o pedido da lista ou atualizar status
+		if (itemToDelete) {
+			// Remove a doação usando o método do contexto
+			deleteDoacao(itemToDelete);
+			
+			// Fechar o modal
+			setShowConfirmacaoModal(false);
+			setItemToDelete(null);
+			
+			// Feedback para o usuário
+			alert("Solicitação encerrada com sucesso!");
+		}
 	};
 
 	// Função para navegar para TodasDoacoes com filtro de categoria
@@ -394,11 +405,11 @@ export function EditDoacoes() {
 													)}
 												</div>
 												
-												{/* Botão Encerrar Solicitação */}
+												{/* Botão Encerrar Solicitação - Modificado para passar o ID */}
 												<button
 													className="bg-[#172233] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
 													style={{ backgroundColor: footerColor }}
-													onClick={handleOpenConfirmacaoModal}
+													onClick={() => handleOpenConfirmacaoModal(pedido.id)}
 												>
 													Encerrar Solicitação
 												</button>

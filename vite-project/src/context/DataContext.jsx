@@ -83,6 +83,23 @@ export const DataProvider = ({ children }) => {
     return dataStore.filterRealocacoes(filters);
   };
 
+  // Métodos de exclusão
+  const deleteDoacao = (id) => {
+    // Chama o método do dataStore que realmente remove do "banco de dados"
+    dataStore.removeDoacao(id);
+    
+    // Atualiza também o estado local para atualização imediata da UI
+    setDoacoes(prevDoacoes => prevDoacoes.filter(doacao => doacao.id !== id));
+  };
+
+  const deleteRealocacao = (id) => {
+    // Chama o método do dataStore que realmente remove do "banco de dados"
+    dataStore.removeRealocacao(id);
+    
+    // Atualiza também o estado local para atualização imediata da UI
+    setRealocacoes(prevRealocacoes => prevRealocacoes.filter(realocacao => realocacao.id !== id));
+  };
+
   const value = {
     // Dados
     doacoes,
@@ -102,6 +119,10 @@ export const DataProvider = ({ children }) => {
     updateRealocacao,
     getRealocacoesPaginadas,
     filterRealocacoes,
+
+    // Métodos de exclusão
+    deleteDoacao,
+    deleteRealocacao,
   };
 
   return (

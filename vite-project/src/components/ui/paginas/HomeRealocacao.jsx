@@ -26,8 +26,9 @@ function HomeRealocacao() {
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const { getRealocacoesPaginadas } = useData();
-
+	const [itemToDelete, setItemToDelete] = useState(null);
+	const { getRealocacoesPaginadas, deleteRealocacao } = useData();
+	
 	const itemsPerPage = 6;
 
 	// Efeito para ler parâmetros da URL e definir página atual
@@ -56,21 +57,31 @@ function HomeRealocacao() {
 		};
 	}, [showConfirmacaoModal, showPostagemModal]);
 
-	// Abrir modal ConfirmacaoEncerrarRealocacao
-	const handleOpenConfirmacaoModal = () => {
+	// Abrir modal ConfirmacaoEncerrarRealocacao com o ID do item
+	const handleOpenConfirmacaoModal = (itemId) => {
+		setItemToDelete(itemId);
 		setShowConfirmacaoModal(true);
 	};
 
 	// Fechar modal ConfirmacaoEncerrarRealocacao
 	const handleCloseConfirmacaoModal = () => {
 		setShowConfirmacaoModal(false);
+		setItemToDelete(null);
 	};
 
 	// Confirmar encerramento da realocação
 	const handleConfirmEncerramento = () => {
-		// Aqui você pode adicionar a lógica para encerrar a realocação
-		setShowConfirmacaoModal(false);
-		// Exemplo: remover o item da lista ou atualizar status
+		if (itemToDelete) {
+			// Remove a realocação usando o método do contexto
+			deleteRealocacao(itemToDelete);
+			
+			// Fechar o modal
+			setShowConfirmacaoModal(false);
+			setItemToDelete(null);
+			
+			// Feedback para o usuário
+			alert("Realocação encerrada com sucesso!");
+		}
 	};
 
 	// Abrir modal PostagemRealocacao
@@ -254,11 +265,11 @@ function HomeRealocacao() {
 													)}
 												</div>
 												
-												{/* Botão Encerrar Solicitação */}
+												{/* Botão Encerrar Solicitação - Modificado para passar o ID */}
 												<button
 													className="bg-[#172233] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
 													style={{ backgroundColor: footerColor }}
-													onClick={handleOpenConfirmacaoModal}
+													onClick={() => handleOpenConfirmacaoModal(pedido.id)}
 												>
 													Encerrar Solicitação
 												</button>

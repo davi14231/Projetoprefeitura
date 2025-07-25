@@ -1,4 +1,4 @@
-  import React from "react";
+import React from "react";
   import { useNavigate } from "react-router-dom";
   import { BlocoDoador } from "@/components/ui/BlocoInformativoDoador";
   import { BlocoONG } from "@/components/ui/BlocoInformativoONG";
@@ -75,14 +75,19 @@ export default function Tela_Home({ imagensCarrossel, itens }) {
                 style={{ display: 'block' }}
               />
             </div>
-            {/* Indicador do carrossel */}
-            <div className="flex justify-center mt-2 cursor-pointer">
+            {/* Indicador do carrossel - Versão melhorada */}
+            <div className="flex justify-center mt-4 gap-2 py-2">
               {imagens.map((_, i) => (
                 <button
                   key={i}
-                  className={`w-3 h-3 rounded-full mx-1 inline-block focus:outline-none transition-all duration-200 ${imgIndex === i ? "bg-gray-500 scale-110 shadow-md" : "bg-gray-300"}`}
+                  className={`w-4 h-4 rounded-full focus:outline-none transition-all duration-300 cursor-pointer hover:opacity-80 border ${
+                    imgIndex === i 
+                      ? "bg-blue-600 border-blue-700 scale-110 shadow-md" 
+                      : "bg-gray-300 border-gray-400 hover:bg-gray-400"
+                  }`}
                   onClick={() => setImgIndex(i)}
                   aria-label={`Selecionar imagem ${i + 1}`}
+                  style={{ cursor: 'pointer' }}
                 />
               ))}
             </div>
