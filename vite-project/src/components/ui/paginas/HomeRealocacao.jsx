@@ -26,6 +26,8 @@ function HomeRealocacao() {
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [editData, setEditData] = useState(null);
+	const [editId, setEditId] = useState(null);
 	const { getRealocacoesPaginadas } = useData();
 
 	const itemsPerPage = 6;
@@ -66,6 +68,13 @@ function HomeRealocacao() {
 		setShowConfirmacaoModal(false);
 	};
 
+	// Função para lidar com edição
+	const handleEdit = (realocacao) => {
+		setEditId(realocacao.id);
+		setEditData(realocacao);
+		setShowPostagemModal(true); // Abrir o modal para edição
+	};
+
 	// Confirmar encerramento da realocação
 	const handleConfirmEncerramento = () => {
 		// Aqui você pode adicionar a lógica para encerrar a realocação
@@ -81,6 +90,8 @@ function HomeRealocacao() {
 	// Fechar modal PostagemRealocacao
 	const handleClosePostagemModal = () => {
 		setShowPostagemModal(false);
+		setEditData(null); // Limpar dados de edição
+		setEditId(null); // Limpar ID de edição
 	};
 
 	// Função para navegar para RealocacaoListagem com filtro de categoria
@@ -208,6 +219,7 @@ function HomeRealocacao() {
 												</span>
 												<button
 													className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
+													onClick={() => handleEdit(pedido)}
 												>
 													<Edit2 className="w-4 h-4" /> Editar
 												</button>
@@ -292,6 +304,7 @@ function HomeRealocacao() {
 			{showPostagemModal && (
 				<PostagemRealocacao 
 					onClose={handleClosePostagemModal}
+					editData={editData}
 				/>
 			)}
 		</div>

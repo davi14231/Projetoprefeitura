@@ -7,23 +7,24 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Upload, X } from "lucide-react";
 import { useData } from "@/context/DataContext";
 
-export function SolicitarDoacao({ onClose }) {
+export function SolicitarDoacao({ onClose, editData = null }) {
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(editData?.imageUrl || null);
   const [formData, setFormData] = useState({
-    titulo: "",
-    categoria: "",
-    quantidade: "",
-    urgencia: "",
-    prazo: "",
-    whatsapp: "",
-    email: "",
-    descricao: "",
-    imageUrl: ""
+    titulo: editData?.titulo || "",
+    categoria: editData?.categoria || "",
+    quantidade: editData?.quantidade || "",
+    urgencia: editData?.urgencia || "",
+    prazo: editData?.prazo || "",
+    whatsapp: editData?.whatsapp || "",
+    email: editData?.email || "",
+    descricao: editData?.descricao || "",
+    imageUrl: editData?.imageUrl || ""
   });
   
   const navigate = useNavigate();
-  const { addDoacao } = useData();
+  const { addDoacao, updateDoacao } = useData();
+  const isEditing = editData !== null;
 
   function handleCancel() {
     if (onClose) {
@@ -94,8 +95,8 @@ export function SolicitarDoacao({ onClose }) {
       finalImageUrl = defaultImages[formData.categoria] || "/imagens/outros.jpg";
     }
 
-    // Criar nova doação
-    const novaDoacao = {
+    // Criar dados da doação
+    const dadosDoacao = {
       titulo: formData.titulo,
       categoria: formData.categoria,
       quantidade: formData.quantidade,
@@ -109,11 +110,15 @@ export function SolicitarDoacao({ onClose }) {
       validade: formData.prazo
     };
 
-    // Adicionar ao store
-    addDoacao(novaDoacao);
-    
-    // Mostrar mensagem de sucesso
-    alert("Solicitação de doação criada com sucesso!");
+    if (isEditing) {
+      // Atualizar doação existente
+      updateDoacao(editData.id, dadosDoacao);
+      alert("Doação atualizada com sucesso!");
+    } else {
+      // Adicionar nova doação
+      addDoacao(dadosDoacao);
+      alert("Solicitação de doação criada com sucesso!");
+    }
     
     // Fechar modal
     if (onClose) {

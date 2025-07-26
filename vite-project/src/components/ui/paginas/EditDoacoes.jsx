@@ -59,6 +59,7 @@ export function EditDoacoes() {
 	const handleEdit = (pedido) => {
 		setEditId(pedido.id);
 		setEditData(pedido);
+		setShowSolicitarModal(true); // Abrir o modal para edição
 	};
 
 	const handleChange = (e) => {
@@ -89,6 +90,8 @@ export function EditDoacoes() {
 	// Fechar modal SolicitarDoacao
 	const handleCloseSolicitarModal = () => {
 		setShowSolicitarModal(false);
+		setEditData(null); // Limpar dados de edição
+		setEditId(null); // Limpar ID de edição
 	};
 
 	// Abrir modal ConfirmacaoEncerrarSolicitacao
@@ -437,7 +440,10 @@ export function EditDoacoes() {
 						</button>
 						<div className="p-6">
 							{SolicitarDoacao ? (
-								<SolicitarDoacao onClose={handleCloseSolicitarModal} />
+								<SolicitarDoacao 
+									onClose={handleCloseSolicitarModal} 
+									editData={editData}
+								/>
 							) : (
 								<div>
 									<h2 className="text-lg font-bold mb-4">Solicitar Doação</h2>

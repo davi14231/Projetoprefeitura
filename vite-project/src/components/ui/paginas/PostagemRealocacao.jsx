@@ -7,21 +7,22 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Upload, X } from "lucide-react";
 import { useData } from "@/context/DataContext";
 
-export function PostagemRealocacao({ onClose }) {
+export function PostagemRealocacao({ onClose, editData = null }) {
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(editData?.imageUrl || null);
   const [formData, setFormData] = useState({
-    titulo: "",
-    categoria: "",
-    quantidade: "",
-    email: "",
-    whatsapp: "",
-    descricao: "",
-    imageUrl: ""
+    titulo: editData?.titulo || "",
+    categoria: editData?.categoria || "",
+    quantidade: editData?.quantidade || "",
+    email: editData?.email || "",
+    whatsapp: editData?.whatsapp || "",
+    descricao: editData?.descricao || "",
+    imageUrl: editData?.imageUrl || ""
   });
   
   const navigate = useNavigate();
-  const { addRealocacao } = useData();
+  const { addRealocacao, updateRealocacao } = useData();
+  const isEditing = !!editData;
 
   function handleCancel() {
     if (onClose) {
@@ -92,8 +93,8 @@ export function PostagemRealocacao({ onClose }) {
       finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
     }
 
-    // Criar nova realocação
-    const novaRealocacao = {
+    // Criar dados da realocação
+    const dadosRealocacao = {
       titulo: formData.titulo,
       categoria: formData.categoria,
       quantidade: formData.quantidade,
@@ -104,8 +105,16 @@ export function PostagemRealocacao({ onClose }) {
       imageUrl: finalImageUrl,
     };
 
-    addRealocacao(novaRealocacao);
-    alert("Postagem de realocação criada com sucesso!");
+    if (isEditing) {
+      // Atualizar realocação existente
+      updateRealocacao(editData.id, dadosRealocacao);
+      alert("Realocação atualizada com sucesso!");
+    } else {
+      // Adicionar nova realocação
+      addRealocacao(dadosRealocacao);
+      alert("Postagem de realocação criada com sucesso!");
+    }
+    
     handleCancel(); // Fecha o modal ou navega para a página anterior
   }
 
