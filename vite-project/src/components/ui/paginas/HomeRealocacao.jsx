@@ -235,30 +235,33 @@ function HomeRealocacao(props) {
 									</div>
 								))}
 							</div>
-							{/* Paginação */}
-							<div className="flex justify-center items-center gap-2 mt-8">
-								<button
-									className="w-8 h-8 rounded bg-[#172233] text-white font-bold"
-									style={{ backgroundColor: footerColor }}
-								>
-									1
-								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
-									2
-								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
-									3
-								</button>
-								<span className="px-2 text-neutral-500 font-bold">...</span>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
-									7
-								</button>
-								<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
-									8
-								</button>
-							</div>
 						</CardContent>
 					</Card>
+				</section>
+
+				{/* Paginação - Movida para fora do card */}
+				<section className="max-w-6xl mx-auto px-4 mb-12">
+					<div className="flex justify-center items-center gap-2">
+						<button
+							className="w-8 h-8 rounded bg-[#172233] text-white font-bold"
+							style={{ backgroundColor: footerColor }}
+						>
+							1
+						</button>
+						<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+							2
+						</button>
+						<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+							3
+						</button>
+						<span className="px-2 text-neutral-500 font-bold">...</span>
+						<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+							7
+						</button>
+						<button className="w-8 h-8 rounded text-neutral-900 font-bold hover:bg-neutral-200">
+							8
+						</button>
+					</div>
 				</section>
 			</main>
 			<Footer />
