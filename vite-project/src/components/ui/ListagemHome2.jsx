@@ -43,6 +43,7 @@ function ListagemHome2({ itens, carrosselId = 'carousel-container', onCardClick 
               titulo={item.titulo}
               descricao={item.descricao}
               onClick={() => onCardClick && onCardClick(item)}
+              disableOngClick={true}
             />
           </div>
         ))}

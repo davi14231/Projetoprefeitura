@@ -9,6 +9,7 @@ export function CardHome({
   titulo,
   descricao,
   onClick, // Recebe a função de clique como uma propriedade
+  disableOngClick = false, // Nova prop para desabilitar o clique na ONG
 }) {
   // Define a cor do badge de urgência conforme o valor
   let urgenciaColor = "bg-red-400/90 text-white";
@@ -47,13 +48,19 @@ export function CardHome({
         <CardTitle className="text-lg font-bold mb-2 leading-tight line-clamp-2 min-h-[3.5rem]">
           {titulo}
         </CardTitle>
-        <a 
-          href="#" 
-          onClick={(e) => e.stopPropagation()}
-          className="text-blue-600 text-sm font-medium hover:underline mb-3 block truncate"
-        >
-          {ong}
-        </a>
+        {disableOngClick ? (
+          <span className="text-blue-600 text-sm font-medium mb-3 block truncate">
+            {ong}
+          </span>
+        ) : (
+          <a 
+            href="#" 
+            onClick={(e) => e.stopPropagation()}
+            className="text-blue-600 text-sm font-medium hover:underline mb-3 block truncate"
+          >
+            {ong}
+          </a>
+        )}
         <CardDescription className="text-gray-600 text-sm leading-relaxed flex-1 line-clamp-4">
           {descricao}
         </CardDescription>
