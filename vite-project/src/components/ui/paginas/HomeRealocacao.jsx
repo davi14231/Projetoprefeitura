@@ -226,20 +226,6 @@ function HomeRealocacao() {
 											</div>
 											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
 												<span>Publicado: {pedido.publicado}</span>
-												<span className="flex items-center gap-1">
-													<svg
-														width="16"
-														height="16"
-														fill="none"
-														stroke="currentColor"
-														strokeWidth="1.5"
-														className="inline-block"
-													>
-														<circle cx="8" cy="8" r="7" />
-														<path d="M8 4v4l2 2" />
-													</svg>
-													Tempo restante: {pedido.tempoRestante}
-												</span>
 											</div>
 											<div className="mt-2 text-gray-700 text-base">
 												<span className="block w-full break-words">
