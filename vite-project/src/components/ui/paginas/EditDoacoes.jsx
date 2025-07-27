@@ -113,6 +113,15 @@ export function EditDoacoes() {
 		navigate(`/todas-doacoes?categoria=${encodeURIComponent(categoria)}`);
 	};
 
+	const destaques = [
+		{ titulo: "Roupas e Calçados", img: "/imagens/roupas.jpg", categoria: "Roupas e Calçados" },
+		{ titulo: "Eletrônicos", img: "/imagens/Laptops.jpg", categoria: "Eletrônicos" },
+		{ titulo: "Móveis", img: "/imagens/moveis.jpg", categoria: "Eletrodomésticos e Móveis" },
+		{ titulo: "Utensílios", img: "/imagens/ferramentas.jpg", categoria: "Utensílios Gerais" },
+		{ titulo: "Material Educativo", img: "/imagens/alimentos.jpg", categoria: "Materiais Educativos e Culturais" },
+		{ titulo: "Outros", img: "/imagens/outros.jpg", categoria: "Outros" },
+	];
+
 	return (
 		<div className="bg-[#fafbfc] min-h-screen flex flex-col relative">
 			<Headeredicao />
@@ -134,58 +143,47 @@ export function EditDoacoes() {
 						<div className="flex gap-6 justify-between pb-2">
 							<button 
 								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-								onClick={() => navigateToCategory("Medicamentos")}
-							>
-								<img
-									src="/imagens/medicamentos.jpg"
-									alt="Medicamentos"
-									className="w-52 h-32 object-contain rounded-lg"
-								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Medicamentos</span>
-							</button>
-							<button 
-								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-								onClick={() => navigateToCategory("Roupas")}
+								onClick={() => navigateToCategory("Roupas e Calçados")}
 							>
 								<img
 									src="/imagens/roupas.jpg"
-									alt="Roupas"
+									alt="Roupas e Calçados"
 									className="w-52 h-32 object-contain rounded-lg"
 								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Roupas</span>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Roupas e Calçados</span>
 							</button>
 							<button 
 								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-								onClick={() => navigateToCategory("Móveis")}
+								onClick={() => navigateToCategory("Eletrodomésticos e Móveis")}
 							>
 								<img
 									src="/imagens/moveis.jpg"
 									alt="Móveis"
 									className="w-52 h-32 object-contain rounded-lg"
 								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Móveis</span>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Eletrodomésticos e Móveis</span>
 							</button>
 							<button 
 								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-								onClick={() => navigateToCategory("Equipamento")}
+								onClick={() => navigateToCategory("Utensílios Gerais")}
 							>
 								<img
 									src="/imagens/ferramentas.jpg"
-									alt="Ferramentas"
+									alt="Utensílios"
 									className="w-52 h-32 object-contain rounded-lg"
 								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Equipamento</span>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Utensílios Gerais</span>
 							</button>
 							<button 
 								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-								onClick={() => navigateToCategory("Alimentos")}
+								onClick={() => navigateToCategory("Materiais Educativos e Culturais")}
 							>
 								<img
 									src="/imagens/alimentos.jpg"
-									alt="Alimentos"
+									alt="Material Educativo"
 									className="w-52 h-32 object-contain rounded-lg"
 								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Alimentos</span>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Materiais Educativos e Culturais</span>
 							</button>
 							<button 
 								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
@@ -412,13 +410,16 @@ export function EditDoacoes() {
 				</section>
 
 				{/* Paginação */}
-				<Pagination 
-					currentPage={currentPage}
-					totalPages={paginatedData.totalPages}
-					baseUrl="/edit-doacoes"
-				/>
-			</main>
-			<Footer />
+				<div className="mb-8">
+                    <Pagination 
+                        currentPage={currentPage}
+                        totalPages={paginatedData.totalPages}
+                        baseUrl="/edit-doacoes"
+                    />
+                </div>
+
+            </main>
+            <Footer />
 
 			{/* Modal SolicitarDoacao */}
 			{showSolicitarModal && (

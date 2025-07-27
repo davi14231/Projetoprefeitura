@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Headerrealocacao } from "@/components/ui/layouts/Headerrealocacao";
@@ -11,16 +10,17 @@ import { Facebook } from "lucide-react";
 
 // import "./MyNewScreen.css";
 
+// Badge colors for categories
 const badgeColors = {
-  Alimentos: "bg-[#34C759] text-white", // verde
-  Roupas: "bg-[#007AFF] text-white", // azul
-  Eletrônicos: "bg-[#5856D6] text-white", // roxo
-  Móveis: "bg-[#FF9500] text-white", // laranja
-  Brinquedos: "bg-[#FFCC00] text-gray-900", // amarelo
-  Medicamentos: "bg-[#FF3B30] text-white", // vermelho
-  "Material Escolar": "bg-[#8E8E93] text-white", // cinza
-  Livros: "bg-[#AF52DE] text-white", // lilás
-  Educação: "bg-[#8E8E93] text-white", // cinza
+  "Roupas e Calçados": "bg-[#007AFF] text-white", // azul
+  "Materiais Educativos e Culturais": "bg-[#34C759] text-white", // verde
+  "Saúde e Higiene": "bg-[#FF3B30] text-white", // vermelho
+  "Utensílios Gerais": "bg-[#FF9500] text-white", // laranja
+  "Itens de Inclusão e Mobilidade": "bg-[#5856D6] text-white", // roxo
+  "Eletrodomésticos e Móveis": "bg-[#8E8E93] text-white", // cinza
+  "Itens Pet": "bg-[#FFCC00] text-gray-900", // amarelo
+  "Eletrônicos": "bg-[#AF52DE] text-white", // lilás
+  "Outros": "bg-gray-300 text-gray-800",
   default: "bg-gray-300 text-gray-800",
 };
 
@@ -53,16 +53,15 @@ export function RealocacaoListagem() {
 
   // Lista completa de categorias disponíveis
   const todasCategorias = [
-    "Alimentos",
-    "Roupas", 
+    "Roupas e Calçados",
+    "Materiais Educativos e Culturais", 
+    "Saúde e Higiene",
+    "Utensílios Gerais",
+    "Itens de Inclusão e Mobilidade",
+    "Eletrodomésticos e Móveis",
+    "Itens Pet",
     "Eletrônicos",
-    "Equipamento",
-    "Móveis",
-    "Brinquedos",
-    "Medicamentos",
-    "Material Escolar",
-    "Livros",
-    "Educação"
+    "Outros"
   ];
 
   // Prevent background scroll when modal is open
@@ -305,11 +304,13 @@ export function RealocacaoListagem() {
         </section>
         {/* Paginação */}
         {/* Mantém apenas o componente Pagination para evitar duplicidade e garantir lógica dinâmica */}
-        <Pagination 
-          currentPage={currentPage}
-          totalPages={paginatedData.totalPages}
-          baseUrl="/realocacao-listagem"
-        />
+        <div className="mb-8">
+          <Pagination 
+            currentPage={currentPage}
+            totalPages={paginatedData.totalPages}
+            baseUrl="/realocacao-listagem"
+          />
+        </div>
 
         {/* Bloco CTA */}
         <section className="max-w-[900px] mx-auto mb-20 px-2">

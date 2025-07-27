@@ -82,13 +82,13 @@ export function PostagemRealocacao({ onClose }) {
     let finalImageUrl = formData.imageUrl;
     if (!finalImageUrl) {
       const defaultImages = {
-        "Alimentos": "/imagens/alimentos.jpg",
-        "Roupas": "/imagens/roupas.jpg",
-        "Medicamentos": "/imagens/medicamentos.jpg",
-        "Material Escolar": "/imagens/MatEsc.jpg",
-        "Brinquedos": "/imagens/BrinquedosEdu.jpg",
-        "Livros": "/imagens/Livrosdid.jpg",
-        "Móveis": "/imagens/moveis.jpg",
+        "Roupas e Calçados": "/imagens/roupas.jpg",
+        "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
+        "Saúde e Higiene": "/imagens/med.jpg",
+        "Utensílios Gerais": "/imagens/alimentos.jpg",
+        "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
+        "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
+        "Itens Pet": "/imagens/outros.jpg",
         "Eletrônicos": "/imagens/Laptops.jpg",
         "Outros": "/imagens/outros.jpg"
       };
@@ -183,15 +183,14 @@ export function PostagemRealocacao({ onClose }) {
                     required
                   >
                     <option value="">Selecione uma categoria</option>
-                    <option value="Alimentos">Alimentos</option>
-                    <option value="Roupas">Roupas</option>
+                    <option value="Roupas e Calçados">Roupas e Calçados</option>
+                    <option value="Materiais Educativos e Culturais">Materiais Educativos e Culturais</option>
+                    <option value="Saúde e Higiene">Saúde e Higiene</option>
+                    <option value="Utensílios Gerais">Utensílios Gerais</option>
+                    <option value="Itens de Inclusão e Mobilidade">Itens de Inclusão e Mobilidade</option>
+                    <option value="Eletrodomésticos e Móveis">Eletrodomésticos e Móveis</option>
+                    <option value="Itens Pet">Itens Pet</option>
                     <option value="Eletrônicos">Eletrônicos</option>
-                    <option value="Móveis">Móveis</option>
-                    <option value="Brinquedos">Brinquedos</option>
-                    <option value="Medicamentos">Medicamentos</option>
-                    <option value="Material Escolar">Material Escolar</option>
-                    <option value="Livros">Livros</option>
-                    <option value="Equipamento">Equipamento</option>
                     <option value="Outros">Outros</option>
                   </select>
                 </div>

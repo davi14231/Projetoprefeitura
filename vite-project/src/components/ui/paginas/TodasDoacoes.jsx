@@ -34,16 +34,15 @@ export default function TodasDoacoes() {
 
 	// Lista completa de categorias disponíveis
 	const todasCategorias = [
-		"Alimentos",
-		"Roupas", 
+		"Roupas e Calçados",
+		"Materiais Educativos e Culturais", 
+		"Saúde e Higiene",
+		"Utensílios Gerais",
+		"Itens de Inclusão e Mobilidade",
+		"Eletrodomésticos e Móveis",
+		"Itens Pet",
 		"Eletrônicos",
-		"Equipamento",
-		"Móveis",
-		"Brinquedos",
-		"Medicamentos",
-		"Material Escolar",
-		"Livros",
-		"Educação"
+		"Outros"
 	];
 
 	// Ler parâmetros da URL
@@ -325,7 +324,7 @@ export default function TodasDoacoes() {
 						currentPage={currentPage}
 						totalPages={paginatedData.totalPages}
 						onPageChange={handlePageChange}
-						baseUrl="/todas-doacoes"
+						baseUrl="/todas_doacoes"
 					/>
 				</div>
 

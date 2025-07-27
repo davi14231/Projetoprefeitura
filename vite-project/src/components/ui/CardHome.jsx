@@ -47,13 +47,12 @@ export function CardHome({
         <CardTitle className="text-lg font-bold mb-2 leading-tight line-clamp-2 min-h-[3.5rem]">
           {titulo}
         </CardTitle>
-        <a 
-          href="#" 
-          onClick={(e) => e.stopPropagation()}
-          className="text-blue-600 text-sm font-medium hover:underline mb-3 block truncate"
+        <span
+          className="text-[#007AFF] text-xs font-semibold mb-1"
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           {ong}
-        </a>
+        </span>
         <CardDescription className="text-gray-600 text-sm leading-relaxed flex-1 line-clamp-4">
           {descricao}
         </CardDescription>

@@ -1,4 +1,4 @@
-  import React from "react";
+import React from "react";
   import { useNavigate } from "react-router-dom";
   import { BlocoDoador } from "@/components/ui/BlocoInformativoDoador";
   import { BlocoONG } from "@/components/ui/BlocoInformativoONG";
@@ -58,6 +58,51 @@ export default function Tela_Home({ imagensCarrossel, itens }) {
       }, 5000);
       return () => clearInterval(timer);
     }, [imagens.length]);
+
+    // Dados de destaques com as novas categorias
+    const destaques = [
+      { 
+        id: 1, 
+        titulo: "Roupas e Calçados", 
+        img: "/imagens/roupas.jpg", 
+        categoria: "Roupas e Calçados" 
+      },
+      { 
+        id: 2, 
+        titulo: "Eletrônicos", 
+        img: "/imagens/Laptops.jpg", 
+        categoria: "Eletrônicos" 
+      },
+      { 
+        id: 3, 
+        titulo: "Eletrodomésticos e Móveis", 
+        img: "/imagens/moveis.jpg", 
+        categoria: "Eletrodomésticos e Móveis" 
+      },
+      { 
+        id: 4, 
+        titulo: "Utensílios Gerais", 
+        img: "/imagens/ferramentas.jpg", 
+        categoria: "Utensílios Gerais" 
+      },
+      { 
+        id: 5, 
+        titulo: "Materiais Educativos e Culturais", 
+        img: "/imagens/alimentos.jpg", 
+        categoria: "Materiais Educativos e Culturais" 
+      },
+      { 
+        id: 6, 
+        titulo: "Outros", 
+        img: "/imagens/outros.jpg", 
+        categoria: "Outros" 
+      }
+    ];
+
+    // Função para navegar para TodasDoacoes com filtro de categoria
+    const navigateToCategory = (categoria) => {
+      navigate(`/todas-doacoes?categoria=${encodeURIComponent(categoria)}`);
+    };
 
     return (
       <div>

@@ -12,7 +12,7 @@ class DataStore {
       {
         id: 1,
         titulo: "Cestas Básicas para Famílias",
-        categoria: "Alimentos",
+        categoria: "Utensílios Gerais",
         ong: "Casa da Esperança",
         imageUrl: "/imagens/CestasBasicas.jpg",
         descricao: "Necessitamos de cestas básicas para 50 famílias em situação de vulnerabilidade",
@@ -26,7 +26,7 @@ class DataStore {
       {
         id: 2,
         titulo: "Roupas de Inverno",
-        categoria: "Roupas",
+        categoria: "Roupas e Calçados",
         ong: "Aquecendo Vidas",
         imageUrl: "/imagens/roupas.jpg",
         descricao: "Precisamos de roupas de inverno para crianças e adultos",
@@ -52,7 +52,7 @@ class DataStore {
       {
         id: 4,
         titulo: "Móveis para Casa de Apoio",
-        categoria: "Móveis",
+        categoria: "Eletrodomésticos e Móveis",
         ong: "Lar Solidário",
         imageUrl: "/imagens/moveis.jpg",
         descricao: "Móveis para casa de apoio a idosos",
@@ -64,7 +64,7 @@ class DataStore {
       {
         id: 5,
         titulo: "Brinquedos para Creche",
-        categoria: "Brinquedos",
+        categoria: "Materiais Educativos e Culturais",
         ong: "Alegria Infantil",
         imageUrl: "/imagens/BrinquedosEdu.jpg",
         descricao: "Brinquedos educativos para nossa creche comunitária",
@@ -78,7 +78,7 @@ class DataStore {
       {
         id: 6,
         titulo: "Medicamentos para Idosos",
-        categoria: "Medicamentos",
+        categoria: "Saúde e Higiene",
         ong: "Cuidar com Amor",
         imageUrl: "/imagens/med.jpg",
         descricao: "Medicamentos para tratamento de idosos carentes",
@@ -92,14 +92,14 @@ class DataStore {
       {
         id: 7,
         titulo: "Material para Escola",
-        categoria: "Material Escolar",
+        categoria: "Materiais Educativos e Culturais",
         ong: "Educar É Transformar",
         imageUrl: "/imagens/MatEsc.jpg",
-        descricao: "Material escolar para crianças da comunidade",
+        descricao: "Material escolar para crianças carentes",
         publicado: "01/01/2025",
         email: "contato@educaretransformar.org.br",
         whatsapp: "(81) 99999-7777",
-        urgencia: "Média"
+        urgencia: "Baixa"
       },
       {
         id: 8,
@@ -147,26 +147,28 @@ class DataStore {
       {
         id: 1,
         titulo: "Cestas Básicas",
-        categoria: "Alimentos",
+        categoria: "Utensílios Gerais",
         ong: "Instituto Beneficente",
         imageUrl: "/imagens/CestasBasicas.jpg",
         descricao: "Cestas básicas completas para famílias em situação de vulnerabilidade",
         publicado: "15/01/2025",
         validade: "30/01/2025",
         email: "contato@institutobeneficente.org.br",
-        whatsapp: "(81) 99999-1111"
+        whatsapp: "(81) 99999-1111",
+        tempoRestante: "15 dias"
       },
       {
         id: 2,
         titulo: "Roupas Infantis",
-        categoria: "Roupas",
+        categoria: "Roupas e Calçados",
         ong: "Casa da Criança",
-        imageUrl: "/imagens/RoupasInfantis.jpg",
-        descricao: "Roupas infantis em bom estado, tamanhos variados",
+        imageUrl: "/imagens/roupas.jpg",
+        descricao: "Roupas infantis em bom estado, tamanhos variados de 2 a 12 anos",
         publicado: "12/01/2025",
         validade: "28/01/2025",
         email: "contato@casadacrianca.org.br",
-        whatsapp: "(81) 99999-2222"
+        whatsapp: "(81) 99999-2222",
+        tempoRestante: "12 dias"
       },
       {
         id: 3,
@@ -174,90 +176,72 @@ class DataStore {
         categoria: "Eletrônicos",
         ong: "Educação Digital",
         imageUrl: "/imagens/Laptops.jpg",
-        descricao: "Laptops para programas educacionais e inclusão digital",
+        descricao: "Laptops para programas educacionais e inclusão digital em bom funcionamento",
         publicado: "10/01/2025",
         email: "contato@educacaodigital.org.br",
-        whatsapp: "(81) 99999-3333"
+        whatsapp: "(81) 99999-3333",
+        tempoRestante: "Sem prazo"
       },
       {
         id: 4,
         titulo: "Móveis de Escritório",
-        categoria: "Móveis",
+        categoria: "Eletrodomésticos e Móveis",
         ong: "Reciclando Vidas",
-        imageUrl: "/imagens/Mobilia.jpg",
-        descricao: "Mesas, cadeiras e armários em bom estado",
+        imageUrl: "/imagens/moveis.jpg",
+        descricao: "Mesas, cadeiras e armários de escritório em bom estado de conservação",
         publicado: "08/01/2025",
         email: "contato@reciclandovidas.org.br",
-        whatsapp: "(81) 99999-4444"
+        whatsapp: "(81) 99999-4444",
+        tempoRestante: "Sem prazo"
       },
       {
         id: 5,
-        titulo: "Brinquedos Educativos",
-        categoria: "Brinquedos",
-        ong: "Crescer Brincando",
-        imageUrl: "/imagens/BrinquedosEdu.jpg",
-        descricao: "Brinquedos educativos para desenvolvimento infantil",
+        titulo: "Material Escolar",
+        categoria: "Materiais Educativos e Culturais",
+        ong: "Futuro Brilhante",
+        imageUrl: "/imagens/MatEsc.jpg",
+        descricao: "Cadernos, lápis, canetas e materiais escolares diversos para crianças",
         publicado: "05/01/2025",
         validade: "20/01/2025",
-        email: "contato@crescerbrincando.org.br",
-        whatsapp: "(81) 99999-5555"
+        email: "contato@futurobrilhante.org.br",
+        whatsapp: "(81) 99999-5555",
+        tempoRestante: "4 dias"
       },
       {
         id: 6,
-        titulo: "Medicamentos Básicos",
-        categoria: "Medicamentos",
-        ong: "Saúde Para Todos",
-        imageUrl: "/imagens/medicamentos.jpg",
-        descricao: "Medicamentos básicos dentro da validade",
+        titulo: "Produtos de Higiene",
+        categoria: "Saúde e Higiene",
+        ong: "Cuidar com Amor",
+        imageUrl: "/imagens/med.jpg",
+        descricao: "Sabonetes, shampoos, produtos de higiene pessoal e medicamentos básicos",
         publicado: "03/01/2025",
-        validade: "15/01/2025",
-        email: "contato@saudeparatodos.org.br",
-        whatsapp: "(81) 99999-6666"
+        email: "contato@cuidarcomamor.org.br",
+        whatsapp: "(81) 99999-6666",
+        tempoRestante: "Sem prazo"
       },
       {
         id: 7,
-        titulo: "Material Escolar",
-        categoria: "Material Escolar",
-        ong: "Educando o Futuro",
-        imageUrl: "/imagens/MatEsc.jpg",
-        descricao: "Cadernos, lápis, canetas e outros materiais escolares",
+        titulo: "Cadeiras de Rodas",
+        categoria: "Itens de Inclusão e Mobilidade",
+        ong: "Inclusão Para Todos",
+        imageUrl: "/imagens/outros.jpg",
+        descricao: "Cadeiras de rodas e equipamentos de mobilidade em bom estado",
         publicado: "01/01/2025",
-        email: "contato@educandoofuturo.org.br",
-        whatsapp: "(81) 99999-7777"
+        email: "contato@inclusaoparatodos.org.br",
+        whatsapp: "(81) 99999-7777",
+        tempoRestante: "Sem prazo"
       },
       {
         id: 8,
-        titulo: "Livros Didáticos",
-        categoria: "Livros",
-        ong: "Biblioteca Comunitária",
-        imageUrl: "/imagens/Livrosdid.jpg",
-        descricao: "Livros didáticos para ensino fundamental e médio",
+        titulo: "Ração e Acessórios Pet",
+        categoria: "Itens Pet",
+        ong: "Amigos dos Animais",
+        imageUrl: "/imagens/outros.jpg",
+        descricao: "Ração, comedouros, bebedouros e brinquedos para cães e gatos",
         publicado: "28/12/2024",
-        email: "contato@bibliotecacomunitaria.org.br",
-        whatsapp: "(81) 99999-8888"
-      },
-      // Dados adicionais para paginação
-      {
-        id: 9,
-        titulo: "Produtos de Limpeza",
-        categoria: "Outros",
-        ong: "Limpeza Solidária",
-        imageUrl: "/imagens/prodhig.jpg",
-        descricao: "Produtos de limpeza para manutenção de abrigos",
-        publicado: "25/12/2024",
-        email: "contato@limpezasolidaria.org.br",
-        whatsapp: "(81) 99999-9999"
-      },
-      {
-        id: 10,
-        titulo: "Equipamentos de Cozinha",
-        categoria: "Equipamento",
-        ong: "Cozinha Comunitária",
-        imageUrl: "/imagens/ferramentas.jpg",
-        descricao: "Equipamentos de cozinha para nossa cozinha comunitária",
-        publicado: "20/12/2024",
-        email: "contato@cozinhacomunitaria.org.br",
-        whatsapp: "(81) 99999-0000"
+        email: "contato@amigosdosanimais.org.br",
+        whatsapp: "(81) 99999-8888",
+        tempoRestante: "Sem prazo"
       }
     ];
   }
