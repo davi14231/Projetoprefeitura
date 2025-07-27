@@ -1,4 +1,4 @@
-  import React from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { BlocoDoador } from "@/components/ui/BlocoInformativoDoador";
 import { BlocoONG2 } from "@/components/ui/BlocoInformativoONG2";
@@ -14,7 +14,16 @@ export default function TelahomeONG({ imagensCarrossel, itens }) {
   const [showDetalheModal, setShowDetalheModal] = React.useState(false);
   const [dadosDetalhe, setDadosDetalhe] = React.useState(null);
   const navigate = useNavigate();
-  const imagens = imagensCarrossel || [];
+
+  // Imagens padrão locais para o carrossel (substitua as URLs externas)
+  const imagensDefault = [
+    "/imagens/CestasBasicas.jpg",
+    "/imagens/roupas.jpg", 
+    "/imagens/alimentos.jpg"
+  ];
+
+  // Use imagens locais se não houver imagens do carrossel
+  const imagens = imagensCarrossel && imagensCarrossel.length > 0 ? imagensCarrossel : imagensDefault;
 
   // Prevent background scroll when modal is open
   React.useEffect(() => {
@@ -59,6 +68,50 @@ export default function TelahomeONG({ imagensCarrossel, itens }) {
     return () => clearInterval(timer);
   }, [imagens.length]);
 
+  // Dados de exemplo de solicitações da ONG (com imagens locais)
+  const solicitacoesONG = [
+    {
+      id: 1,
+      titulo: "Cestas Básicas Urgentes", 
+      categoria: "Utensílios Gerais",
+      urgencia: "Alta",
+      descricao: "Precisamos de cestas básicas para 30 famílias em situação de emergência",
+      publicado: "15/01/2025",
+      validade: "30/01/2025",
+      imageUrl: "/imagens/CestasBasicas.jpg", // Adicione imageUrl
+      ong: "Instituto Esperança"
+    },
+    {
+      id: 2,
+      titulo: "Roupas de Inverno",
+      categoria: "Roupas e Calçados", 
+      urgencia: "Média",
+      descricao: "Casacos e agasalhos para crianças e adultos",
+      publicado: "10/01/2025",
+      validade: "25/01/2025",
+      imageUrl: "/imagens/roupas.jpg", // Adicione imageUrl
+      ong: "Casa Acolhedora"
+    },
+    {
+      id: 3,
+      titulo: "Medicamentos Básicos",
+      categoria: "Saúde e Higiene",
+      urgencia: "Alta", 
+      descricao: "Medicamentos para tratamento de doenças crônicas",
+      publicado: "08/01/2025",
+      validade: "20/01/2025",
+      imageUrl: "/imagens/med.jpg", // Adicione imageUrl
+      ong: "Saúde para Todos"
+    }
+  ];
+
+  const getImageUrl = (imagePath) => {
+    // Imagem placeholder caso a original não exista
+    const placeholder = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='18' fill='%23999'%3EImagem não encontrada%3C/text%3E%3C/svg%3E";
+    
+    return imagePath || placeholder;
+  };
+
   return (
     <div>
       <Headerinicio />
@@ -69,10 +122,13 @@ export default function TelahomeONG({ imagensCarrossel, itens }) {
           <div className="relative flex flex-col items-center">
             <div className="mx-auto mb-2 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-gradient-to-b from-white to-gray-100" style={{ maxWidth: 900 }}>
               <img
-                src={imagens[imgIndex]}
+                src={getImageUrl(imagens[imgIndex])}
                 alt="Banner"
                 className="w-full h-[400px] object-cover"
                 style={{ display: 'block' }}
+                onError={(e) => {
+                  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='18' fill='%23999'%3EImagem não encontrada%3C/text%3E%3C/svg%3E";
+                }}
               />
             </div>
             {/* Indicador do carrossel */}

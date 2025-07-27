@@ -82,17 +82,17 @@ export function SolicitarDoacao({ onClose, editData = null }) {
     let finalImageUrl = formData.imageUrl;
     if (!finalImageUrl) {
       const defaultImages = {
-        "Alimentos": "/imagens/alimentos.jpg",
-        "Roupas": "/imagens/roupas.jpg",
-        "Medicamentos": "/imagens/medicamentos.jpg",
-        "Material Escolar": "/imagens/MatEsc.jpg",
-        "Brinquedos": "/imagens/BrinquedosEdu.jpg",
-        "Livros": "/imagens/Livrosdid.jpg",
-        "Móveis": "/imagens/moveis.jpg",
+        "Roupas e Calçados": "/imagens/roupas.jpg",
+        "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
+        "Saúde e Higiene": "/imagens/med.jpg",
+        "Utensílios Gerais": "/imagens/alimentos.jpg",
+        "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
+        "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
+        "Itens Pet": "/imagens/outros.jpg",
         "Eletrônicos": "/imagens/Laptops.jpg",
         "Outros": "/imagens/outros.jpg"
       };
-      finalImageUrl = defaultImages[formData.categoria] || "/imagens/outros.jpg";
+      finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
     }
 
     // Criar dados da doação
@@ -216,16 +216,15 @@ export function SolicitarDoacao({ onClose, editData = null }) {
                     onChange={handleInputChange}
                     required
                   >
-                    <option value="">Categoria x</option>
-                    <option value="Alimentos">Alimentos</option>
-                    <option value="Roupas">Roupas</option>
+                    <option value="">Selecione uma categoria</option>
+                    <option value="Roupas e Calçados">Roupas e Calçados</option>
+                    <option value="Materiais Educativos e Culturais">Materiais Educativos e Culturais</option>
+                    <option value="Saúde e Higiene">Saúde e Higiene</option>
+                    <option value="Utensílios Gerais">Utensílios Gerais</option>
+                    <option value="Itens de Inclusão e Mobilidade">Itens de Inclusão e Mobilidade</option>
+                    <option value="Eletrodomésticos e Móveis">Eletrodomésticos e Móveis</option>
+                    <option value="Itens Pet">Itens Pet</option>
                     <option value="Eletrônicos">Eletrônicos</option>
-                    <option value="Móveis">Móveis</option>
-                    <option value="Brinquedos">Brinquedos</option>
-                    <option value="Medicamentos">Medicamentos</option>
-                    <option value="Material Escolar">Material Escolar</option>
-                    <option value="Livros">Livros</option>
-                    <option value="Equipamento">Equipamento</option>
                     <option value="Outros">Outros</option>
                   </select>
                 </div>
@@ -286,7 +285,8 @@ export function SolicitarDoacao({ onClose, editData = null }) {
                 </div>
               </div>
             </div>
-            {/* Descrição */}
+
+            {/* Upload de imagem */}
             <div>
               <Label htmlFor="descricao" className="mb-1 block text-base font-medium">
                 Descrição e propósito do Item (para que fim o item vai ser utilizado):
@@ -298,23 +298,26 @@ export function SolicitarDoacao({ onClose, editData = null }) {
                 placeholder="Descreva detalhadamente o(s) item(s) e diga o propósito deles"
                 value={formData.descricao}
                 onChange={handleInputChange}
-                required
               />
+              <p className="text-xs text-gray-500 mt-1">
+                Se não inserir uma imagem, usaremos uma imagem padrão da categoria
+              </p>
             </div>
-            {/* Botões */}
-            <div className="flex justify-end gap-3">
+
+            {/* Buttons */}
+            <div className="flex gap-4 pt-4">
               <button
                 type="button"
-                className="px-6 py-2 rounded-lg bg-neutral-200 text-neutral-700 font-medium hover:bg-neutral-300 transition"
-                onClick={handleCancel}
+                onClick={onClose}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition"
+                className="flex-1 px-4 py-2 bg-[#172233] text-white rounded-md hover:bg-[#22304d] transition"
               >
-                Publicar
+                Publicar Solicitação
               </button>
             </div>
           </form>
