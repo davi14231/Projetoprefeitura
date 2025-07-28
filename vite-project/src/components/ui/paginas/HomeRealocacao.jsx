@@ -2,33 +2,139 @@ import React, { useState, useEffect } from "react";
 import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit2, X, Facebook } from "lucide-react";
+import { Edit2, X, Facebook, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
+import ConfirmacaoDeletar from "./ConfirmacaoDeletar";
 import { PostagemRealocacao } from "./PostagemRealocacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
 
 const footerColor = "#172233";
 
-const destaques = [
-	{ id: 1, titulo: "Medicamentos", img: "/imagens/medicamentos.jpg", categoria: "Medicamentos" },
-	{ id: 2, titulo: "Roupas", img: "/imagens/roupas.jpg", categoria: "Roupas" },
-	{ id: 3, titulo: "Móveis", img: "/imagens/moveis.jpg", categoria: "Móveis" },
-	{ id: 4, titulo: "Equipamento", img: "/imagens/ferramentas.jpg", categoria: "Equipamento" },
-	{ id: 5, titulo: "Alimentos", img: "/imagens/alimentos.jpg", categoria: "Alimentos" },
-	{ id: 6, titulo: "Outros", img: "/imagens/outros.jpg", categoria: "Outros" },
-];
-
 function HomeRealocacao() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
-	const [showPostagemModal, setShowPostagemModal] = useState(false);
-	const [currentPage, setCurrentPage] = useState(1);
-	const { getRealocacoesPaginadas } = useData();
+const [showConfirmacaoDeletar, setShowConfirmacaoDeletar] = useState(false);
+const [showConfirmacaoEncerrar, setShowConfirmacaoEncerrar] = useState(false);
+const [showPostagemModal, setShowPostagemModal] = useState(false);
+const [editId, setEditId] = useState(null);
+const [editData, setEditData] = useState({});
+const [currentPage, setCurrentPage] = useState(1);
+const [carouselIndex, setCarouselIndex] = useState(0);
+const { getRealocacoesPaginadas, removeRealocacao, updateRealocacao } = useData();
+const [idParaExcluir, setIdParaExcluir] = useState(null);
 
-	const itemsPerPage = 6;
+// Itens já realocados para outras ONGs
+const itensRealocados = [
+	{
+		id: 1,
+		nome: "Kits de toalhas de banho",
+		imagem: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=400&fit=crop&crop=center"
+	},
+	{
+		id: 2,
+		nome: "Alimentos não perecíveis",
+		imagem: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&h=400&fit=crop&crop=center"
+	},
+	{
+		id: 3,
+		nome: "Utensílios de cozinha",
+		imagem: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop&crop=center"
+	},
+	{
+		id: 4,
+		nome: "Kits de fraldas",
+		imagem: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=400&h=400&fit=crop&crop=center"
+	},
+	{
+		id: 5,
+		nome: "Cadeiras de escritório",
+		imagem: "https://images.unsplash.com/photo-1549497538-303791108f95?w=400&h=400&fit=crop&crop=center"
+	},
+	{
+		id: 6,
+		nome: "Termômetros digitais",
+		imagem: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=400&fit=crop&crop=center"
+	},
+	{
+		id: 7,
+		nome: "Computadores portáteis",
+		imagem: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop&crop=center"
+	},
+	{
+		id: 8,
+		nome: "Material de limpeza",
+		imagem: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400&h=400&fit=crop&crop=center"
+	},
+	{
+		id: 9,
+		nome: "Roupas de cama",
+		imagem: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&h=400&fit=crop&crop=center"
+	},
+	{
+		id: 10,
+		nome: "Equipamentos médicos",
+		imagem: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=400&fit=crop&crop=center"
+	}
+];
+
+const itemsPerPage = 6;
+const carouselItemsPerView = 6;
+
+	// Navegação do carousel
+	const handlePrevCarousel = () => {
+		setCarouselIndex(prev => Math.max(0, prev - 1));
+	};
+
+	const handleNextCarousel = () => {
+		const maxIndex = Math.max(0, itensRealocados.length - carouselItemsPerView);
+		setCarouselIndex(prev => Math.min(maxIndex, prev + 1));
+	};
+
+	const canGoPrev = carouselIndex > 0;
+	const canGoNext = carouselIndex < itensRealocados.length - carouselItemsPerView;
+
+	const visibleItems = itensRealocados.slice(carouselIndex, carouselIndex + carouselItemsPerView);
+
+// Abrir modal de confirmação para deletar
+const handleDelete = (id) => {
+  setIdParaExcluir(id);
+  setShowConfirmacaoDeletar(true);
+};
+
+// Confirma exclusão no modal
+const handleConfirmDelete = () => {
+  if (idParaExcluir) {
+	removeRealocacao(idParaExcluir);
+	setIdParaExcluir(null);
+  }
+  setShowConfirmacaoDeletar(false);
+};
+
+// Função para editar realocação
+const handleEdit = (pedido) => {
+	setEditId(pedido.id);
+	setEditData(pedido);
+	setShowPostagemModal(true); // Abrir o modal para edição
+};
+
+// Abrir modal de confirmação de encerramento
+const handleOpenConfirmacaoEncerrar = () => {
+  setShowConfirmacaoEncerrar(true);
+};
+
+// Fechar modal de confirmação de encerramento
+const handleCloseConfirmacaoEncerrar = () => {
+  setShowConfirmacaoEncerrar(false);
+};
+
+// Confirmar encerramento da realocação
+const handleConfirmEncerramento = () => {
+  // Aqui você pode adicionar a lógica para encerrar a realocação
+  setShowConfirmacaoEncerrar(false);
+  // Exemplo: remover o item da lista ou atualizar status
+};
 
 	// Efeito para ler parâmetros da URL e definir página atual
 	useEffect(() => {
@@ -44,34 +150,19 @@ function HomeRealocacao() {
 		filters: {}
 	});
 
-	// Prevent background scroll when modal is open
-	React.useEffect(() => {
-		if (showConfirmacaoModal || showPostagemModal) {
-			document.body.style.overflow = "hidden";
-		} else {
-			document.body.style.overflow = "auto";
-		}
-		return () => {
-			document.body.style.overflow = "auto";
-		};
-	}, [showConfirmacaoModal, showPostagemModal]);
+// Prevent background scroll when any modal is open
+React.useEffect(() => {
+  if (showConfirmacaoDeletar || showConfirmacaoEncerrar || showPostagemModal) {
+	document.body.style.overflow = "hidden";
+  } else {
+	document.body.style.overflow = "auto";
+  }
+  return () => {
+	document.body.style.overflow = "auto";
+  };
+}, [showConfirmacaoDeletar, showConfirmacaoEncerrar, showPostagemModal]);
 
-	// Abrir modal ConfirmacaoEncerrarRealocacao
-	const handleOpenConfirmacaoModal = () => {
-		setShowConfirmacaoModal(true);
-	};
-
-	// Fechar modal ConfirmacaoEncerrarRealocacao
-	const handleCloseConfirmacaoModal = () => {
-		setShowConfirmacaoModal(false);
-	};
-
-	// Confirmar encerramento da realocação
-	const handleConfirmEncerramento = () => {
-		// Aqui você pode adicionar a lógica para encerrar a realocação
-		setShowConfirmacaoModal(false);
-		// Exemplo: remover o item da lista ou atualizar status
-	};
+// ...existing code...
 
 	// Abrir modal PostagemRealocacao
 	const handleOpenPostagemModal = () => {
@@ -81,6 +172,8 @@ function HomeRealocacao() {
 	// Fechar modal PostagemRealocacao
 	const handleClosePostagemModal = () => {
 		setShowPostagemModal(false);
+		setEditData(null); // Limpar dados de edição
+		setEditId(null); // Limpar ID de edição
 	};
 
 	// Função para navegar para RealocacaoListagem com filtro de categoria
@@ -110,49 +203,29 @@ function HomeRealocacao() {
 					</button>
 				</section>
 
-				{/* Destaques */}
-				<section className="max-w-6xl mx-auto px-4 mb-2">
-					<div className="flex flex-col">
-						<div className="flex gap-6 justify-between pb-2">
-							{destaques.map((item) => (
-								<button
-									key={item.id}
-									className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-									onClick={() => navigateToCategory(item.categoria)}
-								>
-									<img
-										src={item.img}
-										alt={item.titulo}
-										className="w-52 h-32 object-contain rounded-lg"
-									/>
-									<span className="mt-2 text-sm font-medium text-gray-700 text-center">
-										{item.titulo}
-									</span>
-								</button>
-							))}
-						</div>
-						<div className="flex justify-between items-center mt-2">
-							<button
-								className={`w-1/2 text-center text-sm font-medium py-2 rounded-l-lg transition cursor-pointer ${
-									location.pathname === "/edit-doacoes"
-										? "bg-[#22304d] text-white"
-										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
-								}`}
-								onClick={() => navigate("/edit-doacoes")}
-							>
-								Solicitações postadas
-							</button>
-							<button
-								className={`w-1/2 text-center text-sm font-medium py-2 rounded-r-lg transition cursor-pointer ${
-									location.pathname === "/home-realocacao"
-										? "bg-[#22304d] text-white"
-										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
-								}`}
-								onClick={() => navigate("/home-realocacao")}
-							>
-								Realocações postadas
-							</button>
-						</div>
+				{/* Seção de botões de navegação */}
+				<section className="max-w-6xl mx-auto px-4 mb-6">
+					<div className="flex justify-between items-center mt-2">
+						<button
+							className={`w-1/2 text-center text-sm font-medium py-2 rounded-l-lg transition cursor-pointer ${
+								location.pathname === "/edit-doacoes"
+									? "bg-[#22304d] text-white"
+									: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+							}`}
+							onClick={() => navigate("/edit-doacoes")}
+						>
+							Solicitações postadas
+						</button>
+						<button
+							className={`w-1/2 text-center text-sm font-medium py-2 rounded-r-lg transition cursor-pointer ${
+								location.pathname === "/home-realocacao"
+									? "bg-[#22304d] text-white"
+									: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+							}`}
+							onClick={() => navigate("/home-realocacao")}
+						>
+							Realocações postadas
+						</button>
 					</div>
 				</section>
 
@@ -200,34 +273,32 @@ function HomeRealocacao() {
 										/>
 										<div className="flex-1">
 											<div className="flex items-center gap-2">
-												<span className="font-semibold text-lg text-gray-800">
-													{pedido.titulo}
-												</span>
-												<span className="px-3 py-1 rounded-full text-xs font-semibold shadow bg-blue-500 text-white">
-													{pedido.categoria}
-												</span>
-												<button
-													className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
-												>
-													<Edit2 className="w-4 h-4" /> Editar
-												</button>
+<div className="flex items-center gap-2 w-full">
+  <span className="font-semibold text-lg text-gray-800">
+	{pedido.titulo}
+  </span>
+  <span className="px-3 py-1 rounded-full text-xs font-semibold shadow bg-blue-500 text-white">
+	{pedido.categoria}
+  </span>
+  <button
+	className="flex items-center gap-1 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-neutral-100 cursor-pointer shadow hover:scale-[1.03]"
+	onClick={() => handleEdit(pedido)}
+  >
+	<Edit2 className="w-4 h-4" /> Editar
+  </button>
+  <div className="flex-1"></div>
+  <button
+	className="flex items-center justify-center p-2 rounded-full hover:bg-red-100 transition-colors cursor-pointer ml-2"
+	title="Excluir"
+	onClick={() => handleDelete(pedido.id)}
+	style={{ color: '#e3342f' }}
+  >
+	<Trash2 className="w-5 h-5" />
+  </button>
+</div>
 											</div>
 											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
 												<span>Publicado: {pedido.publicado}</span>
-												<span className="flex items-center gap-1">
-													<svg
-														width="16"
-														height="16"
-														fill="none"
-														stroke="currentColor"
-														strokeWidth="1.5"
-														className="inline-block"
-													>
-														<circle cx="8" cy="8" r="7" />
-														<path d="M8 4v4l2 2" />
-													</svg>
-													Tempo restante: {pedido.tempoRestante}
-												</span>
 											</div>
 											<div className="mt-2 text-gray-700 text-base">
 												<span className="block w-full break-words">
@@ -258,9 +329,9 @@ function HomeRealocacao() {
 												<button
 													className="bg-[#172233] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
 													style={{ backgroundColor: footerColor }}
-													onClick={handleOpenConfirmacaoModal}
+													onClick={handleOpenConfirmacaoEncerrar}
 												>
-													Encerrar Solicitação
+													Realocação Concluída
 												</button>
 											</div>
 										</div>
@@ -277,21 +348,86 @@ function HomeRealocacao() {
 					totalPages={paginatedData.totalPages}
 					baseUrl="/home-realocacao"
 				/>
+
+				{/* Confira os itens já realocados para outras ONGs */}
+				<section className="max-w-6xl mx-auto px-4 py-8 mb-8">
+					{/* Título alinhado com a primeira coluna de itens */}
+					<h2 className="text-xl font-bold text-gray-800 mb-6" style={{ marginLeft: 'calc(2.5rem + 1rem)' }}>
+						Confira os itens já realocados para outras ONGs
+					</h2>
+					
+					<div className="flex items-center gap-4">
+						{/* Seta esquerda */}
+						<button 
+							className={`flex-shrink-0 p-2 rounded-full transition ${
+								canGoPrev 
+									? 'hover:bg-gray-100 text-gray-700 cursor-pointer' 
+									: 'text-gray-300 cursor-not-allowed'
+							}`}
+							onClick={handlePrevCarousel}
+							disabled={!canGoPrev}
+						>
+							<ChevronLeft className="w-6 h-6" />
+						</button>
+
+						{/* Cards dos itens */}
+						<div className="flex gap-4 flex-1 justify-center">
+							{visibleItems.map((item) => (
+								<div key={item.id} className="flex flex-col items-center">
+									<div className="w-32 h-32 bg-white rounded-lg border shadow-sm overflow-hidden mb-2">
+										<img 
+											src={item.imagem} 
+											alt={item.nome}
+											className="w-full h-full object-cover"
+										/>
+									</div>
+									<span className="text-xs text-blue-600 font-medium px-3 py-1 bg-blue-50 rounded-full border border-blue-200 text-center">
+										{item.nome}
+									</span>
+								</div>
+							))}
+						</div>
+
+						{/* Seta direita */}
+						<button 
+							className={`flex-shrink-0 p-2 rounded-full transition ${
+								canGoNext 
+									? 'hover:bg-gray-100 text-gray-700 cursor-pointer' 
+									: 'text-gray-300 cursor-not-allowed'
+							}`}
+							onClick={handleNextCarousel}
+							disabled={!canGoNext}
+						>
+							<ChevronRight className="w-6 h-6" />
+						</button>
+					</div>
+				</section>
 			</main>
 			<Footer />
 
 			{/* Modal ConfirmacaoEncerrarRealocacao */}
-			{showConfirmacaoModal && (
-				<ConfirmacaoEncerrarRealocacao 
-					onCancel={handleCloseConfirmacaoModal}
-					onConfirm={handleConfirmEncerramento}
-				/>
-			)}
+
+	  {/* Modal ConfirmacaoDeletar */}
+	  {showConfirmacaoDeletar && (
+		<ConfirmacaoDeletar
+		  onCancel={() => setShowConfirmacaoDeletar(false)}
+		  onConfirm={handleConfirmDelete}
+		  tipo="realocacao"
+		/>
+	  )}
+	  {/* Modal ConfirmacaoEncerrarRealocacao */}
+	  {showConfirmacaoEncerrar && (
+		<ConfirmacaoEncerrarRealocacao
+		  onCancel={handleCloseConfirmacaoEncerrar}
+		  onConfirm={handleConfirmEncerramento}
+		/>
+	  )}
 
 			{/* Modal PostagemRealocacao */}
 			{showPostagemModal && (
 				<PostagemRealocacao 
 					onClose={handleClosePostagemModal}
+					editData={editData}
 				/>
 			)}
 		</div>

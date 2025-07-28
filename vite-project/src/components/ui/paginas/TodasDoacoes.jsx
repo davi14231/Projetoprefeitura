@@ -395,7 +395,7 @@ const mockDoacoes = [
     imageUrl:
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80", // Alimentos
     categoria: "Alimentos",
-    urgencia: "Urgente",
+    urgencia: "Baixa",
     ong: "Instituto Criança Feliz",
     titulo: "Cestas Básicas Completas",
     quantidade: "25 unidades",
@@ -451,7 +451,7 @@ const mockDoacoes = [
     imageUrl:
       "https://images.unsplash.com/photo-1588776814546-ec7e1b3c1b6b?auto=format&fit=crop&w=600&q=80", // Medicamentos
     categoria: "Medicamentos",
-    urgencia: "Urgente",
+    urgencia: "Baixa",
     ong: "Saúde para Todos",
     titulo: "Medicamentos Básicos",
     quantidade: "100 caixas",

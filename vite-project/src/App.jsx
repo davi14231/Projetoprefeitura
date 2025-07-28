@@ -11,6 +11,7 @@ import { RealocacaoListagem } from "./components/ui/paginas/RealocacaoListagem";
 import ConfirmacaoEncerrarSolicitacao from "./components/ui/paginas/ConfirmacaoEncerrarSolicitacao";
 import ConfirmacaoEncerrarRealocacao from "./components/ui/paginas/ConfirmacaoEncerrarRealocacao";
 import { DataProvider } from "./context/DataContext";
+import ConfirmacaoDeletar from "./components/ui/paginas/ConfirmacaoDeletar";
 
 function App() {
   // Imagens do carrossel (separadas)
@@ -28,7 +29,7 @@ function App() {
       titulo: "Cestas Básicas Completas",
       ong: "Instituto Criança Feliz",
       categoria: "Alimentos",
-      urgencia: "Urgente",
+      urgencia: "Baixa",
       descricao: "Cestas básicas completas com arroz, feijão, etc.",
       quantidade: 30,
       validade: "20/08/2024"
@@ -37,7 +38,7 @@ function App() {
       id: 2,
       imageUrl: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80",
       categoria: "Alimentos",
-      urgencia: "Urgente",
+      urgencia: "Baixa",
       ong: "Instituto Criança Feliz",
       titulo: "Cestas Básicas Completas",
       descricao: "Cestas básicas completas com arroz, feijão, macarrão, óleo, açúcar, sal e outros itens essenciais.",
@@ -106,6 +107,7 @@ function App() {
           <Route path="/realocacao-listagem" element={<RealocacaoListagem />} />
           <Route path="/confirmar-encerrar-solicitacao" element={<ConfirmacaoEncerrarSolicitacao />} />
           <Route path="/confirmar-encerrar-realocacao" element={<ConfirmacaoEncerrarRealocacao />} />
+          <Route path="/confirmar-deletar" element={<ConfirmacaoDeletar />} />
         </Routes>
       </BrowserRouter>
     </DataProvider>

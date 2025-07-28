@@ -4,29 +4,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Botao } from "@/components/ui/botao";
 import { Card, CardContent } from "@/components/ui/card";
-import { Upload, Facebook, Instagram, X } from "lucide-react";
+import { Upload, X } from "lucide-react";
 import { useData } from "@/context/DataContext";
 
-export function SolicitarDoacao({ onClose }) {
-  const [facebook, setFacebook] = useState(false);
-  const [instagram, setInstagram] = useState(false);
+export function SolicitarDoacao({ onClose, editData = null }) {
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(editData?.imageUrl || null);
   const [formData, setFormData] = useState({
-    titulo: "",
-    categoria: "",
-    email: "",
-    whatsapp: "",
-    urgencia: "",
-    prazo: "",
-    descricao: "",
-    facebook: "",
-    instagram: "",
-    imageUrl: ""
+    titulo: editData?.titulo || "",
+    categoria: editData?.categoria || "",
+    quantidade: editData?.quantidade || "",
+    urgencia: editData?.urgencia || "",
+    prazo: editData?.prazo || "",
+    whatsapp: editData?.whatsapp || "",
+    email: editData?.email || "",
+    descricao: editData?.descricao || "",
+    imageUrl: editData?.imageUrl || ""
   });
   
   const navigate = useNavigate();
-  const { addDoacao } = useData();
+  const { addDoacao, updateDoacao } = useData();
+  const isEditing = editData !== null;
 
   function handleCancel() {
     if (onClose) {
@@ -97,27 +95,30 @@ export function SolicitarDoacao({ onClose }) {
       finalImageUrl = defaultImages[formData.categoria] || "/imagens/outros.jpg";
     }
 
-    // Criar nova doação
-    const novaDoacao = {
+    // Criar dados da doação
+    const dadosDoacao = {
       titulo: formData.titulo,
       categoria: formData.categoria,
+      quantidade: formData.quantidade,
       email: formData.email,
       whatsapp: formData.whatsapp,
       urgencia: formData.urgencia || "Baixa",
       prazo: formData.prazo,
       descricao: formData.descricao,
-      facebook: formData.facebook,
-      instagram: formData.instagram,
       ong: "Sua ONG", // Seria pego do usuário logado
       imageUrl: finalImageUrl, // Usar a imagem enviada ou padrão
       validade: formData.prazo
     };
 
-    // Adicionar ao store
-    addDoacao(novaDoacao);
-    
-    // Mostrar mensagem de sucesso
-    alert("Solicitação de doação criada com sucesso!");
+    if (isEditing) {
+      // Atualizar doação existente
+      updateDoacao(editData.id, dadosDoacao);
+      alert("Doação atualizada com sucesso!");
+    } else {
+      // Adicionar nova doação
+      addDoacao(dadosDoacao);
+      alert("Solicitação de doação criada com sucesso!");
+    }
     
     // Fechar modal
     if (onClose) {
@@ -125,8 +126,18 @@ export function SolicitarDoacao({ onClose }) {
     }
   }
 
+  function handleBackdropClick(e) {
+    // Fechar modal se clicar no backdrop (fundo escuro)
+    if (e.target === e.currentTarget) {
+      handleCancel();
+    }
+  }
+
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
+    <div 
+      className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4"
+      onClick={handleBackdropClick}
+    >
       <Card className="w-full max-w-3xl rounded-2xl shadow-lg bg-white max-h-[90vh] overflow-y-auto relative">
         <button
           onClick={handleCancel}
@@ -177,11 +188,22 @@ export function SolicitarDoacao({ onClose }) {
                   <Input 
                     id="titulo" 
                     name="titulo"
-                    placeholder="Nome do item" 
+                    placeholder="Nome" 
                     className="mt-1"
                     value={formData.titulo}
                     onChange={handleInputChange}
                     required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="quantidade" className="text-base font-medium">Quantidade</Label>
+                  <Input 
+                    id="quantidade" 
+                    name="quantidade"
+                    placeholder="xx" 
+                    className="mt-1"
+                    value={formData.quantidade}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -194,7 +216,7 @@ export function SolicitarDoacao({ onClose }) {
                     onChange={handleInputChange}
                     required
                   >
-                    <option value="">Selecione uma categoria</option>
+                    <option value="">Categoria x</option>
                     <option value="Alimentos">Alimentos</option>
                     <option value="Roupas">Roupas</option>
                     <option value="Eletrônicos">Eletrônicos</option>
@@ -207,20 +229,6 @@ export function SolicitarDoacao({ onClose }) {
                     <option value="Outros">Outros</option>
                   </select>
                 </div>
-                
-                <div>
-                  <Label htmlFor="email" className="text-base font-medium">Email para contato</Label>
-                  <Input 
-                    id="email" 
-                    name="email"
-                    type="email" 
-                    placeholder="email@exemplo.com" 
-                    className="mt-1"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
                 <div>
                   <Label htmlFor="urgencia" className="text-base font-medium">Urgência</Label>
                   <select 
@@ -230,9 +238,25 @@ export function SolicitarDoacao({ onClose }) {
                     value={formData.urgencia}
                     onChange={handleInputChange}
                   >
-                    <option value="Baixa">Baixa</option>
-                    <option value="Média">Média</option>
                     <option value="Alta">Alta</option>
+                    <option value="Média">Média</option>
+                    <option value="Baixa">Baixa</option>
+                  </select>
+                </div>
+                <div>
+                  <Label htmlFor="prazo" className="text-base font-medium">Prazo</Label>
+                  <select 
+                    id="prazo" 
+                    name="prazo"
+                    className="w-full border rounded-md px-3 py-2 bg-white text-neutral-700 mt-1"
+                    value={formData.prazo}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">60 dias</option>
+                    <option value="15 dias">15 dias</option>
+                    <option value="30 dias">30 dias</option>
+                    <option value="45 dias">45 dias</option>
+                    <option value="60 dias">60 dias</option>
                   </select>
                 </div>
                 <div>
@@ -247,39 +271,17 @@ export function SolicitarDoacao({ onClose }) {
                     required
                   />
                 </div>
-                <div>
-                  <Label htmlFor="prazo" className="text-base font-medium">Prazo</Label>
+                <div className="col-span-2">
+                  <Label htmlFor="email" className="text-base font-medium">Email para contato</Label>
                   <Input 
-                    id="prazo" 
-                    name="prazo"
-                    type="date"
+                    id="email" 
+                    name="email"
+                    type="email" 
+                    placeholder="Email" 
                     className="mt-1"
-                    value={formData.prazo}
+                    value={formData.email}
                     onChange={handleInputChange}
-                  />
-                </div>
-                
-                {/* Campos de redes sociais */}
-                <div>
-                  <Label htmlFor="facebook" className="text-base font-medium">Facebook (opcional)</Label>
-                  <Input 
-                    id="facebook" 
-                    name="facebook"
-                    placeholder="https://facebook.com/suapage" 
-                    className="mt-1"
-                    value={formData.facebook}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="instagram" className="text-base font-medium">Instagram (opcional)</Label>
-                  <Input 
-                    id="instagram" 
-                    name="instagram"
-                    placeholder="https://instagram.com/seuusuario" 
-                    className="mt-1"
-                    value={formData.instagram}
-                    onChange={handleInputChange}
+                    required
                   />
                 </div>
               </div>
@@ -287,7 +289,7 @@ export function SolicitarDoacao({ onClose }) {
             {/* Descrição */}
             <div>
               <Label htmlFor="descricao" className="mb-1 block text-base font-medium">
-                Descrição (características e quantidade) e Propósito do Item (para que fim o item vai ser utilizado):
+                Descrição e propósito do Item (para que fim o item vai ser utilizado):
               </Label>
               <textarea
                 id="descricao"
