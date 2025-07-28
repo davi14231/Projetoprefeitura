@@ -41,7 +41,9 @@ function ListagemHome({ itens, carrosselId = 'carousel-container', onCardClick }
               urgencia={item.urgencia}
               ong={item.ong}
               titulo={item.titulo}
+              validade={item.validade}
               descricao={item.descricao}
+              quantidade={item.quantidade}
               onClick={() => onCardClick && onCardClick(item)}
             />
           </div>

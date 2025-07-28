@@ -18,6 +18,7 @@ class DataStore {
         descricao: "Necessitamos de cestas básicas para 50 famílias em situação de vulnerabilidade",
         publicado: "15/01/2025",
         validade: "30/01/2025",
+        quantidade: 50,
         email: "contato@casadaesperanca.org.br",
         whatsapp: "(81) 99999-1111",
         urgencia: "Alta",
@@ -32,6 +33,7 @@ class DataStore {
         descricao: "Precisamos de roupas de inverno para crianças e adultos",
         publicado: "12/01/2025",
         validade: "28/01/2025",
+        quantidade: 120,
         email: "contato@aquecendovidas.org.br",
         whatsapp: "(81) 99999-2222",
         urgencia: "Média",
@@ -45,6 +47,8 @@ class DataStore {
         imageUrl: "/imagens/Laptops.jpg",
         descricao: "Computadores para projeto de inclusão digital",
         publicado: "10/01/2025",
+        validade: "30/04/2025",
+        quantidade: 15,
         email: "contato@futurodigital.org.br",
         whatsapp: "(81) 99999-3333",
         urgencia: "Baixa"
@@ -57,6 +61,8 @@ class DataStore {
         imageUrl: "/imagens/moveis.jpg",
         descricao: "Móveis para casa de apoio a idosos",
         publicado: "08/01/2025",
+        validade: "08/04/2025",
+        quantidade: 25,
         email: "contato@larsolidario.org.br",
         whatsapp: "(81) 99999-4444",
         urgencia: "Média"
@@ -70,6 +76,7 @@ class DataStore {
         descricao: "Brinquedos educativos para nossa creche comunitária",
         publicado: "05/01/2025",
         validade: "20/01/2025",
+        quantidade: 80,
         email: "contato@alegriainfantil.org.br",
         whatsapp: "(81) 99999-5555",
         urgencia: "Alta",
@@ -84,6 +91,7 @@ class DataStore {
         descricao: "Medicamentos para tratamento de idosos carentes",
         publicado: "03/01/2025",
         validade: "15/01/2025",
+        quantidade: 200,
         email: "contato@cuidarcomamor.org.br",
         whatsapp: "(81) 99999-6666",
         urgencia: "Alta",
@@ -97,6 +105,7 @@ class DataStore {
         imageUrl: "/imagens/MatEsc.jpg",
         descricao: "Material escolar para crianças da comunidade",
         publicado: "01/01/2025",
+        quantidade: 300,
         email: "contato@educaretransformar.org.br",
         whatsapp: "(81) 99999-7777",
         urgencia: "Média"
@@ -109,6 +118,7 @@ class DataStore {
         imageUrl: "/imagens/Livrosdid.jpg",
         descricao: "Livros para nossa biblioteca comunitária",
         publicado: "28/12/2024",
+        quantidade: 150,
         email: "contato@saberpopular.org.br",
         whatsapp: "(81) 99999-8888",
         urgencia: "Baixa"
@@ -122,6 +132,7 @@ class DataStore {
         imageUrl: "/imagens/prodhig.jpg",
         descricao: "Produtos de higiene pessoal para famílias carentes",
         publicado: "25/12/2024",
+        quantidade: 500,
         email: "contato@higienesolidaria.org.br",
         whatsapp: "(81) 99999-9999",
         urgencia: "Média"
@@ -134,6 +145,7 @@ class DataStore {
         imageUrl: "/imagens/medicamentos.jpg",
         descricao: "Equipamentos médicos básicos para nossa clínica popular",
         publicado: "20/12/2024",
+        quantidade: 10,
         email: "contato@saudeparatodos.org.br",
         whatsapp: "(81) 99999-0000",
         urgencia: "Alta"
@@ -152,6 +164,7 @@ class DataStore {
         imageUrl: "/imagens/CestasBasicas.jpg",
         descricao: "Cestas básicas completas para famílias em situação de vulnerabilidade",
         publicado: "15/01/2025",
+        quantidade: 100,
         validade: "30/01/2025",
         email: "contato@institutobeneficente.org.br",
         whatsapp: "(81) 99999-1111"
@@ -164,6 +177,7 @@ class DataStore {
         imageUrl: "/imagens/RoupasInfantis.jpg",
         descricao: "Roupas infantis em bom estado, tamanhos variados",
         publicado: "12/01/2025",
+        quantidade: 250,
         validade: "28/01/2025",
         email: "contato@casadacrianca.org.br",
         whatsapp: "(81) 99999-2222"
@@ -176,6 +190,8 @@ class DataStore {
         imageUrl: "/imagens/Laptops.jpg",
         descricao: "Laptops para programas educacionais e inclusão digital",
         publicado: "10/01/2025",
+        quantidade: 20,
+        validade: "30/03/2025",
         email: "contato@educacaodigital.org.br",
         whatsapp: "(81) 99999-3333"
       },
@@ -187,6 +203,8 @@ class DataStore {
         imageUrl: "/imagens/Mobilia.jpg",
         descricao: "Mesas, cadeiras e armários em bom estado",
         publicado: "08/01/2025",
+        quantidade: 35,
+        validade: "28/02/2025",
         email: "contato@reciclandovidas.org.br",
         whatsapp: "(81) 99999-4444"
       },
@@ -198,6 +216,7 @@ class DataStore {
         imageUrl: "/imagens/BrinquedosEdu.jpg",
         descricao: "Brinquedos educativos para desenvolvimento infantil",
         publicado: "05/01/2025",
+        quantidade: 180,
         validade: "20/01/2025",
         email: "contato@crescerbrincando.org.br",
         whatsapp: "(81) 99999-5555"
@@ -210,6 +229,7 @@ class DataStore {
         imageUrl: "/imagens/medicamentos.jpg",
         descricao: "Medicamentos básicos dentro da validade",
         publicado: "03/01/2025",
+        quantidade: 60,
         validade: "15/01/2025",
         email: "contato@saudeparatodos.org.br",
         whatsapp: "(81) 99999-6666"
@@ -222,6 +242,8 @@ class DataStore {
         imageUrl: "/imagens/MatEsc.jpg",
         descricao: "Cadernos, lápis, canetas e outros materiais escolares",
         publicado: "01/01/2025",
+        quantidade: 300,
+        validade: "31/03/2025",
         email: "contato@educandoofuturo.org.br",
         whatsapp: "(81) 99999-7777"
       },
@@ -233,6 +255,8 @@ class DataStore {
         imageUrl: "/imagens/Livrosdid.jpg",
         descricao: "Livros didáticos para ensino fundamental e médio",
         publicado: "28/12/2024",
+        quantidade: 120,
+        validade: "30/06/2025",
         email: "contato@bibliotecacomunitaria.org.br",
         whatsapp: "(81) 99999-8888"
       },
@@ -245,6 +269,8 @@ class DataStore {
         imageUrl: "/imagens/prodhig.jpg",
         descricao: "Produtos de limpeza para manutenção de abrigos",
         publicado: "25/12/2024",
+        quantidade: 90,
+        validade: "25/06/2025",
         email: "contato@limpezasolidaria.org.br",
         whatsapp: "(81) 99999-9999"
       },
@@ -256,6 +282,8 @@ class DataStore {
         imageUrl: "/imagens/ferramentas.jpg",
         descricao: "Equipamentos de cozinha para nossa cozinha comunitária",
         publicado: "20/12/2024",
+        quantidade: 40,
+        validade: "20/06/2025",
         email: "contato@cozinhacomunitaria.org.br",
         whatsapp: "(81) 99999-0000"
       }
