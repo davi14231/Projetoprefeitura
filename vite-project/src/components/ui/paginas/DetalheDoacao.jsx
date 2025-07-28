@@ -1,74 +1,131 @@
 import React from 'react';
-import { VscClose } from 'react-icons/vsc';
-import { FaWhatsapp, FaInstagram, FaFacebookF } from 'react-icons/fa';
-import { MdOutlineMailOutline, MdOutlinePhone } from 'react-icons/md';
+import { X, Share, Mail, Phone } from 'lucide-react';
 
 export default function DetalheDoacao({ dados, onClose }) {
+  // Função para compartilhar nas redes sociais
+  const handleShare = async () => {
+    const url = window.location.href;
+    const text = `Confira esta doação: ${dados.titulo}`;
+    
+    // Tentar usar a Web Share API nativa primeiro (funciona melhor em dispositivos móveis)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: dados.titulo || 'Doação',
+          text: text,
+          url: url
+        });
+        return;
+      } catch (error) {
+        // Se o usuário cancelar ou houver erro, continua para as opções manuais
+        console.log('Compartilhamento cancelado');
+      }
+    }
+    
+    // Fallback: mostrar opções de compartilhamento manual
+    const shareText = encodeURIComponent(text + ' ' + url);
+    const whatsappUrl = `https://wa.me/?text=${shareText}`;
+    
+    // Abrir WhatsApp como opção principal de fallback
+    window.open(whatsappUrl, '_blank', 'width=600,height=400');
+  };
+
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
-      <div className="w-full max-w-4xl bg-white text-slate-900 flex flex-col rounded-xl border shadow-2xl animate-in fade-in-0 zoom-in-95 overflow-hidden">
+      <div className="w-full max-w-4xl bg-white text-slate-900 flex flex-col rounded-xl shadow-2xl animate-in fade-in-0 zoom-in-95 overflow-hidden">
         
         {/* Cabeçalho */}
-        <header className="bg-slate-800 text-white p-5 flex justify-between items-start">
+        <header className="bg-[#394a5c] text-white px-6 py-4 flex justify-between items-start">
           <div>
-            <h2 className="text-2xl font-bold leading-none">{dados.instituto}</h2>
-            <p className="text-sm text-slate-300 pt-1">Publicado: {dados.publicadoEm}</p>
+            <h2 className="text-lg font-medium leading-none">{dados.instituto || dados.ong || "Instituto Viver Mais"}</h2>
+            <p className="text-sm text-slate-300 pt-1">Publicado em {dados.publicadoEm || dados.publicado || "07/04/25"}</p>
           </div>
           <button 
-            className="inline-flex items-center justify-center rounded-full size-9 text-white hover:bg-slate-700 cursor-pointer"
+            className="inline-flex items-center justify-center rounded-full w-8 h-8 text-white hover:bg-slate-600 cursor-pointer"
             onClick={onClose}
           >
-            <VscClose size={24} />
+            <X size={20} />
           </button>
         </header>
 
         {/* Conteúdo */}
         <main className="p-6">
-          <h1 className="text-3xl font-bold text-slate-900">{dados.titulo}</h1>
-          <div className="flex flex-wrap items-center gap-3 my-4">
-            <span className="px-3 py-1 rounded-full font-semibold text-sm bg-blue-100 text-blue-800 hover:bg-blue-200">
+          <h1 className="text-2xl font-bold text-slate-900 mb-4">{dados.titulo}</h1>
+          
+          <div className="flex flex-wrap items-center gap-3 mb-6">
+            <span className="px-3 py-1 rounded-full font-medium text-sm bg-blue-100 text-blue-800">
               {dados.categoria}
             </span>
-            <span className="px-3 py-1 rounded-full font-semibold text-sm border border-orange-500 text-orange-600">
-              {dados.diasRestantes} dias restantes
+            <span className="px-3 py-1 rounded-full font-medium text-sm bg-blue-50 text-blue-600 border border-blue-200 flex items-center gap-1">
+              <img src="/imagens/quant.jpg" alt="Quantidade" className="w-4 h-4" />
+              {dados.quantidade || "5"}
+            </span>
+            <span className="px-3 py-1 rounded-full font-medium text-sm bg-orange-50 text-orange-600 border border-orange-200 flex items-center gap-1">
+              <img src="/imagens/relogio.jpg" alt="Tempo" className="w-4 h-4" />
+              {dados.diasRestantes || dados.tempoRestante || "17 dias restantes"}
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 items-start">
-            <img src={dados.imagemUrl} alt="Imagem da Doação" className="col-span-1 rounded-lg object-cover w-full h-auto" />
-            <p className="md:col-span-2 text-slate-700 text-base leading-relaxed">
-              {dados.descricao}
-            </p>
+
+          {/* Layout principal com imagem e descrição */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+            {/* Imagem */}
+            <div className="lg:col-span-1">
+              <img 
+                src={dados.imagemUrl || dados.imageUrl} 
+                alt="Imagem da Doação" 
+                className="w-full h-48 rounded-lg object-cover border"
+              />
+            </div>
+
+            {/* Descrição */}
+            <div className="lg:col-span-3">
+              <p className="text-slate-700 text-base leading-relaxed">
+                {dados.descricao}
+              </p>
+            </div>
+          </div>
+
+          {/* Linha divisória sutil */}
+          <div className="border-t border-gray-200 mb-6"></div>
+
+          {/* Botões de ação - layout com alinhamento exato */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
+            {/* Botão de compartilhar - mesma largura da foto */}
+            <div className="lg:col-span-1">
+              <button 
+                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition flex items-center justify-center gap-2"
+                onClick={handleShare}
+              >
+                <Share size={16} />
+                Compartilhar
+              </button>
+            </div>
+
+            {/* Email centralizado na área da descrição */}
+            <div className="lg:col-span-2 flex justify-center">
+              <a 
+                href={`mailto:${dados.email || 'kellysayonara854@gmail.com'}`}
+                className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition"
+              >
+                <Mail size={18} />
+                <span className="font-medium">{dados.email || 'kellysayonara854@gmail.com'}</span>
+              </a>
+            </div>
+
+            {/* Telefone alinhado à direita */}
+            <div className="lg:col-span-1 flex justify-end">
+              <a 
+                href={`https://wa.me/5581984465009?text=${encodeURIComponent(`Olá! Vi sua doação "${dados.titulo}" e tenho interesse.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition"
+              >
+                <Phone size={18} />
+                <span className="font-medium">{dados.whatsapp || dados.telefone || "(81) 8446-5009"}</span>
+              </a>
+            </div>
           </div>
         </main>
-
-        {/* Rodapé */}
-        <footer className="flex-col items-start gap-4 p-6 border-t">
-          <h3 className="text-lg font-semibold text-slate-900">Informações de Contato</h3>
-          <div className="w-full flex justify-between items-center flex-wrap gap-y-4 gap-x-2">
-            <a href={`mailto:${dados.email}`} className="flex items-center gap-2 text-blue-700 hover:underline">
-              <MdOutlineMailOutline size={20} />
-              {dados.email}
-            </a>
-            <div className="flex flex-col items-center">
-              <span className="text-sm text-slate-500 mb-1">Divulgue essa doação</span>
-              <div className="flex gap-2">
-                <button className="inline-flex items-center justify-center size-9 border rounded-md hover:bg-accent">
-                  <FaWhatsapp className="text-green-600" size={18} />
-                </button>
-                <button className="inline-flex items-center justify-center size-9 border rounded-md hover:bg-accent">
-                  <FaInstagram className="text-pink-600" size={18} />
-                </button>
-                <button className="inline-flex items-center justify-center size-9 border rounded-md hover:bg-accent">
-                  <FaFacebookF className="text-blue-800" size={18} />
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 text-green-700 font-bold">
-              <MdOutlinePhone size={20} />
-              {dados.telefone}
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
   );

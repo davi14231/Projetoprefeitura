@@ -4,27 +4,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Botao } from "@/components/ui/botao";
 import { Card, CardContent } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Upload, Facebook, X } from "lucide-react";
+import { Upload, X } from "lucide-react";
 import { useData } from "@/context/DataContext";
 
-export function PostagemRealocacao({ onClose }) {
-  const [facebook, setFacebook] = useState(false);
+export function PostagemRealocacao({ onClose, editData = null }) {
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(editData?.imageUrl || null);
   const [formData, setFormData] = useState({
-    titulo: "",
-    categoria: "",
-    email: "",
-    whatsapp: "",
-    descricao: "",
-    facebook: "",
-    instagram: "",
-    imageUrl: ""
+    titulo: editData?.titulo || "",
+    categoria: editData?.categoria || "",
+    quantidade: editData?.quantidade || "",
+    email: editData?.email || "",
+    whatsapp: editData?.whatsapp || "",
+    descricao: editData?.descricao || "",
+    imageUrl: editData?.imageUrl || ""
   });
   
   const navigate = useNavigate();
-  const { addRealocacao } = useData();
+  const { addRealocacao, updateRealocacao } = useData();
+  const isEditing = !!editData;
 
   function handleCancel() {
     if (onClose) {
@@ -95,26 +93,43 @@ export function PostagemRealocacao({ onClose }) {
       finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
     }
 
-    // Criar nova realocação
-    const novaRealocacao = {
+    // Criar dados da realocação
+    const dadosRealocacao = {
       titulo: formData.titulo,
       categoria: formData.categoria,
+      quantidade: formData.quantidade,
       email: formData.email,
       whatsapp: formData.whatsapp,
       descricao: formData.descricao,
-      facebook: formData.facebook,
-      instagram: formData.instagram,
       ong: "Sua ONG",
       imageUrl: finalImageUrl,
     };
 
-    addRealocacao(novaRealocacao);
-    alert("Postagem de realocação criada com sucesso!");
+    if (isEditing) {
+      // Atualizar realocação existente
+      updateRealocacao(editData.id, dadosRealocacao);
+      alert("Realocação atualizada com sucesso!");
+    } else {
+      // Adicionar nova realocação
+      addRealocacao(dadosRealocacao);
+      alert("Postagem de realocação criada com sucesso!");
+    }
+    
     handleCancel(); // Fecha o modal ou navega para a página anterior
   }
 
+  function handleBackdropClick(e) {
+    // Fechar modal se clicar no backdrop (fundo escuro)
+    if (e.target === e.currentTarget) {
+      handleCancel();
+    }
+  }
+
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
+    <div 
+      className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4"
+      onClick={handleBackdropClick}
+    >
       <Card className="w-full max-w-3xl rounded-2xl shadow-lg bg-white max-h-[90vh] overflow-y-auto relative">
         <button
           onClick={handleCancel}
@@ -165,11 +180,22 @@ export function PostagemRealocacao({ onClose }) {
                   <Input 
                     id="titulo" 
                     name="titulo"
-                    placeholder="Nome do item" 
+                    placeholder="Nome" 
                     className="mt-1"
                     value={formData.titulo}
                     onChange={handleInputChange}
                     required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="quantidade" className="text-base font-medium">Quantidade</Label>
+                  <Input 
+                    id="quantidade" 
+                    name="quantidade"
+                    placeholder="xx" 
+                    className="mt-1"
+                    value={formData.quantidade}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div>
@@ -182,7 +208,7 @@ export function PostagemRealocacao({ onClose }) {
                     onChange={handleInputChange}
                     required
                   >
-                    <option value="">Selecione uma categoria</option>
+                    <option value="">Categoria x</option>
                     <option value="Alimentos">Alimentos</option>
                     <option value="Roupas">Roupas</option>
                     <option value="Eletrônicos">Eletrônicos</option>
@@ -194,20 +220,6 @@ export function PostagemRealocacao({ onClose }) {
                     <option value="Equipamento">Equipamento</option>
                     <option value="Outros">Outros</option>
                   </select>
-                </div>
-                
-                <div>
-                  <Label htmlFor="email" className="text-base font-medium">Email para contato</Label>
-                  <Input 
-                    id="email" 
-                    name="email"
-                    type="email" 
-                    placeholder="email@exemplo.com" 
-                    className="mt-1"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                  />
                 </div>
                 <div>
                   <Label htmlFor="whatsapp" className="text-base font-medium">WhatsApp para contato</Label>
@@ -221,28 +233,17 @@ export function PostagemRealocacao({ onClose }) {
                     required
                   />
                 </div>
-                
-                {/* Campos de redes sociais com URLs */}
-                <div>
-                  <Label htmlFor="facebook" className="text-base font-medium">Facebook (opcional)</Label>
+                <div className="col-span-2">
+                  <Label htmlFor="email" className="text-base font-medium">Email para contato</Label>
                   <Input 
-                    id="facebook" 
-                    name="facebook"
-                    placeholder="https://facebook.com/suapage" 
+                    id="email" 
+                    name="email"
+                    type="email" 
+                    placeholder="Email" 
                     className="mt-1"
-                    value={formData.facebook}
+                    value={formData.email}
                     onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="instagram" className="text-base font-medium">Instagram (opcional)</Label>
-                  <Input 
-                    id="instagram" 
-                    name="instagram"
-                    placeholder="https://instagram.com/seuusuario" 
-                    className="mt-1"
-                    value={formData.instagram}
-                    onChange={handleInputChange}
+                    required
                   />
                 </div>
               </div>
@@ -250,7 +251,7 @@ export function PostagemRealocacao({ onClose }) {
             {/* Descrição */}
             <div>
               <Label htmlFor="descricao" className="mb-1 block text-base font-medium">
-                Descrição (características e quantidade):
+                Descrição:
               </Label>
               <textarea
                 id="descricao"
