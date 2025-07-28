@@ -61,7 +61,8 @@ export function Headernecessidade() {
             <Link to="/home-ong" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Início</Link>
             <Link to="/realocacao-listagem" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Realocação</Link>
             <Link to="/todas-doacoes" className="text-blue-400 hover:text-blue-300 transition-colors text-sm border-b-2 border-blue-400 pb-1">Necessidades</Link>
-             {/* Minha ONG com dropdown */}
+            
+            {/* Minha ONG com dropdown */}
             <div 
               className="relative flex items-center"
               onMouseEnter={handleMouseEnter}
