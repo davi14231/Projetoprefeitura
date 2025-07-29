@@ -10,6 +10,8 @@ import { PostagemRealocacao } from "./PostagemRealocacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
 
+// ...existing code...
+
 const footerColor = "#172233";
 
 const destaques = [
@@ -22,6 +24,8 @@ const destaques = [
 ];
 
 function HomeRealocacao() {
+	// Adicionar estado editData para edição de realocação
+	const [editData, setEditData] = useState(null);
 	const navigate = useNavigate();
 	const location = useLocation();
 const [showConfirmacaoDeletar, setShowConfirmacaoDeletar] = useState(false);
