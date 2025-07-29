@@ -2,7 +2,7 @@ import React from "react";
 import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit2, Save, X, Facebook, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Edit2, Save, X, Facebook, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SolicitarDoacao } from "./SolicitarDoacao";
@@ -29,81 +29,10 @@ export function EditDoacoes() {
 	const [showConfirmacaoEncerrar, setShowConfirmacaoEncerrar] = useState(false);
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [carouselIndex, setCarouselIndex] = useState(0);
 	const { getDoacoesPaginadas, updateDoacao, removeDoacao } = useData();
 	const navigate = useNavigate();
 
-	// Itens recebidos por voluntários
-	const itensRecebidos = [
-		{
-			id: 1,
-			nome: "Cesta básica",
-			imagem: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop&crop=center"
-		},
-		{
-			id: 2,
-			nome: "Roupas infantis",
-			imagem: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop&crop=center"
-		},
-		{
-			id: 3,
-			nome: "Material escolar",
-			imagem: "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=400&h=400&fit=crop&crop=center"
-		},
-		{
-			id: 4,
-			nome: "Livros didáticos",
-			imagem: "https://images.unsplash.com/photo-1543674892-7d64d45df18b?w=400&h=400&fit=crop&crop=center"
-		},
-		{
-			id: 5,
-			nome: "Brinquedos educativos",
-			imagem: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=400&fit=crop&crop=center"
-		},
-		{
-			id: 6,
-			nome: "Produtos de higiene",
-			imagem: "https://images.unsplash.com/photo-1631815587646-b85a1bb027e1?w=400&h=400&fit=crop&crop=center"
-		},
-		{
-			id: 7,
-			nome: "Medicamentos básicos",
-			imagem: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=400&h=400&fit=crop&crop=center"
-		},
-		{
-			id: 8,
-			nome: "Cobertores e mantas",
-			imagem: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=400&fit=crop&crop=center"
-		},
-		{
-			id: 9,
-			nome: "Produtos de limpeza",
-			imagem: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400&h=400&fit=crop&crop=center"
-		},
-		{
-			id: 10,
-			nome: "Equipamentos esportivos",
-			imagem: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center"
-		}
-	];
-
 	const itemsPerPage = 6;
-	const carouselItemsPerView = 6;
-
-	// Navegação do carousel
-	const handlePrevCarousel = () => {
-		setCarouselIndex(prev => Math.max(0, prev - 1));
-	};
-
-	const handleNextCarousel = () => {
-		const maxIndex = Math.max(0, itensRecebidos.length - carouselItemsPerView);
-		setCarouselIndex(prev => Math.min(maxIndex, prev + 1));
-	};
-
-	const canGoPrev = carouselIndex > 0;
-	const canGoNext = carouselIndex < itensRecebidos.length - carouselItemsPerView;
-
-	const visibleItems = itensRecebidos.slice(carouselIndex, carouselIndex + carouselItemsPerView);
 
 	// Efeito para ler parâmetros da URL e definir página atual
 	useEffect(() => {
@@ -212,6 +141,11 @@ const handleConfirmEncerramento = () => {
   // Exemplo: remover o pedido da lista ou atualizar status
 };
 
+	// Função para navegar para TodasDoacoes com filtro de categoria
+	const navigateToCategory = (categoria) => {
+		navigate(`/todas-doacoes?categoria=${encodeURIComponent(categoria)}`);
+	};
+
 	return (
 		<div className="bg-[#fafbfc] min-h-screen flex flex-col relative">
 			<Headeredicao />
@@ -227,29 +161,99 @@ const handleConfirmEncerramento = () => {
 					</p>
 				</section>
 
-				{/* Seção de botões de navegação */}
-				<section className="max-w-6xl mx-auto px-4 mb-6">
-					<div className="flex justify-between items-center mt-2">
-						<button
-							className={`w-1/2 text-center text-sm font-medium py-2 rounded-l-lg transition cursor-pointer ${
-								location.pathname === "/edit-doacoes"
-									? "bg-[#22304d] text-white"
-									: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
-							}`}
-							onClick={() => navigate("/edit-doacoes")}
-						>
-							Solicitações postadas
-						</button>
-						<button
-							className={`w-1/2 text-center text-sm font-medium py-2 rounded-r-lg transition cursor-pointer ${
-								location.pathname === "/home-realocacao"
-									? "bg-[#22304d] text-white"
-									: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
-							}`}
-							onClick={() => navigate("/home-realocacao")}
-						>
-							Realocações postadas
-						</button>
+				{/* Categorias */}
+				<section className="max-w-6xl mx-auto px-4 mb-2">
+					<div className="flex flex-col">
+						<div className="flex gap-6 justify-between pb-2">
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Medicamentos")}
+							>
+								<img
+									src="/imagens/medicamentos.jpg"
+									alt="Medicamentos"
+									className="w-52 h-32 object-contain rounded-lg"
+								/>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Medicamentos</span>
+							</button>
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Roupas")}
+							>
+								<img
+									src="/imagens/roupas.jpg"
+									alt="Roupas"
+									className="w-52 h-32 object-contain rounded-lg"
+								/>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Roupas</span>
+							</button>
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Móveis")}
+							>
+								<img
+									src="/imagens/moveis.jpg"
+									alt="Móveis"
+									className="w-52 h-32 object-contain rounded-lg"
+								/>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Móveis</span>
+							</button>
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Equipamento")}
+							>
+								<img
+									src="/imagens/ferramentas.jpg"
+									alt="Ferramentas"
+									className="w-52 h-32 object-contain rounded-lg"
+								/>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Equipamento</span>
+							</button>
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Alimentos")}
+							>
+								<img
+									src="/imagens/alimentos.jpg"
+									alt="Alimentos"
+									className="w-52 h-32 object-contain rounded-lg"
+								/>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Alimentos</span>
+							</button>
+							<button 
+								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
+								onClick={() => navigateToCategory("Outros")}
+							>
+								<img
+									src="/imagens/outros.jpg"
+									alt="Outros"
+									className="w-52 h-32 object-contain rounded-lg"
+								/>
+								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Outros</span>
+							</button>
+						</div>
+						<div className="flex justify-between items-center mt-2">
+							<button
+								className={`w-1/2 text-center text-sm font-medium py-2 rounded-l-lg transition cursor-pointer ${
+									location.pathname === "/edit-doacoes"
+										? "bg-[#22304d] text-white"
+										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+								}`}
+								onClick={() => navigate("/edit-doacoes")}
+							>
+								Solicitações postadas
+							</button>
+							<button
+								className={`w-1/2 text-center text-sm font-medium py-2 rounded-r-lg transition cursor-pointer ${
+									location.pathname === "/home-realocacao"
+										? "bg-[#22304d] text-white"
+										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+								}`}
+								onClick={() => navigate("/home-realocacao")}
+							>
+								Realocações postadas
+							</button>
+						</div>
 					</div>
 				</section>
 
@@ -321,6 +325,20 @@ const handleConfirmEncerramento = () => {
 </div>
 																<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
 																	<span>Publicado: {pedido.publicado}</span>
+																	<span className="flex items-center gap-1">
+																		<svg
+																			width="16"
+																			height="16"
+																			fill="none"
+																			stroke="currentColor"
+																			strokeWidth="1.5"
+																			className="inline-block"
+																		>
+																			<circle cx="8" cy="8" r="7" />
+																			<path d="M8 4v4l2 2" />
+																		</svg>
+																		Tempo restante: {pedido.tempoRestante}
+																	</span>
 																</div>
 																<div className="mt-2 text-gray-700 text-base">
 																	<span className="block w-full break-words">
@@ -400,60 +418,6 @@ const handleConfirmEncerramento = () => {
 					totalPages={paginatedData.totalPages}
 					baseUrl="/edit-doacoes"
 				/>
-
-				{/* Confira os itens recebidos por voluntários */}
-				<section className="max-w-6xl mx-auto px-4 py-8 mb-8">
-					{/* Título alinhado com a primeira coluna de itens */}
-					<h2 className="text-xl font-bold text-gray-800 mb-6" style={{ marginLeft: 'calc(2.5rem + 1rem)' }}>
-						Confira os itens recebidos por voluntários
-					</h2>
-					
-					<div className="flex items-center gap-4">
-						{/* Seta esquerda */}
-						<button 
-							className={`flex-shrink-0 p-2 rounded-full transition ${
-								canGoPrev 
-									? 'hover:bg-gray-100 text-gray-700 cursor-pointer' 
-									: 'text-gray-300 cursor-not-allowed'
-							}`}
-							onClick={handlePrevCarousel}
-							disabled={!canGoPrev}
-						>
-							<ChevronLeft className="w-6 h-6" />
-						</button>
-
-						{/* Cards dos itens */}
-						<div className="flex gap-4 flex-1 justify-center">
-							{visibleItems.map((item) => (
-								<div key={item.id} className="flex flex-col items-center">
-									<div className="w-32 h-32 bg-white rounded-lg border shadow-sm overflow-hidden mb-2">
-										<img 
-											src={item.imagem} 
-											alt={item.nome}
-											className="w-full h-full object-cover"
-										/>
-									</div>
-									<span className="text-xs text-blue-600 font-medium px-3 py-1 bg-blue-50 rounded-full border border-blue-200 text-center">
-										{item.nome}
-									</span>
-								</div>
-							))}
-						</div>
-
-						{/* Seta direita */}
-						<button 
-							className={`flex-shrink-0 p-2 rounded-full transition ${
-								canGoNext 
-									? 'hover:bg-gray-100 text-gray-700 cursor-pointer' 
-									: 'text-gray-300 cursor-not-allowed'
-							}`}
-							onClick={handleNextCarousel}
-							disabled={!canGoNext}
-						>
-							<ChevronRight className="w-6 h-6" />
-						</button>
-					</div>
-				</section>
 			</main>
 			<Footer />
 
