@@ -411,7 +411,7 @@ export function EditDoacoes() {
 													style={{ backgroundColor: footerColor }}
 													onClick={() => handleOpenConfirmacaoModal(pedido.id)}
 												>
-													Encerrar Solicitação
+													Nessecidade Recebida
 												</button>
 											</div>
 										</div>

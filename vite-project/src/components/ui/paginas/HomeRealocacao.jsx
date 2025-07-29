@@ -271,7 +271,7 @@ function HomeRealocacao() {
 													style={{ backgroundColor: footerColor }}
 													onClick={() => handleOpenConfirmacaoModal(pedido.id)}
 												>
-													Encerrar Solicitação
+													Realocação Concluída
 												</button>
 											</div>
 										</div>
