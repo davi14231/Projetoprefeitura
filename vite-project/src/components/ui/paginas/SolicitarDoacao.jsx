@@ -89,9 +89,17 @@ export function SolicitarDoacao({ onClose, editData = null }) {
         "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
         "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
         "Itens Pet": "/imagens/outros.jpg",
+        "Roupas e Calçados": "/imagens/roupas.jpg",
+        "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
+        "Saúde e Higiene": "/imagens/med.jpg",
+        "Utensílios Gerais": "/imagens/alimentos.jpg",
+        "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
+        "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
+        "Itens Pet": "/imagens/outros.jpg",
         "Eletrônicos": "/imagens/Laptops.jpg",
         "Outros": "/imagens/outros.jpg"
       };
+      finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
       finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
     }
 
@@ -287,6 +295,8 @@ export function SolicitarDoacao({ onClose, editData = null }) {
             </div>
 
             {/* Upload de imagem */}
+
+            {/* Upload de imagem */}
             <div>
               <Label htmlFor="descricao" className="mb-1 block text-base font-medium">
                 Descrição e propósito do Item (para que fim o item vai ser utilizado):
@@ -302,12 +312,20 @@ export function SolicitarDoacao({ onClose, editData = null }) {
               <p className="text-xs text-gray-500 mt-1">
                 Se não inserir uma imagem, usaremos uma imagem padrão da categoria
               </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Se não inserir uma imagem, usaremos uma imagem padrão da categoria
+              </p>
             </div>
+
+            {/* Buttons */}
+            <div className="flex gap-4 pt-4">
 
             {/* Buttons */}
             <div className="flex gap-4 pt-4">
               <button
                 type="button"
+                onClick={onClose}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                 onClick={onClose}
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
               >
@@ -316,13 +334,15 @@ export function SolicitarDoacao({ onClose, editData = null }) {
               <button
                 type="submit"
                 className="flex-1 px-4 py-2 bg-[#172233] text-white rounded-md hover:bg-[#22304d] transition"
+                className="flex-1 px-4 py-2 bg-[#172233] text-white rounded-md hover:bg-[#22304d] transition"
               >
+                Publicar Solicitação
                 Publicar Solicitação
               </button>
             </div>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
