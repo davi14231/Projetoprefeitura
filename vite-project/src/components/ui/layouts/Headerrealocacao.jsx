@@ -1,22 +1,30 @@
 import { Input } from "@/components/ui/input";
-import { Botao } from "@/components/ui/botao";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import TelaFlutuante from "../TelaFlutuante";
 
 export function Headerrealocacao() {
   const [telaFlutuanteVisible, setTelaFlutuanteVisible] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(null);
 
   const handleMouseEnter = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
     setTelaFlutuanteVisible(true);
   };
 
   const handleMouseLeave = () => {
-    setTelaFlutuanteVisible(false);
+    const id = setTimeout(() => {
+      setTelaFlutuanteVisible(false);
+    }, 300);
+    setTimeoutId(id);
   };
 
   const handleTelaFlutuanteMouseEnter = () => {
-    setTelaFlutuanteVisible(true);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
   };
 
   const handleTelaFlutuanteMouseLeave = () => {

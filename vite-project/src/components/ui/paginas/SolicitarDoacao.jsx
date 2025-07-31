@@ -319,13 +319,8 @@ export function SolicitarDoacao({ onClose, editData = null }) {
 
             {/* Buttons */}
             <div className="flex gap-4 pt-4">
-
-            {/* Buttons */}
-            <div className="flex gap-4 pt-4">
               <button
                 type="button"
-                onClick={onClose}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                 onClick={onClose}
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
               >
@@ -334,15 +329,13 @@ export function SolicitarDoacao({ onClose, editData = null }) {
               <button
                 type="submit"
                 className="flex-1 px-4 py-2 bg-[#172233] text-white rounded-md hover:bg-[#22304d] transition"
-                className="flex-1 px-4 py-2 bg-[#172233] text-white rounded-md hover:bg-[#22304d] transition"
               >
-                Publicar Solicitação
                 Publicar Solicitação
               </button>
             </div>
           </form>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

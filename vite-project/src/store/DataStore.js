@@ -116,7 +116,6 @@ class DataStore {
         email: "contato@educaretransformar.org.br",
         whatsapp: "(81) 99999-7777",
         urgencia: "Baixa"
-        urgencia: "Baixa"
       },
       {
         id: 8,
@@ -176,10 +175,6 @@ class DataStore {
         quantidade: 100,
         validade: "30/01/2025",
         email: "contato@institutobeneficente.org.br",
-        whatsapp: "(81) 99999-1111",
-        tempoRestante: "15 dias"
-        whatsapp: "(81) 99999-1111",
-        tempoRestante: "15 dias"
       },
       {
         id: 2,
@@ -197,8 +192,6 @@ class DataStore {
         email: "contato@casadacrianca.org.br",
         whatsapp: "(81) 99999-2222",
         tempoRestante: "12 dias"
-        whatsapp: "(81) 99999-2222",
-        tempoRestante: "12 dias"
       },
       {
         id: 3,
@@ -212,8 +205,6 @@ class DataStore {
         quantidade: 20,
         validade: "30/03/2025",
         email: "contato@educacaodigital.org.br",
-        whatsapp: "(81) 99999-3333",
-        tempoRestante: "Sem prazo"
         whatsapp: "(81) 99999-3333",
         tempoRestante: "Sem prazo"
       },
@@ -233,8 +224,6 @@ class DataStore {
         email: "contato@reciclandovidas.org.br",
         whatsapp: "(81) 99999-4444",
         tempoRestante: "Sem prazo"
-        whatsapp: "(81) 99999-4444",
-        tempoRestante: "Sem prazo"
       },
       {
         id: 5,
@@ -251,9 +240,6 @@ class DataStore {
         publicado: "05/01/2025",
         quantidade: 180,
         validade: "20/01/2025",
-        email: "contato@futurobrilhante.org.br",
-        whatsapp: "(81) 99999-5555",
-        tempoRestante: "4 dias"
         email: "contato@futurobrilhante.org.br",
         whatsapp: "(81) 99999-5555",
         tempoRestante: "4 dias"
