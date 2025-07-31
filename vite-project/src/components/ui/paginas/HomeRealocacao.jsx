@@ -12,13 +12,33 @@ import { Pagination } from "@/components/ui/Pagination";
 
 const footerColor = "#172233";
 
+// Badge colors for categories
+const badgeColors = {
+  "Roupas e Calçados": "bg-[#007AFF] text-white", // azul
+  "Materiais Educativos e Culturais": "bg-[#34C759] text-white", // verde
+  "Saúde e Higiene": "bg-[#FF3B30] text-white", // vermelho
+  "Utensílios Gerais": "bg-[#FF9500] text-white", // laranja
+  "Itens de Inclusão e Mobilidade": "bg-[#5856D6] text-white", // roxo
+  "Eletrodomésticos e Móveis": "bg-[#8E8E93] text-white", // cinza
+  "Itens Pet": "bg-[#FFCC00] text-gray-900", // amarelo
+  "Eletrônicos": "bg-[#AF52DE] text-white", // lilás
+  "Outros": "bg-gray-300 text-gray-800",
+  default: "bg-gray-300 text-gray-800",
+};
+
 const destaques = [
-	{ id: 1, titulo: "Medicamentos", img: "/imagens/medicamentos.jpg", categoria: "Medicamentos" },
-	{ id: 2, titulo: "Roupas", img: "/imagens/roupas.jpg", categoria: "Roupas" },
-	{ id: 3, titulo: "Móveis", img: "/imagens/moveis.jpg", categoria: "Móveis" },
-	{ id: 4, titulo: "Equipamento", img: "/imagens/ferramentas.jpg", categoria: "Equipamento" },
-	{ id: 5, titulo: "Alimentos", img: "/imagens/alimentos.jpg", categoria: "Alimentos" },
-	{ id: 6, titulo: "Outros", img: "/imagens/outros.jpg", categoria: "Outros" },
+    { id: 1, titulo: "Roupas e Calçados", img: "/imagens/roupas.jpg", categoria: "Roupas e Calçados" },
+    { id: 2, titulo: "Eletrônicos", img: "/imagens/Laptops.jpg", categoria: "Eletrônicos" },
+    { id: 3, titulo: "Móveis", img: "/imagens/moveis.jpg", categoria: "Eletrodomésticos e Móveis" },
+    { id: 4, titulo: "Utensílios", img: "/imagens/ferramentas.jpg", categoria: "Utensílios Gerais" },
+    { id: 5, titulo: "Material Educativo", img: "/imagens/alimentos.jpg", categoria: "Materiais Educativos e Culturais" },
+    { id: 6, titulo: "Outros", img: "/imagens/outros.jpg", categoria: "Outros" },
+    { id: 1, titulo: "Roupas e Calçados", img: "/imagens/roupas.jpg", categoria: "Roupas e Calçados" },
+    { id: 2, titulo: "Eletrônicos", img: "/imagens/Laptops.jpg", categoria: "Eletrônicos" },
+    { id: 3, titulo: "Móveis", img: "/imagens/moveis.jpg", categoria: "Eletrodomésticos e Móveis" },
+    { id: 4, titulo: "Utensílios", img: "/imagens/ferramentas.jpg", categoria: "Utensílios Gerais" },
+    { id: 5, titulo: "Material Educativo", img: "/imagens/alimentos.jpg", categoria: "Materiais Educativos e Culturais" },
+    { id: 6, titulo: "Outros", img: "/imagens/outros.jpg", categoria: "Outros" },
 ];
 
 function HomeRealocacao() {
@@ -298,22 +318,17 @@ function HomeRealocacao() {
 				</section>
 
 				{/* Paginação */}
-				<Pagination 
-					currentPage={currentPage}
-					totalPages={paginatedData.totalPages}
-					baseUrl="/home-realocacao"
-				/>
-			</main>
-			<Footer />
+				<div className="mb-8">
+                    <Pagination 
+                        currentPage={currentPage}
+                        totalPages={paginatedData.totalPages}
+                        baseUrl="/home-realocacao"
+                    />
+                </div>
+            </main>
+            <Footer />
 
-			{/* Modal ConfirmacaoEncerrarRealocacao */}
-	  {showConfirmacaoDeletar && (
-		<ConfirmacaoDeletar
-		  onCancel={() => setShowConfirmacaoDeletar(false)}
-		  onConfirm={handleConfirmDelete}
-		  tipo="realocacao"
-		/>
-	  )}
+
 	  {/* Modal ConfirmacaoEncerrarRealocacao */}
 	  {showConfirmacaoModal && (
 		<ConfirmacaoEncerrarRealocacao

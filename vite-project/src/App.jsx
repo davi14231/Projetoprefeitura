@@ -12,6 +12,8 @@ import ConfirmacaoEncerrarSolicitacao from "./components/ui/paginas/ConfirmacaoE
 import ConfirmacaoEncerrarRealocacao from "./components/ui/paginas/ConfirmacaoEncerrarRealocacao";
 import { DataProvider } from "./context/DataContext";
 import ConfirmacaoDeletar from "./components/ui/paginas/ConfirmacaoDeletar";
+import TelaFlutuante from "./components/ui/TelaFlutuante";
+import React, { useState } from "react";
 
 function App() {
   // Imagens do carrossel (separadas)
@@ -92,6 +94,16 @@ function App() {
     // Adicione mais itens conforme necessário
   ];
 
+    const [telaFlutuanteVisible, setTelaFlutuanteVisible] = useState(false);
+
+    const abrirTelaFlutuante = () => {
+      setTelaFlutuanteVisible(true);
+    };
+
+    const fecharTelaFlutuante = () => {
+      setTelaFlutuanteVisible(false);
+    };
+
   return (
     <DataProvider>
       <BrowserRouter>
@@ -109,6 +121,12 @@ function App() {
           <Route path="/confirmar-encerrar-realocacao" element={<ConfirmacaoEncerrarRealocacao />} />
           <Route path="/confirmar-deletar" element={<ConfirmacaoDeletar />} />
         </Routes>
+
+        <TelaFlutuante 
+          isVisible={telaFlutuanteVisible}
+          onClose={fecharTelaFlutuante}
+          nomeONG="Instituto Beneficente"
+        />
       </BrowserRouter>
     </DataProvider>
   );
