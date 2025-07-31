@@ -29,6 +29,8 @@ export function EditDoacoes() {
 	const [showConfirmacaoEncerrar, setShowConfirmacaoEncerrar] = useState(false);
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [encerrados, setEncerrados] = useState([]);
+	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
 	const { getDoacoesPaginadas, updateDoacao, removeDoacao } = useData();
 	const navigate = useNavigate();
 
@@ -125,18 +127,23 @@ const handleConfirmDelete = () => {
 };
 
 // Abrir modal de confirmação de encerramento
-const handleOpenConfirmacaoEncerrar = () => {
+const handleOpenConfirmacaoEncerrar = (id) => {
+  setIdParaEncerrar(id);
   setShowConfirmacaoEncerrar(true);
 };
 
 // Fechar modal de confirmação de encerramento
 const handleCloseConfirmacaoEncerrar = () => {
   setShowConfirmacaoEncerrar(false);
+  setIdParaEncerrar(null);
 };
 
 // Confirmar encerramento da solicitação
 const handleConfirmEncerramento = () => {
-  // Aqui você pode adicionar a lógica para encerrar a solicitação
+  if (idParaEncerrar) {
+    setEncerrados([...encerrados, idParaEncerrar]);
+    setIdParaEncerrar(null);
+  }
   setShowConfirmacaoEncerrar(false);
   // Exemplo: remover o pedido da lista ou atualizar status
 };
@@ -289,7 +296,7 @@ const handleConfirmEncerramento = () => {
 										<Card className="w-full bg-white border">
 											<CardContent className="py-6 px-8">
 												<div className="flex flex-col gap-6">
-													{paginatedData.items.map((pedido) => (
+													{paginatedData.items.filter(pedido => !encerrados.includes(pedido.id)).map((pedido) => (
 														<div
 															key={pedido.id}
 															className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
@@ -399,7 +406,7 @@ const handleConfirmEncerramento = () => {
   <button
 	className="bg-[#172233] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
 	style={{ backgroundColor: footerColor }}
-	onClick={handleOpenConfirmacaoEncerrar}
+	onClick={() => handleOpenConfirmacaoEncerrar(pedido.id)}
   >
 	Doação Recebida
   </button>

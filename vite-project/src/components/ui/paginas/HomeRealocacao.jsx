@@ -10,8 +10,6 @@ import { PostagemRealocacao } from "./PostagemRealocacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
 
-// ...existing code...
-
 const footerColor = "#172233";
 
 const destaques = [
@@ -26,46 +24,52 @@ const destaques = [
 function HomeRealocacao() {
 	// Adicionar estado editData para edição de realocação
 	const [editData, setEditData] = useState(null);
+	const [encerrados, setEncerrados] = useState([]);
+	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
 	const navigate = useNavigate();
 	const location = useLocation();
-const [showConfirmacaoDeletar, setShowConfirmacaoDeletar] = useState(false);
-const [showConfirmacaoEncerrar, setShowConfirmacaoEncerrar] = useState(false);
-const [showPostagemModal, setShowPostagemModal] = useState(false);
-const [currentPage, setCurrentPage] = useState(1);
-const { getRealocacoesPaginadas, removeRealocacao } = useData();
-const [idParaExcluir, setIdParaExcluir] = useState(null);
+	const [showConfirmacaoDeletar, setShowConfirmacaoDeletar] = useState(false);
+	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
+	const [showPostagemModal, setShowPostagemModal] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
+	const { getRealocacoesPaginadas, removeRealocacao } = useData();
+	const [idParaExcluir, setIdParaExcluir] = useState(null);
 
-// Abrir modal de confirmação para deletar
-const handleDelete = (id) => {
-  setIdParaExcluir(id);
-  setShowConfirmacaoDeletar(true);
-};
+	// Abrir modal de confirmação para deletar
+	const handleDelete = (id) => {
+		setIdParaExcluir(id);
+		setShowConfirmacaoDeletar(true);
+	};
 
-// Confirma exclusão no modal
-const handleConfirmDelete = () => {
-  if (idParaExcluir) {
-	removeRealocacao(idParaExcluir);
-	setIdParaExcluir(null);
-  }
-  setShowConfirmacaoDeletar(false);
-};
+	// Confirma exclusão no modal
+	const handleConfirmDelete = () => {
+		if (idParaExcluir) {
+			removeRealocacao(idParaExcluir);
+			setIdParaExcluir(null);
+		}
+		setShowConfirmacaoDeletar(false);
+	};
 
-// Abrir modal de confirmação de encerramento
-const handleOpenConfirmacaoEncerrar = () => {
-  setShowConfirmacaoEncerrar(true);
-};
+	// Abrir modal de confirmação de encerramento
+	const handleOpenConfirmacaoModal = (id) => {
+		setIdParaEncerrar(id);
+		setShowConfirmacaoModal(true);
+	};
 
-// Fechar modal de confirmação de encerramento
-const handleCloseConfirmacaoEncerrar = () => {
-  setShowConfirmacaoEncerrar(false);
-};
+	// Fechar modal de confirmação de encerramento
+	const handleCloseConfirmacaoModal = () => {
+		setShowConfirmacaoModal(false);
+		setIdParaEncerrar(null);
+	};
 
-// Confirmar encerramento da realocação
-const handleConfirmEncerramento = () => {
-  // Aqui você pode adicionar a lógica para encerrar a realocação
-  setShowConfirmacaoEncerrar(false);
-  // Exemplo: remover o item da lista ou atualizar status
-};
+	// Confirmar encerramento da realocação
+	const handleConfirmEncerramento = () => {
+		if (idParaEncerrar) {
+			setEncerrados([...encerrados, idParaEncerrar]);
+			setIdParaEncerrar(null);
+		}
+		setShowConfirmacaoModal(false);
+	};
 
 	const itemsPerPage = 6;
 
@@ -83,19 +87,17 @@ const handleConfirmEncerramento = () => {
 		filters: {}
 	});
 
-// Prevent background scroll when any modal is open
-React.useEffect(() => {
-  if (showConfirmacaoDeletar || showConfirmacaoEncerrar || showPostagemModal) {
-	document.body.style.overflow = "hidden";
-  } else {
-	document.body.style.overflow = "auto";
-  }
-  return () => {
-	document.body.style.overflow = "auto";
-  };
-}, [showConfirmacaoDeletar, showConfirmacaoEncerrar, showPostagemModal]);
-
-// ...existing code...
+	// Prevent background scroll when any modal is open
+	React.useEffect(() => {
+		if (showConfirmacaoDeletar || showConfirmacaoModal || showPostagemModal) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "auto";
+		}
+		return () => {
+			document.body.style.overflow = "auto";
+		};
+	}, [showConfirmacaoDeletar, showConfirmacaoModal, showPostagemModal]);
 
 	// Abrir modal PostagemRealocacao
 	const handleOpenPostagemModal = () => {
@@ -214,7 +216,7 @@ React.useEffect(() => {
 					<Card className="w-full bg-white border">
 						<CardContent className="py-6 px-8">
 							<div className="flex flex-col gap-6">
-								{paginatedData.items.map((pedido) => (
+								{paginatedData.items.filter(pedido => !encerrados.includes(pedido.id)).map((pedido) => (
 									<div
 										key={pedido.id}
 										className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
@@ -282,9 +284,9 @@ React.useEffect(() => {
 												<button
 													className="bg-[#172233] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
 													style={{ backgroundColor: footerColor }}
-													onClick={handleOpenConfirmacaoEncerrar}
+													onClick={() => handleOpenConfirmacaoModal(pedido.id)}
 												>
-													Realocação Concluída
+													Encerrar Solicitação
 												</button>
 											</div>
 										</div>
@@ -305,8 +307,6 @@ React.useEffect(() => {
 			<Footer />
 
 			{/* Modal ConfirmacaoEncerrarRealocacao */}
-
-	  {/* Modal ConfirmacaoDeletar */}
 	  {showConfirmacaoDeletar && (
 		<ConfirmacaoDeletar
 		  onCancel={() => setShowConfirmacaoDeletar(false)}
@@ -315,9 +315,9 @@ React.useEffect(() => {
 		/>
 	  )}
 	  {/* Modal ConfirmacaoEncerrarRealocacao */}
-	  {showConfirmacaoEncerrar && (
+	  {showConfirmacaoModal && (
 		<ConfirmacaoEncerrarRealocacao
-		  onCancel={handleCloseConfirmacaoEncerrar}
+		  onCancel={handleCloseConfirmacaoModal}
 		  onConfirm={handleConfirmEncerramento}
 		/>
 	  )}
