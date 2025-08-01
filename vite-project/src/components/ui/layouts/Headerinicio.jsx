@@ -1,3 +1,4 @@
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -32,6 +33,8 @@ export function Headerinicio() {
   };
 
   return (
+    
+    
     <header className="bg-gray-800 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between py-3">
@@ -69,8 +72,7 @@ export function Headerinicio() {
             <Link to="/home-ong" className="text-blue-400 hover:text-blue-300 transition-colors text-sm border-b-2 border-blue-400 pb-1">Início</Link>
             <Link to="/realocacao-listagem" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Realocação</Link>
             <Link to="/todas-doacoes" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Necessidades</Link>
-            
-            {/* Minha ONG com dropdown */}
+             {/* Minha ONG com dropdown */}
             <div 
               className="relative flex items-center"
               onMouseEnter={handleMouseEnter}
@@ -104,6 +106,7 @@ export function Headerinicio() {
                 </div>
               )}
             </div>
+
           </nav>
         </div>
       </div>

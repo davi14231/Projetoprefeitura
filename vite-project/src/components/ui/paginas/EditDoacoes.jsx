@@ -29,9 +29,8 @@ export function EditDoacoes() {
 	const [showConfirmacaoEncerrar, setShowConfirmacaoEncerrar] = useState(false);
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [encerrados, setEncerrados] = useState([]);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
-	const { getDoacoesPaginadas, updateDoacao, removeDoacao } = useData();
+	const { getDoacoesPaginadas, updateDoacao, removeDoacao, encerrarDoacao } = useData();
 	const navigate = useNavigate();
 
 	const itemsPerPage = 6;
@@ -141,11 +140,10 @@ const handleCloseConfirmacaoEncerrar = () => {
 // Confirmar encerramento da solicitação
 const handleConfirmEncerramento = () => {
   if (idParaEncerrar) {
-    setEncerrados([...encerrados, idParaEncerrar]);
+    encerrarDoacao(idParaEncerrar);
     setIdParaEncerrar(null);
   }
   setShowConfirmacaoEncerrar(false);
-  // Exemplo: remover o pedido da lista ou atualizar status
 };
 
 	// Função para navegar para TodasDoacoes com filtro de categoria
@@ -233,7 +231,7 @@ const handleConfirmEncerramento = () => {
 										<Card className="w-full bg-white border">
 											<CardContent className="py-6 px-8">
 												<div className="flex flex-col gap-6">
-													{paginatedData.items.filter(pedido => !encerrados.includes(pedido.id)).map((pedido) => (
+													{paginatedData.items.map((pedido) => (
 														<div
 															key={pedido.id}
 															className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"

@@ -30,7 +30,6 @@ function HomeRealocacao() {
 	// Estados para edição de realocação
 	const [editData, setEditData] = useState(null);
 	const [editId, setEditId] = useState(null);
-	const [encerrados, setEncerrados] = useState([]);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -38,7 +37,7 @@ function HomeRealocacao() {
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const { getRealocacoesPaginadas, removeRealocacao } = useData();
+	const { getRealocacoesPaginadas, removeRealocacao, encerrarRealocacao } = useData();
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 
 	// Função para editar realocação
@@ -78,7 +77,7 @@ function HomeRealocacao() {
 	// Confirmar encerramento da realocação
 	const handleConfirmEncerramento = () => {
 		if (idParaEncerrar) {
-			setEncerrados([...encerrados, idParaEncerrar]);
+			encerrarRealocacao(idParaEncerrar);
 			setIdParaEncerrar(null);
 		}
 		setShowConfirmacaoModal(false);
@@ -209,7 +208,7 @@ function HomeRealocacao() {
 					<Card className="w-full bg-white border">
 						<CardContent className="py-6 px-8">
 							<div className="flex flex-col gap-6">
-								{paginatedData.items.filter(pedido => !encerrados.includes(pedido.id)).map((pedido) => (
+								{paginatedData.items.map((pedido) => (
 									<div
 										key={pedido.id}
 										className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
@@ -279,7 +278,7 @@ function HomeRealocacao() {
 													style={{ backgroundColor: footerColor }}
 													onClick={() => handleOpenConfirmacaoModal(pedido.id)}
 												>
-													Encerrar Solicitação
+													Realocação Concluída
 												</button>
 											</div>
 										</div>
