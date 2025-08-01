@@ -9,15 +9,15 @@ import { Pagination } from "@/components/ui/Pagination";
 import { Facebook, Package, Clock } from "lucide-react";
 
 const badgeColors = {
-	Alimentos: "bg-[#34C759] text-white", // verde
-	Roupas: "bg-[#007AFF] text-white", // azul
-	Equipamento: "bg-[#5856D6] text-white", // roxo
-	Móveis: "bg-[#FF9500] text-white", // laranja
-	Brinquedos: "bg-[#FFCC00] text-gray-900", // amarelo
-	Medicamentos: "bg-[#FF3B30] text-white", // vermelho
-	"Material Escolar": "bg-[#8E8E93] text-white", // cinza
-	Livros: "bg-[#AF52DE] text-white", // lilás
-	default: "bg-gray-300 text-gray-800",
+  Alimentos: "bg-blue-500 text-white",
+  Roupas: "bg-blue-500 text-white",
+  Equipamento: "bg-blue-500 text-white",
+  Móveis: "bg-blue-500 text-white",
+  Brinquedos: "bg-blue-500 text-white",
+  Medicamentos: "bg-blue-500 text-white",
+  "Material Escolar": "bg-blue-500 text-white",
+  Livros: "bg-blue-500 text-white",
+  default: "bg-blue-500 text-white",
 };
 
 const urgencyColors = {
@@ -376,130 +376,130 @@ import TodasDoacoes from "./components/ui/paginas/TodasDoacoes";
 
 const mockDoacoes = [
   {
-    id: 1,
-    imageUrl:
-      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80", // Laptop
-    categoria: "Equipamento",
-    urgencia: "",
-    ong: "Fundação Recife Solidário",
-    titulo: "Laptops para Educação",
-    quantidade: "8 unidades",
-    descricao:
-      "Laptops para programas de inclusão digital e educação. Itens em funcionamento e em bom estado de uso.",
-    publicado: "09/06/2024",
-    validade: "",
+	id: 1,
+	imageUrl:
+	  "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80", // Laptop
+	categoria: "Equipamento",
+	urgencia: "",
+	ong: "Fundação Recife Solidário",
+	titulo: "Laptops para Educação",
+	quantidade: "8 unidades",
+	descricao:
+	  "Laptops para programas de inclusão digital e educação. Itens em funcionamento e em bom estado de uso.",
+	publicado: "09/06/2024",
+	validade: "",
   },
   {
-    id: 2,
-    imageUrl:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80", // Alimentos
-    categoria: "Alimentos",
-    urgencia: "Baixa",
-    ong: "Instituto Criança Feliz",
-    titulo: "Cestas Básicas Completas",
-    quantidade: "25 unidades",
-    descricao:
-      "Cestas básicas completas com arroz, feijão, macarrão, óleo, açúcar, café e outros itens essenciais. Para famílias em situação de vulnerabilidade.",
-    publicado: "10/07/2024",
-    validade: "15/07/2024",
+	id: 2,
+	imageUrl:
+	  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80", // Alimentos
+	categoria: "Alimentos",
+	urgencia: "Baixa",
+	ong: "Instituto Criança Feliz",
+	titulo: "Cestas Básicas Completas",
+	quantidade: "25 unidades",
+	descricao:
+	  "Cestas básicas completas com arroz, feijão, macarrão, óleo, açúcar, café e outros itens essenciais. Para famílias em situação de vulnerabilidade.",
+	publicado: "10/07/2024",
+	validade: "15/07/2024",
   },
   {
-    id: 3,
-    imageUrl:
-      "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80", // Roupas
-    categoria: "Roupas",
-    urgencia: "",
-    ong: "Lar Esperança",
-    titulo: "Roupas Adulto e Infantil",
-    quantidade: "50 peças",
-    descricao:
-      "Roupas em bom estado para adultos e crianças. Aceitamos roupas de inverno e verão.",
-    publicado: "08/07/2024",
-    validade: "",
+	id: 3,
+	imageUrl:
+	  "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80", // Roupas
+	categoria: "Roupas",
+	urgencia: "",
+	ong: "Lar Esperança",
+	titulo: "Roupas Adulto e Infantil",
+	quantidade: "50 peças",
+	descricao:
+	  "Roupas em bom estado para adultos e crianças. Aceitamos roupas de inverno e verão.",
+	publicado: "08/07/2024",
+	validade: "",
   },
   {
-    id: 4,
-    imageUrl:
-      "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=600&q=80", // Móveis
-    categoria: "Móveis",
-    urgencia: "",
-    ong: "Casa Nova ONG",
-    titulo: "Camas e Colchões",
-    quantidade: "6 unidades",
-    descricao:
-      "Camas e colchões para famílias que perderam seus pertences em enchentes. Itens limpos e em bom estado.",
-    publicado: "07/07/2024",
-    validade: "",
+	id: 4,
+	imageUrl:
+	  "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=600&q=80", // Móveis
+	categoria: "Móveis",
+	urgencia: "",
+	ong: "Casa Nova ONG",
+	titulo: "Camas e Colchões",
+	quantidade: "6 unidades",
+	descricao:
+	  "Camas e colchões para famílias que perderam seus pertences em enchentes. Itens limpos e em bom estado.",
+	publicado: "07/07/2024",
+	validade: "",
   },
   {
-    id: 5,
-    imageUrl:
-      "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80", // Brinquedos
-    categoria: "Brinquedos",
-    urgencia: "",
-    ong: "Projeto Sorriso",
-    titulo: "Brinquedos Educativos",
-    quantidade: "30 unidades",
-    descricao:
-      "Brinquedos educativos para crianças de 3 a 10 anos. Preferência por brinquedos novos ou seminovos.",
-    publicado: "05/07/2024",
-    validade: "",
+	id: 5,
+	imageUrl:
+	  "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80", // Brinquedos
+	categoria: "Brinquedos",
+	urgencia: "",
+	ong: "Projeto Sorriso",
+	titulo: "Brinquedos Educativos",
+	quantidade: "30 unidades",
+	descricao:
+	  "Brinquedos educativos para crianças de 3 a 10 anos. Preferência por brinquedos novos ou seminovos.",
+	publicado: "05/07/2024",
+	validade: "",
   },
   {
-    id: 6,
-    imageUrl:
-      "https://images.unsplash.com/photo-1588776814546-ec7e1b3c1b6b?auto=format&fit=crop&w=600&q=80", // Medicamentos
-    categoria: "Medicamentos",
-    urgencia: "Baixa",
-    ong: "Saúde para Todos",
-    titulo: "Medicamentos Básicos",
-    quantidade: "100 caixas",
-    descricao:
-      "Medicamentos básicos como dipirona, paracetamol, soro fisiológico, entre outros. Apenas dentro do prazo de validade.",
-    publicado: "04/07/2024",
-    validade: "30/07/2024",
+	id: 6,
+	imageUrl:
+	  "https://images.unsplash.com/photo-1588776814546-ec7e1b3c1b6b?auto=format&fit=crop&w=600&q=80", // Medicamentos
+	categoria: "Medicamentos",
+	urgencia: "Baixa",
+	ong: "Saúde para Todos",
+	titulo: "Medicamentos Básicos",
+	quantidade: "100 caixas",
+	descricao:
+	  "Medicamentos básicos como dipirona, paracetamol, soro fisiológico, entre outros. Apenas dentro do prazo de validade.",
+	publicado: "04/07/2024",
+	validade: "30/07/2024",
   },
   {
-    id: 7,
-    imageUrl:
-      "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=600&q=80", // Material Escolar
-    categoria: "Material Escolar",
-    urgencia: "",
-    ong: "Educa Brasil",
-    titulo: "Kits de Material Escolar",
-    quantidade: "40 kits",
-    descricao:
-      "Kits com cadernos, lápis, borracha, régua, cola, tesoura e mochila. Para crianças do ensino fundamental.",
-    publicado: "03/07/2024",
-    validade: "",
+	id: 7,
+	imageUrl:
+	  "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=600&q=80", // Material Escolar
+	categoria: "Material Escolar",
+	urgencia: "",
+	ong: "Educa Brasil",
+	titulo: "Kits de Material Escolar",
+	quantidade: "40 kits",
+	descricao:
+	  "Kits com cadernos, lápis, borracha, régua, cola, tesoura e mochila. Para crianças do ensino fundamental.",
+	publicado: "03/07/2024",
+	validade: "",
   },
   {
-    id: 8,
-    imageUrl:
-      "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80", // Livros
-    categoria: "Livros",
-    urgencia: "",
-    ong: "Biblioteca Comunitária",
-    titulo: "Livros Infantis",
-    quantidade: "60 livros",
-    descricao:
-      "Livros infantis para incentivar a leitura em comunidades carentes. Aceitamos livros novos e usados em bom estado.",
-    publicado: "02/07/2024",
-    validade: "",
+	id: 8,
+	imageUrl:
+	  "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80", // Livros
+	categoria: "Livros",
+	urgencia: "",
+	ong: "Biblioteca Comunitária",
+	titulo: "Livros Infantis",
+	quantidade: "60 livros",
+	descricao:
+	  "Livros infantis para incentivar a leitura em comunidades carentes. Aceitamos livros novos e usados em bom estado.",
+	publicado: "02/07/2024",
+	validade: "",
   },
   {
-    id: 9,
-    imageUrl:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80", // Alimentos (Leite)
-    categoria: "Alimentos",
-    urgencia: "",
-    ong: "ONG Bem Viver",
-    titulo: "Leite em Pó",
-    quantidade: "20 latas",
-    descricao:
-      "Leite em pó para crianças e idosos. Preferência por embalagens fechadas e dentro do prazo de validade.",
-    publicado: "01/07/2024",
-    validade: "20/07/2024",
+	id: 9,
+	imageUrl:
+	  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80", // Alimentos (Leite)
+	categoria: "Alimentos",
+	urgencia: "",
+	ong: "ONG Bem Viver",
+	titulo: "Leite em Pó",
+	quantidade: "20 latas",
+	descricao:
+	  "Leite em pó para crianças e idosos. Preferência por embalagens fechadas e dentro do prazo de validade.",
+	publicado: "01/07/2024",
+	validade: "20/07/2024",
   },
 ];
 
