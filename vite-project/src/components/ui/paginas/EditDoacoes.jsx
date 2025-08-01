@@ -30,6 +30,7 @@ export function EditDoacoes() {
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
+	const [paginatedData, setPaginatedData] = useState({ items: [], totalPages: 0, total: 0 });
 	const { getDoacoesPaginadas, updateDoacao, removeDoacao, encerrarDoacao } = useData();
 	const navigate = useNavigate();
 
@@ -42,12 +43,15 @@ export function EditDoacoes() {
 		setCurrentPage(page);
 	}, [location.search]);
 
-	// Obter dados paginados usando Context
-	const paginatedData = getDoacoesPaginadas({
-		page: currentPage,
-		limit: itemsPerPage,
-		filters: {}
-	});
+	// Efeito para atualizar dados paginados quando dados ou página mudam
+	useEffect(() => {
+		const data = getDoacoesPaginadas({
+			page: currentPage,
+			limit: itemsPerPage,
+			filters: {}
+		});
+		setPaginatedData(data);
+	}, [currentPage, getDoacoesPaginadas]);
 
 	// Prevent background scroll when any modal is open
 	React.useEffect(() => {
