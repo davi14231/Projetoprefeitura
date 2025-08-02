@@ -29,9 +29,9 @@ export function EditDoacoes() {
 	const [showConfirmacaoEncerrar, setShowConfirmacaoEncerrar] = useState(false);
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [encerrados, setEncerrados] = useState([]);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
-	const { getDoacoesPaginadas, updateDoacao, removeDoacao } = useData();
+	const [paginatedData, setPaginatedData] = useState({ items: [], totalPages: 0, total: 0 });
+	const { getDoacoesPaginadas, updateDoacao, removeDoacao, encerrarDoacao } = useData();
 	const navigate = useNavigate();
 
 	const itemsPerPage = 6;
@@ -43,12 +43,15 @@ export function EditDoacoes() {
 		setCurrentPage(page);
 	}, [location.search]);
 
-	// Obter dados paginados usando Context
-	const paginatedData = getDoacoesPaginadas({
-		page: currentPage,
-		limit: itemsPerPage,
-		filters: {}
-	});
+	// Efeito para atualizar dados paginados quando dados ou página mudam
+	useEffect(() => {
+		const data = getDoacoesPaginadas({
+			page: currentPage,
+			limit: itemsPerPage,
+			filters: {}
+		});
+		setPaginatedData(data);
+	}, [currentPage, getDoacoesPaginadas]);
 
 	// Prevent background scroll when any modal is open
 	React.useEffect(() => {
@@ -141,26 +144,16 @@ const handleCloseConfirmacaoEncerrar = () => {
 // Confirmar encerramento da solicitação
 const handleConfirmEncerramento = () => {
   if (idParaEncerrar) {
-    setEncerrados([...encerrados, idParaEncerrar]);
+    encerrarDoacao(idParaEncerrar);
     setIdParaEncerrar(null);
   }
   setShowConfirmacaoEncerrar(false);
-  // Exemplo: remover o pedido da lista ou atualizar status
 };
 
 	// Função para navegar para TodasDoacoes com filtro de categoria
 	const navigateToCategory = (categoria) => {
 		navigate(`/todas-doacoes?categoria=${encodeURIComponent(categoria)}`);
 	};
-
-	const destaques = [
-		{ titulo: "Roupas e Calçados", img: "/imagens/roupas.jpg", categoria: "Roupas e Calçados" },
-		{ titulo: "Eletrônicos", img: "/imagens/Laptops.jpg", categoria: "Eletrônicos" },
-		{ titulo: "Móveis", img: "/imagens/moveis.jpg", categoria: "Eletrodomésticos e Móveis" },
-		{ titulo: "Utensílios", img: "/imagens/ferramentas.jpg", categoria: "Utensílios Gerais" },
-		{ titulo: "Material Educativo", img: "/imagens/alimentos.jpg", categoria: "Materiais Educativos e Culturais" },
-		{ titulo: "Outros", img: "/imagens/outros.jpg", categoria: "Outros" },
-	];
 
 	return (
 		<div className="bg-[#fafbfc] min-h-screen flex flex-col relative">
@@ -175,90 +168,38 @@ const handleConfirmEncerramento = () => {
 						Voluntários e outras ONGs podem ver seu pedido e contribuir com o que
 						for possível.
 					</p>
+					<button
+						className="bg-[#172233] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#22304d] transition cursor-pointer shadow-md hover:scale-[1.03]"
+						style={{ backgroundColor: footerColor }}
+						onClick={() => navigate("/todas-doacoes")}
+					>
+						Ver todas as necessidades
+					</button>
 				</section>
 
-				{/* Categorias */}
+				{/* Navegação entre seções */}
 				<section className="max-w-6xl mx-auto px-4 mb-2">
-					<div className="flex flex-col">
-						<div className="flex gap-6 justify-between pb-2">
-							<button 
-								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-								onClick={() => navigateToCategory("Roupas e Calçados")}
-							>
-								<img
-									src="/imagens/roupas.jpg"
-									alt="Roupas e Calçados"
-									className="w-52 h-32 object-contain rounded-lg"
-								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Roupas e Calçados</span>
-							</button>
-							<button 
-								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-								onClick={() => navigateToCategory("Eletrodomésticos e Móveis")}
-							>
-								<img
-									src="/imagens/moveis.jpg"
-									alt="Móveis"
-									className="w-52 h-32 object-contain rounded-lg"
-								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Eletrodomésticos e Móveis</span>
-							</button>
-							<button 
-								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-								onClick={() => navigateToCategory("Utensílios Gerais")}
-							>
-								<img
-									src="/imagens/ferramentas.jpg"
-									alt="Utensílios"
-									className="w-52 h-32 object-contain rounded-lg"
-								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Utensílios Gerais</span>
-							</button>
-							<button 
-								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-								onClick={() => navigateToCategory("Materiais Educativos e Culturais")}
-							>
-								<img
-									src="/imagens/alimentos.jpg"
-									alt="Material Educativo"
-									className="w-52 h-32 object-contain rounded-lg"
-								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Materiais Educativos e Culturais</span>
-							</button>
-							<button 
-								className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-								onClick={() => navigateToCategory("Outros")}
-							>
-								<img
-									src="/imagens/outros.jpg"
-									alt="Outros"
-									className="w-52 h-32 object-contain rounded-lg"
-								/>
-								<span className="mt-2 text-sm font-medium text-gray-700 text-center">Outros</span>
-							</button>
-						</div>
-						<div className="flex justify-between items-center mt-2">
-							<button
-								className={`w-1/2 text-center text-sm font-medium py-2 rounded-l-lg transition cursor-pointer ${
-									location.pathname === "/edit-doacoes"
-										? "bg-[#22304d] text-white"
-										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
-								}`}
-								onClick={() => navigate("/edit-doacoes")}
-							>
-								Solicitações postadas
-							</button>
-							<button
-								className={`w-1/2 text-center text-sm font-medium py-2 rounded-r-lg transition cursor-pointer ${
-									location.pathname === "/home-realocacao"
-										? "bg-[#22304d] text-white"
-										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
-								}`}
-								onClick={() => navigate("/home-realocacao")}
-							>
-								Realocações postadas
-							</button>
-						</div>
+					<div className="flex justify-between items-center">
+						<button
+							className={`w-1/2 text-center text-sm font-medium py-2 rounded-l-lg transition cursor-pointer ${
+								location.pathname === "/edit-doacoes"
+									? "bg-[#22304d] text-white"
+									: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+							}`}
+							onClick={() => navigate("/edit-doacoes")}
+						>
+							Solicitações postadas
+						</button>
+						<button
+							className={`w-1/2 text-center text-sm font-medium py-2 rounded-r-lg transition cursor-pointer ${
+								location.pathname === "/home-realocacao"
+									? "bg-[#22304d] text-white"
+									: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+							}`}
+							onClick={() => navigate("/home-realocacao")}
+						>
+							Realocações postadas
+						</button>
 					</div>
 				</section>
 
@@ -294,7 +235,7 @@ const handleConfirmEncerramento = () => {
 										<Card className="w-full bg-white border">
 											<CardContent className="py-6 px-8">
 												<div className="flex flex-col gap-6">
-													{paginatedData.items.filter(pedido => !encerrados.includes(pedido.id)).map((pedido) => (
+													{paginatedData.items.map((pedido) => (
 														<div
 															key={pedido.id}
 															className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"

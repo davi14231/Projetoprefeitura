@@ -349,16 +349,19 @@ class DataStore {
   }
 
   getDoacoesPaginadas(page = 1, itemsPerPage = 6) {
+    // Filtrar doações não encerradas
+    const doacoesAtivas = this.doacoes.filter(doacao => !doacao.encerrado);
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const items = this.doacoes.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(this.doacoes.length / itemsPerPage);
+    const items = doacoesAtivas.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(doacoesAtivas.length / itemsPerPage);
     
     return {
       items,
       currentPage: page,
       totalPages,
-      totalItems: this.doacoes.length,
+      totalItems: doacoesAtivas.length,
+      total: doacoesAtivas.length,
       itemsPerPage
     };
   }
@@ -393,16 +396,19 @@ class DataStore {
   }
 
   getRealocacoesPaginadas(page = 1, itemsPerPage = 6) {
+    // Filtrar realocações não encerradas
+    const realocacoesAtivas = this.realocacoes.filter(realocacao => !realocacao.encerrado);
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const items = this.realocacoes.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(this.realocacoes.length / itemsPerPage);
+    const items = realocacoesAtivas.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(realocacoesAtivas.length / itemsPerPage);
     
     return {
       items,
       currentPage: page,
       totalPages,
-      totalItems: this.realocacoes.length,
+      totalItems: realocacoesAtivas.length,
+      total: realocacoesAtivas.length,
       itemsPerPage
     };
   }
@@ -433,7 +439,8 @@ class DataStore {
 
   // Métodos de filtro
   filterDoacoes(filters = {}) {
-    let filtered = [...this.doacoes];
+    // Começar apenas com doações não encerradas
+    let filtered = this.doacoes.filter(doacao => !doacao.encerrado);
 
     if (filters.categoria) {
       filtered = filtered.filter(item => item.categoria === filters.categoria);
@@ -456,7 +463,8 @@ class DataStore {
   }
 
   filterRealocacoes(filters = {}) {
-    let filtered = [...this.realocacoes];
+    // Começar apenas com realocações não encerradas
+    let filtered = this.realocacoes.filter(realocacao => !realocacao.encerrado);
 
     if (filters.categoria) {
       filtered = filtered.filter(item => item.categoria === filters.categoria);

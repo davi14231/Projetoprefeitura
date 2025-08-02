@@ -49,6 +49,10 @@ export const DataProvider = ({ children }) => {
     dataStore.updateDoacao(id, updates);
   };
 
+  const encerrarDoacao = (id) => {
+    dataStore.updateDoacao(id, { encerrado: true });
+  };
+
   const getDoacoesPaginadas = ({ page = 1, limit = 6, filters = {} } = {}) => {
     return dataStore.getDoacoesPaginadas(page, limit);
   };
@@ -68,6 +72,10 @@ export const DataProvider = ({ children }) => {
 
   const updateRealocacao = (id, updates) => {
     dataStore.updateRealocacao(id, updates);
+  };
+
+  const encerrarRealocacao = (id) => {
+    dataStore.updateRealocacao(id, { encerrado: true });
   };
 
   const getRealocacoesPaginadas = (pageOrOptions = 1, itemsPerPage = 6) => {
@@ -93,6 +101,7 @@ export const DataProvider = ({ children }) => {
     addDoacao,
     removeDoacao,
     updateDoacao,
+    encerrarDoacao,
     getDoacoesPaginadas,
     filterDoacoes,
 
@@ -100,6 +109,7 @@ export const DataProvider = ({ children }) => {
     addRealocacao,
     removeRealocacao,
     updateRealocacao,
+    encerrarRealocacao,
     getRealocacoesPaginadas,
     filterRealocacoes,
   };

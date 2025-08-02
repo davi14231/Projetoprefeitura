@@ -89,17 +89,9 @@ export function SolicitarDoacao({ onClose, editData = null }) {
         "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
         "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
         "Itens Pet": "/imagens/outros.jpg",
-        "Roupas e Calçados": "/imagens/roupas.jpg",
-        "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
-        "Saúde e Higiene": "/imagens/med.jpg",
-        "Utensílios Gerais": "/imagens/alimentos.jpg",
-        "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
-        "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
-        "Itens Pet": "/imagens/outros.jpg",
         "Eletrônicos": "/imagens/Laptops.jpg",
         "Outros": "/imagens/outros.jpg"
       };
-      finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
       finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
     }
 

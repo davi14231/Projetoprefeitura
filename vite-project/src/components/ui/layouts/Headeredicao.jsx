@@ -36,7 +36,7 @@ export function Headeredicao() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between py-3">
           {/* Logo */}
-          <Link to="/" className="flex items-center min-w-[140px] cursor-pointer">
+          <Link to="/home-ong" className="flex items-center min-w-[140px] cursor-pointer">
             <img
               src="/imagens/logo-recife.png"
               alt="Recife Prefeitura"

@@ -12,16 +12,16 @@ import { Facebook, Package, Clock } from "lucide-react";
 
 // Badge colors for categories
 const badgeColors = {
-  "Roupas e Calçados": "bg-[#007AFF] text-white", // azul
-  "Materiais Educativos e Culturais": "bg-[#34C759] text-white", // verde
-  "Saúde e Higiene": "bg-[#FF3B30] text-white", // vermelho
-  "Utensílios Gerais": "bg-[#FF9500] text-white", // laranja
-  "Itens de Inclusão e Mobilidade": "bg-[#5856D6] text-white", // roxo
-  "Eletrodomésticos e Móveis": "bg-[#8E8E93] text-white", // cinza
-  "Itens Pet": "bg-[#FFCC00] text-gray-900", // amarelo
-  "Eletrônicos": "bg-[#AF52DE] text-white", // lilás
-  "Outros": "bg-gray-300 text-gray-800",
-  default: "bg-gray-300 text-gray-800",
+  "Roupas e Calçados": "bg-blue-500 text-white",
+  "Materiais Educativos e Culturais": "bg-blue-500 text-white",
+  "Saúde e Higiene": "bg-blue-500 text-white",
+  "Utensílios Gerais": "bg-blue-500 text-white",
+  "Itens de Inclusão e Mobilidade": "bg-blue-500 text-white",
+  "Eletrodomésticos e Móveis": "bg-blue-500 text-white",
+  "Itens Pet": "bg-blue-500 text-white",
+  "Eletrônicos": "bg-blue-500 text-white",
+  "Outros": "bg-blue-500 text-white",
+  default: "bg-blue-500 text-white",
 };
 
 export function RealocacaoListagem() {

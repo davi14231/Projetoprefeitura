@@ -36,7 +36,7 @@ export function Headerrealocacao() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between py-3">
           {/* Logo */}
-          <Link to="/" className="flex items-center min-w-[140px] cursor-pointer">
+          <Link to="/home-ong" className="flex items-center min-w-[140px] cursor-pointer">
             <img
               src="/imagens/logo-recife.png"
               alt="Recife Prefeitura"
@@ -46,7 +46,7 @@ export function Headerrealocacao() {
           </Link>
 
           {/* Campo de busca */}
-          <div className="flex-1 flex justify-center md:justify-center my-2 md:my-0">
+          <div className="flex-1 flex justify-center md:justify-cen'ter my-2 md:my-0">
             <div className="relative w-full max-w-md">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <img
@@ -69,7 +69,7 @@ export function Headerrealocacao() {
             <Link to="/home-ong" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Início</Link>
             <Link to="/realocacao-listagem" className="text-blue-400 hover:text-blue-300 transition-colors text-sm border-b-2 border-blue-400 pb-1">Realocação</Link>
             <Link to="/todas-doacoes" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Necessidades</Link>
-            
+                        
             {/* Minha ONG com dropdown */}
             <div 
               className="relative flex items-center"

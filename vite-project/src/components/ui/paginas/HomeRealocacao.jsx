@@ -26,25 +26,10 @@ const badgeColors = {
   default: "bg-gray-300 text-gray-800",
 };
 
-const destaques = [
-    { id: 1, titulo: "Roupas e Calçados", img: "/imagens/roupas.jpg", categoria: "Roupas e Calçados" },
-    { id: 2, titulo: "Eletrônicos", img: "/imagens/Laptops.jpg", categoria: "Eletrônicos" },
-    { id: 3, titulo: "Móveis", img: "/imagens/moveis.jpg", categoria: "Eletrodomésticos e Móveis" },
-    { id: 4, titulo: "Utensílios", img: "/imagens/ferramentas.jpg", categoria: "Utensílios Gerais" },
-    { id: 5, titulo: "Material Educativo", img: "/imagens/alimentos.jpg", categoria: "Materiais Educativos e Culturais" },
-    { id: 6, titulo: "Outros", img: "/imagens/outros.jpg", categoria: "Outros" },
-    { id: 1, titulo: "Roupas e Calçados", img: "/imagens/roupas.jpg", categoria: "Roupas e Calçados" },
-    { id: 2, titulo: "Eletrônicos", img: "/imagens/Laptops.jpg", categoria: "Eletrônicos" },
-    { id: 3, titulo: "Móveis", img: "/imagens/moveis.jpg", categoria: "Eletrodomésticos e Móveis" },
-    { id: 4, titulo: "Utensílios", img: "/imagens/ferramentas.jpg", categoria: "Utensílios Gerais" },
-    { id: 5, titulo: "Material Educativo", img: "/imagens/alimentos.jpg", categoria: "Materiais Educativos e Culturais" },
-    { id: 6, titulo: "Outros", img: "/imagens/outros.jpg", categoria: "Outros" },
-];
-
 function HomeRealocacao() {
-	// Adicionar estado editData para edição de realocação
+	// Estados para edição de realocação
 	const [editData, setEditData] = useState(null);
-	const [encerrados, setEncerrados] = useState([]);
+	const [editId, setEditId] = useState(null);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -52,8 +37,15 @@ function HomeRealocacao() {
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const { getRealocacoesPaginadas, removeRealocacao } = useData();
+	const { getRealocacoesPaginadas, removeRealocacao, encerrarRealocacao } = useData();
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
+
+	// Função para editar realocação
+	const handleEdit = (pedido) => {
+		setEditId(pedido.id);
+		setEditData(pedido);
+		setShowPostagemModal(true); // Abrir o modal para edição
+	};
 
 	// Abrir modal de confirmação para deletar
 	const handleDelete = (id) => {
@@ -85,7 +77,7 @@ function HomeRealocacao() {
 	// Confirmar encerramento da realocação
 	const handleConfirmEncerramento = () => {
 		if (idParaEncerrar) {
-			setEncerrados([...encerrados, idParaEncerrar]);
+			encerrarRealocacao(idParaEncerrar);
 			setIdParaEncerrar(null);
 		}
 		setShowConfirmacaoModal(false);
@@ -158,49 +150,29 @@ function HomeRealocacao() {
 					</button>
 				</section>
 
-				{/* Destaques */}
+				{/* Navegação entre seções */}
 				<section className="max-w-6xl mx-auto px-4 mb-2">
-					<div className="flex flex-col">
-						<div className="flex gap-6 justify-between pb-2">
-							{destaques.map((item) => (
-								<button
-									key={item.id}
-									className="flex flex-col items-center flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-									onClick={() => navigateToCategory(item.categoria)}
-								>
-									<img
-										src={item.img}
-										alt={item.titulo}
-										className="w-52 h-32 object-contain rounded-lg"
-									/>
-									<span className="mt-2 text-sm font-medium text-gray-700 text-center">
-										{item.titulo}
-									</span>
-								</button>
-							))}
-						</div>
-						<div className="flex justify-between items-center mt-2">
-							<button
-								className={`w-1/2 text-center text-sm font-medium py-2 rounded-l-lg transition cursor-pointer ${
-									location.pathname === "/edit-doacoes"
-										? "bg-[#22304d] text-white"
-										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
-								}`}
-								onClick={() => navigate("/edit-doacoes")}
-							>
-								Solicitações postadas
-							</button>
-							<button
-								className={`w-1/2 text-center text-sm font-medium py-2 rounded-r-lg transition cursor-pointer ${
-									location.pathname === "/home-realocacao"
-										? "bg-[#22304d] text-white"
-										: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
-								}`}
-								onClick={() => navigate("/home-realocacao")}
-							>
-								Realocações postadas
-							</button>
-						</div>
+					<div className="flex justify-between items-center">
+						<button
+							className={`w-1/2 text-center text-sm font-medium py-2 rounded-l-lg transition cursor-pointer ${
+								location.pathname === "/edit-doacoes"
+									? "bg-[#22304d] text-white"
+									: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+							}`}
+							onClick={() => navigate("/edit-doacoes")}
+						>
+							Solicitações postadas
+						</button>
+						<button
+							className={`w-1/2 text-center text-sm font-medium py-2 rounded-r-lg transition cursor-pointer ${
+								location.pathname === "/home-realocacao"
+									? "bg-[#22304d] text-white"
+									: "bg-neutral-100 text-neutral-900 hover:bg-neutral-200"
+							}`}
+							onClick={() => navigate("/home-realocacao")}
+						>
+							Realocações postadas
+						</button>
 					</div>
 				</section>
 
@@ -236,7 +208,7 @@ function HomeRealocacao() {
 					<Card className="w-full bg-white border">
 						<CardContent className="py-6 px-8">
 							<div className="flex flex-col gap-6">
-								{paginatedData.items.filter(pedido => !encerrados.includes(pedido.id)).map((pedido) => (
+								{paginatedData.items.map((pedido) => (
 									<div
 										key={pedido.id}
 										className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
@@ -306,7 +278,7 @@ function HomeRealocacao() {
 													style={{ backgroundColor: footerColor }}
 													onClick={() => handleOpenConfirmacaoModal(pedido.id)}
 												>
-													Encerrar Solicitação
+													Realocação Concluída
 												</button>
 											</div>
 										</div>
@@ -337,11 +309,20 @@ function HomeRealocacao() {
 		/>
 	  )}
 
+	  {/* Modal ConfirmacaoDeletar */}
+	  {showConfirmacaoDeletar && (
+		<ConfirmacaoDeletar
+		  onCancel={() => setShowConfirmacaoDeletar(false)}
+		  onConfirm={handleConfirmDelete}
+		/>
+	  )}
+
 			{/* Modal PostagemRealocacao */}
 			{showPostagemModal && (
 				<PostagemRealocacao 
 					onClose={handleClosePostagemModal}
 					editData={editData}
+					editId={editId}
 				/>
 			)}
 		</div>
