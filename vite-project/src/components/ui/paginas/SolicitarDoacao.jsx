@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Botao } from "@/components/ui/botao";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, X } from "lucide-react";
 import { useData } from "@/context/DataContext";

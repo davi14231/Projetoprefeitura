@@ -2,23 +2,16 @@ import React from "react";
 import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit2, Save, X, Facebook, Trash2 } from "lucide-react";
+import { Edit2, Facebook, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SolicitarDoacao } from "./SolicitarDoacao";
 import ConfirmacaoEncerrarSolicitacao from "./ConfirmacaoEncerrarSolicitacao";
-// import removido: duplicado
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
 import ConfirmacaoDeletar from "./ConfirmacaoDeletar";
 
 const footerColor = "#172233";
-
-const statusColors = {
-	alta: "bg-orange-400 text-white",
-	baixa: "bg-green-500 text-white",
-	média: "bg-yellow-400 text-white",
-};
 
 export function EditDoacoes() {
 	const location = useLocation();
@@ -30,8 +23,7 @@ export function EditDoacoes() {
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
-	const [paginatedData, setPaginatedData] = useState({ items: [], totalPages: 0, total: 0 });
-	const { getDoacoesPaginadas, updateDoacao, removeDoacao, encerrarDoacao } = useData();
+	const { getDoacoesPaginadas, removeDoacao, encerrarDoacao, forceUpdate } = useData();
 	const navigate = useNavigate();
 
 	const itemsPerPage = 6;
@@ -43,15 +35,19 @@ export function EditDoacoes() {
 		setCurrentPage(page);
 	}, [location.search]);
 
-	// Efeito para atualizar dados paginados quando dados ou página mudam
+	// Efeito para forçar re-renderização quando forceUpdate muda (nova doação adicionada)
 	useEffect(() => {
-		const data = getDoacoesPaginadas({
+		// Este useEffect garante que o componente re-renderize quando uma nova doação é adicionada
+	}, [forceUpdate]);
+
+	// Garantir que os dados sejam sempre atualizados
+	const refreshedData = React.useMemo(() => {
+		return getDoacoesPaginadas({
 			page: currentPage,
 			limit: itemsPerPage,
 			filters: {}
 		});
-		setPaginatedData(data);
-	}, [currentPage, getDoacoesPaginadas]);
+	}, [currentPage, forceUpdate, getDoacoesPaginadas]);
 
 	// Prevent background scroll when any modal is open
 	React.useEffect(() => {
@@ -71,28 +67,10 @@ export function EditDoacoes() {
 		setShowSolicitarModal(true); // Abrir o modal para edição
 	};
 
-	const handleChange = (e) => {
-		setEditData({ ...editData, [e.target.name]: e.target.value });
-	};
-
-	const handleSave = () => {
-		updateDoacao(editId, editData);
-		setEditId(null);
-		setEditData({});
-	};
-
-	const handleCancel = () => {
-		setEditId(null);
-		setEditData({});
-	};
-
-	// Navegação para HomeRealocacao
-	const handleRealocacoesClick = () => {
-		navigate("/home-realocacao");
-	};
-
 	// Abrir modal SolicitarDoacao
 	const handleOpenSolicitarModal = () => {
+		setEditData(null); // Limpar dados para nova solicitação
+		setEditId(null); // Limpar ID para nova solicitação
 		setShowSolicitarModal(true);
 	};
 
@@ -102,17 +80,6 @@ export function EditDoacoes() {
 		setEditData(null); // Limpar dados de edição
 		setEditId(null); // Limpar ID de edição
 	};
-
-	// Abrir modal ConfirmacaoEncerrarSolicitacao
-	const handleOpenConfirmacaoModal = () => {
-		setShowConfirmacaoModal(true);
-	};
-
-	// Fechar modal ConfirmacaoEncerrarSolicitacao
-	const handleCloseConfirmacaoModal = () => {
-		setShowConfirmacaoModal(false);
-	};
-
 
 // Abrir modal de confirmação para deletar
 const handleDelete = (id) => {
@@ -149,11 +116,6 @@ const handleConfirmEncerramento = () => {
   }
   setShowConfirmacaoEncerrar(false);
 };
-
-	// Função para navegar para TodasDoacoes com filtro de categoria
-	const navigateToCategory = (categoria) => {
-		navigate(`/todas-doacoes?categoria=${encodeURIComponent(categoria)}`);
-	};
 
 	return (
 		<div className="bg-[#fafbfc] min-h-screen flex flex-col relative">
@@ -230,12 +192,12 @@ const handleConfirmEncerramento = () => {
 				<section className="max-w-6xl mx-auto px-4 mb-8">
 					{/* Contador de itens */}
 					<div className="mb-4 text-sm text-gray-600 font-medium">
-											{paginatedData.total} itens encontrados - Página {currentPage} de {paginatedData.totalPages}
+											{refreshedData.total} itens encontrados - Página {currentPage} de {refreshedData.totalPages}
 										</div>
 										<Card className="w-full bg-white border">
 											<CardContent className="py-6 px-8">
 												<div className="flex flex-col gap-6">
-													{paginatedData.items.map((pedido) => (
+													{refreshedData.items.map((pedido) => (
 														<div
 															key={pedido.id}
 															className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
@@ -362,7 +324,7 @@ const handleConfirmEncerramento = () => {
 				<div className="mb-8">
                     <Pagination 
                         currentPage={currentPage}
-                        totalPages={paginatedData.totalPages}
+                        totalPages={refreshedData.totalPages}
                         baseUrl="/edit-doacoes"
                     />
                 </div>
@@ -389,7 +351,8 @@ const handleConfirmEncerramento = () => {
 							{SolicitarDoacao ? (
 								<SolicitarDoacao 
 									onClose={handleCloseSolicitarModal} 
-									editData={editData}
+									editData={editId ? editData : null}
+									editId={editId}
 								/>
 							) : (
 								<div>

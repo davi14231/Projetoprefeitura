@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit2, X, Facebook, Trash2 } from "lucide-react";
+import { Edit2, Facebook, Trash2 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
 import ConfirmacaoDeletar from "./ConfirmacaoDeletar";
@@ -12,22 +12,7 @@ import { Pagination } from "@/components/ui/Pagination";
 
 const footerColor = "#172233";
 
-// Badge colors for categories
-const badgeColors = {
-  "Roupas e Calçados": "bg-[#007AFF] text-white", // azul
-  "Materiais Educativos e Culturais": "bg-[#34C759] text-white", // verde
-  "Saúde e Higiene": "bg-[#FF3B30] text-white", // vermelho
-  "Utensílios Gerais": "bg-[#FF9500] text-white", // laranja
-  "Itens de Inclusão e Mobilidade": "bg-[#5856D6] text-white", // roxo
-  "Eletrodomésticos e Móveis": "bg-[#8E8E93] text-white", // cinza
-  "Itens Pet": "bg-[#FFCC00] text-gray-900", // amarelo
-  "Eletrônicos": "bg-[#AF52DE] text-white", // lilás
-  "Outros": "bg-gray-300 text-gray-800",
-  default: "bg-gray-300 text-gray-800",
-};
-
 function HomeRealocacao() {
-	// Estados para edição de realocação
 	const [editData, setEditData] = useState(null);
 	const [editId, setEditId] = useState(null);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
@@ -37,7 +22,7 @@ function HomeRealocacao() {
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const { getRealocacoesPaginadas, removeRealocacao, encerrarRealocacao } = useData();
+	const { getRealocacoesPaginadas, removeRealocacao, encerrarRealocacao, forceUpdate } = useData();
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 
 	// Função para editar realocação
@@ -92,12 +77,26 @@ function HomeRealocacao() {
 		setCurrentPage(page);
 	}, [location.search]);
 
+	// Efeito para forçar re-renderização quando forceUpdate muda (nova realocação adicionada)
+	useEffect(() => {
+		// Este useEffect garante que o componente re-renderize quando uma nova realocação é adicionada
+	}, [forceUpdate]);
+
 	// Obter dados paginados usando Context
 	const paginatedData = getRealocacoesPaginadas({
 		page: currentPage,
 		limit: itemsPerPage,
 		filters: {}
 	});
+
+	// Garantir que os dados sejam sempre atualizados
+	const refreshedData = React.useMemo(() => {
+		return getRealocacoesPaginadas({
+			page: currentPage,
+			limit: itemsPerPage,
+			filters: {}
+		});
+	}, [currentPage, forceUpdate, getRealocacoesPaginadas]);
 
 	// Prevent background scroll when any modal is open
 	React.useEffect(() => {
@@ -203,12 +202,12 @@ function HomeRealocacao() {
 				<section className="max-w-6xl mx-auto px-4 mb-8">
 					{/* Contador de itens */}
 					<div className="mb-4 text-sm text-gray-600 font-medium">
-						{paginatedData.total} itens encontrados - Página {currentPage} de {paginatedData.totalPages}
+						{refreshedData.total} itens encontrados - Página {currentPage} de {refreshedData.totalPages}
 					</div>
 					<Card className="w-full bg-white border">
 						<CardContent className="py-6 px-8">
 							<div className="flex flex-col gap-6">
-								{paginatedData.items.map((pedido) => (
+								{refreshedData.items.map((pedido) => (
 									<div
 										key={pedido.id}
 										className="flex items-start gap-4 border-b pb-6 last:border-b-0 last:pb-0"
@@ -293,7 +292,7 @@ function HomeRealocacao() {
 				<div className="mb-8">
                     <Pagination 
                         currentPage={currentPage}
-                        totalPages={paginatedData.totalPages}
+                        totalPages={refreshedData.totalPages}
                         baseUrl="/home-realocacao"
                     />
                 </div>

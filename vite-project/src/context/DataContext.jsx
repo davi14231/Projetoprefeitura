@@ -30,6 +30,9 @@ export const DataProvider = ({ children }) => {
     // Adicionar listener para mudanças no store
     dataStore.addListener(handleStoreChange);
 
+    // Atualização inicial
+    handleStoreChange();
+
     // Cleanup: remover listener quando o componente for desmontado
     return () => {
       dataStore.removeListener(handleStoreChange);
@@ -38,7 +41,10 @@ export const DataProvider = ({ children }) => {
 
   // Métodos para doações
   const addDoacao = (doacao) => {
-    return dataStore.addDoacao(doacao);
+    const result = dataStore.addDoacao(doacao);
+    // Forçar atualização imediata
+    setForceUpdate(prev => prev + 1);
+    return result;
   };
 
   const removeDoacao = (id) => {
@@ -53,8 +59,13 @@ export const DataProvider = ({ children }) => {
     dataStore.updateDoacao(id, { encerrado: true });
   };
 
-  const getDoacoesPaginadas = ({ page = 1, limit = 6, filters = {} } = {}) => {
-    return dataStore.getDoacoesPaginadas(page, limit);
+  const getDoacoesPaginadas = (pageOrOptions = 1, itemsPerPage = 6) => {
+    // Aceitar tanto objeto quanto parâmetros separados
+    if (typeof pageOrOptions === 'object') {
+      const { page = 1, limit = 6 } = pageOrOptions;
+      return dataStore.getDoacoesPaginadas(page, limit);
+    }
+    return dataStore.getDoacoesPaginadas(pageOrOptions, itemsPerPage);
   };
 
   const filterDoacoes = (filters) => {
@@ -63,7 +74,10 @@ export const DataProvider = ({ children }) => {
 
   // Métodos para realocações
   const addRealocacao = (realocacao) => {
-    return dataStore.addRealocacao(realocacao);
+    const result = dataStore.addRealocacao(realocacao);
+    // Forçar atualização imediata
+    setForceUpdate(prev => prev + 1);
+    return result;
   };
 
   const removeRealocacao = (id) => {
