@@ -1,25 +1,50 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Botao } from "@/components/ui/botao";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useData } from "@/context/DataContext";
 
 export function Teladelogin() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const { login, loading } = useData();
+  
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const from = location.state?.from || "/edit-doacoes";
+  const message = location.state?.message || "";
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Aqui você pode validar o login, se quiser
-    navigate('/edit-doacoes');
+    setError("");
+    
+    if (!email || !password) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
+    
+    try {
+      const result = await login(email, password);
+      
+      if (result.success) {
+        console.log("✅ Login bem-sucedido! Redirecionando para:", from);
+        navigate(from);
+      } else {
+        setError(result.error || "Credenciais inválidas");
+      }
+    } catch (err) {
+      console.error("❌ Erro no login:", err);
+      setError("Erro ao fazer login. Tente novamente.");
+    }
   };
 
   const handleCriarConta = () => {
     alert("Redirecionar para cadastro de conta/workspace.");
-    // Exemplo: window.location.href = "/cadastro";
   };
 
   return (
@@ -40,6 +65,11 @@ export function Teladelogin() {
             <CardDescription className="text-sm text-gray-600">Acesse sua conta e continue fazendo a diferença</CardDescription>
           </CardHeader>
           <CardContent className="px-6 pb-6">
+            {message && (
+              <div className="bg-blue-100 border border-blue-300 text-blue-700 px-4 py-3 rounded mb-4">
+                {message}
+              </div>
+            )}
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-1">
                 <Label htmlFor="email" className="text-sm text-gray-700">Email</Label>
@@ -60,11 +90,16 @@ export function Teladelogin() {
                   type="password"
                   placeholder="Digite sua senha"
                   required
-                  value={senha}
-                  onChange={(e) => setSenha(e.target.value)}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full"
                 />
               </div>
+              {error && (
+                <div className="text-red-500 text-sm">
+                  {error}
+                </div>
+              )}
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center space-x-2">
                   <Checkbox id="lembrar" />
@@ -77,7 +112,7 @@ export function Teladelogin() {
                 </a>
               </div>
               <Botao type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5">
-                Entrar
+                {loading ? 'Entrando...' : 'Entrar'}
               </Botao>
               
               {/* Divisor "ou" */}

@@ -3,6 +3,7 @@ import Tela_Home from "./components/ui/paginas/Tela_Home";
 import { EditDoacoes } from "./components/ui/paginas/EditDoacoes";
 import { HomeRealocacao } from "./components/ui/paginas/HomeRealocacao";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { PrivateRoute } from "./components/auth/PrivateRoute";
 import { SolicitarDoacao } from "./components/ui/paginas/SolicitarDoacao";
 import { PostagemRealocacao } from "./components/ui/paginas/PostagemRealocacao";
 import TodasDoacoes from "./components/ui/paginas/TodasDoacoes";
@@ -108,13 +109,26 @@ function App() {
     <DataProvider>
       <BrowserRouter>
         <Routes>
+          {/* Rotas Públicas */}
           <Route path="/" element={<Tela_Home imagensCarrossel={imagensCarrossel} itens={itens} />} />
           <Route path="/login" element={<Teladelogin />} />
-          <Route path="/edit-doacoes" element={<EditDoacoes />} />
-          <Route path="/home-realocacao" element={<HomeRealocacao />} />
+          <Route path="/todas-doacoes" element={<TodasDoacoes />} />
+          
+          {/* Rotas Protegidas */}
+          <Route path="/edit-doacoes" element={
+            <PrivateRoute>
+              <EditDoacoes />
+            </PrivateRoute>
+          } />
+          
+          <Route path="/home-realocacao" element={
+            <PrivateRoute>
+              <HomeRealocacao />
+            </PrivateRoute>
+          } />
+          
           <Route path="/solicitar-doacao" element={<SolicitarDoacao />} />
           <Route path="/postagem-realocacao" element={<PostagemRealocacao />} />
-          <Route path="/todas-doacoes" element={<TodasDoacoes />} />
           <Route path="/home-ong" element={<TelahomeONG imagensCarrossel={imagensCarrossel} itens={itens} />} />
           <Route path="/realocacao-listagem" element={<RealocacaoListagem />} />
           <Route path="/confirmar-encerrar-solicitacao" element={<ConfirmacaoEncerrarSolicitacao />} />
