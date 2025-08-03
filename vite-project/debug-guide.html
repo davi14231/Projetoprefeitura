@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Debug - Fluxo de Sincronização</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .step {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .expected-log {
+            background: #e8f5e8;
+            border: 1px solid #c3e6c3;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Sistema de Debug - Sincronização EditDoacoes</h1>
+        
+        <div class="warning">
+            <h3>⚠️ Como Fazer o Debug:</h3>
+            <ol>
+                <li>Abra o <strong>Console do Navegador</strong> (F12 → Console)</li>
+                <li>Execute <code>npm run dev</code> no terminal</li>
+                <li>Acesse <code>http://localhost:5173/edit-doacoes</code></li>
+                <li>Clique em "Adicionar Nova Necessidade"</li>
+                <li>Preencha o formulário e clique em "Publicar Solicitação"</li>
+                <li><strong>Observe os logs no console</strong></li>
+            </ol>
+        </div>
+
+        <h2>📋 Sequência de Logs Esperada:</h2>
+
+        <div class="step">
+            <h4>1. Quando clicar em "Publicar Solicitação":</h4>
+            <div class="expected-log">SolicitarDoacao: Adicionando nova doação: {...}</div>
+            <div class="expected-log">DataStore: addDoacao chamado com: {...}</div>
+            <div class="expected-log">DataStore: Nova doação criada com ID: XX</div>
+            <div class="expected-log">DataStore: Total de doações após adição: XX</div>
+            <div class="expected-log">DataStore: Listeners notificados</div>
+        </div>
+
+        <div class="step">
+            <h4>2. Callback executado:</h4>
+            <div class="expected-log">SolicitarDoacao: Nova doação criada: {...}</div>
+            <div class="expected-log">SolicitarDoacao: Chamando callback onItemAdded</div>
+            <div class="expected-log">EditDoacoes: handleItemAdded chamado com: {...}</div>
+        </div>
+
+        <div class="step">
+            <h4>3. Atualização do DataContext:</h4>
+            <div class="expected-log">DataContext: handleStoreChange chamado</div>
+            <div class="expected-log">DataContext: Atualizando estados - doações: XX</div>
+            <div class="expected-log">DataContext: forceUpdate incrementado de X para Y</div>
+        </div>
+
+        <div class="step">
+            <h4>4. Refresh dos dados:</h4>
+            <div class="expected-log">EditDoacoes: refreshData chamado - página atual: 1</div>
+            <div class="expected-log">DataStore: getDoacoesPaginadas chamado - página: 1</div>
+            <div class="expected-log">DataStore: Total de doações ativas: XX</div>
+            <div class="expected-log">EditDoacoes: Dados recebidos de getDoacoesPaginadas: {...}</div>
+        </div>
+
+        <div class="step">
+            <h4>5. Atualização do estado local:</h4>
+            <div class="expected-log">EditDoacoes: Adicionando item diretamente ao estado da página 1</div>
+            <div class="expected-log">EditDoacoes: Estado anterior: {...}</div>
+            <div class="expected-log">EditDoacoes: Novo estado: {...}</div>
+        </div>
+
+        <h2>🎯 Resultados Possíveis:</h2>
+        
+        <div class="step">
+            <h4 class="success">✅ Se todos os logs aparecerem:</h4>
+            <p>O sistema está funcionando. O item deve aparecer na lista!</p>
+        </div>
+
+        <div class="step">
+            <h4 class="error">❌ Se alguns logs não aparecerem:</h4>
+            <p>Identifique onde o fluxo está parando e me informe qual foi o último log exibido.</p>
+        </div>
+
+        <h2>📝 Possíveis Problemas:</h2>
+        <ul>
+            <li><strong>Callback não chamado:</strong> Se não ver "SolicitarDoacao: Chamando callback onItemAdded"</li>
+            <li><strong>DataStore não atualiza:</strong> Se não ver logs do DataStore</li>
+            <li><strong>Listeners não funcionam:</strong> Se não ver "DataContext: handleStoreChange chamado"</li>
+            <li><strong>Dados não chegam:</strong> Se não ver "EditDoacoes: Dados recebidos"</li>
+        </ul>
+
+        <div class="warning">
+            <h3>🚀 Após o teste:</h3>
+            <p>Copie e cole todos os logs do console e me informe qual foi o resultado. Com essas informações, posso identificar exatamente onde está o problema!</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -17,13 +17,13 @@ class DataStore {
         ong: "Casa da Esperança",
         imageUrl: "/imagens/CestasBasicas.jpg",
         descricao: "Necessitamos de cestas básicas para 50 famílias em situação de vulnerabilidade",
-        publicado: "15/01/2025",
-        validade: "30/01/2025",
+        publicado: "03/08/2025",
+        validade: "18/08/2025",
         quantidade: 50,
         email: "contato@casadaesperanca.org.br",
         whatsapp: "(81) 99999-1111",
         urgencia: "Alta",
-        prazo: "30/01/2025"
+        prazo: "18/08/2025"
       },
       {
         id: 2,
@@ -33,13 +33,13 @@ class DataStore {
         ong: "Aquecendo Vidas",
         imageUrl: "/imagens/roupas.jpg",
         descricao: "Precisamos de roupas de inverno para crianças e adultos",
-        publicado: "12/01/2025",
-        validade: "28/01/2025",
+        publicado: "02/08/2025",
+        validade: "10/08/2025",
         quantidade: 120,
         email: "contato@aquecendovidas.org.br",
         whatsapp: "(81) 99999-2222",
         urgencia: "Média",
-        prazo: "28/01/2025"
+        prazo: "10/08/2025"
       },
       {
         id: 3,
@@ -78,13 +78,13 @@ class DataStore {
         ong: "Alegria Infantil",
         imageUrl: "/imagens/BrinquedosEdu.jpg",
         descricao: "Brinquedos educativos para nossa creche comunitária",
-        publicado: "05/01/2025",
-        validade: "20/01/2025",
+        publicado: "01/08/2025",
+        validade: "06/08/2025",
         quantidade: 80,
         email: "contato@alegriainfantil.org.br",
         whatsapp: "(81) 99999-5555",
         urgencia: "Alta",
-        prazo: "20/01/2025"
+        prazo: "06/08/2025"
       },
       {
         id: 6,
@@ -171,9 +171,10 @@ class DataStore {
         ong: "Instituto Beneficente",
         imageUrl: "/imagens/CestasBasicas.jpg",
         descricao: "Cestas básicas completas para famílias em situação de vulnerabilidade",
-        publicado: "15/01/2025",
+        publicado: "03/08/2025",
         quantidade: 100,
-        validade: "30/01/2025",
+        validade: "18/08/2025",
+        prazo: "18/08/2025",
         email: "contato@institutobeneficente.org.br",
       },
       {
@@ -186,9 +187,10 @@ class DataStore {
         descricao: "Roupas infantis em bom estado, tamanhos variados de 2 a 12 anos",
         imageUrl: "/imagens/roupas.jpg",
         descricao: "Roupas infantis em bom estado, tamanhos variados de 2 a 12 anos",
-        publicado: "12/01/2025",
+        publicado: "02/08/2025",
         quantidade: 250,
-        validade: "28/01/2025",
+        validade: "10/08/2025",
+        prazo: "10/08/2025",
         email: "contato@casadacrianca.org.br",
         whatsapp: "(81) 99999-2222",
         tempoRestante: "12 dias"
@@ -201,9 +203,10 @@ class DataStore {
         imageUrl: "/imagens/Laptops.jpg",
         descricao: "Laptops para programas educacionais e inclusão digital em bom funcionamento",
         descricao: "Laptops para programas educacionais e inclusão digital em bom funcionamento",
-        publicado: "10/01/2025",
+        publicado: "03/08/2025",
         quantidade: 20,
-        validade: "30/03/2025",
+        validade: "02/10/2025",
+        prazo: "02/10/2025",
         email: "contato@educacaodigital.org.br",
         whatsapp: "(81) 99999-3333",
         tempoRestante: "Sem prazo"
@@ -221,6 +224,7 @@ class DataStore {
         publicado: "08/01/2025",
         quantidade: 35,
         validade: "28/02/2025",
+        prazo: "28/02/2025",
         email: "contato@reciclandovidas.org.br",
         whatsapp: "(81) 99999-4444",
         tempoRestante: "Sem prazo"
@@ -237,9 +241,10 @@ class DataStore {
         ong: "Futuro Brilhante",
         imageUrl: "/imagens/MatEsc.jpg",
         descricao: "Cadernos, lápis, canetas e materiais escolares diversos para crianças",
-        publicado: "05/01/2025",
+        publicado: "03/08/2025",
         quantidade: 180,
-        validade: "20/01/2025",
+        validade: "02/10/2025",
+        prazo: "02/10/2025",
         email: "contato@futurobrilhante.org.br",
         whatsapp: "(81) 99999-5555",
         tempoRestante: "4 dias"

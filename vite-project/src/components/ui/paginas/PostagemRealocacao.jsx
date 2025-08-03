@@ -92,6 +92,17 @@ export function PostagemRealocacao({ onClose, editData = null }) {
       finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
     }
 
+    // Calcular data final com prazo padrão de 60 dias
+    const hoje = new Date();
+    const dataLimite = new Date(hoje);
+    dataLimite.setDate(hoje.getDate() + 60); // 60 dias padrão
+    
+    // Formatar data como DD/MM/YYYY
+    const dia = String(dataLimite.getDate()).padStart(2, '0');
+    const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+    const ano = dataLimite.getFullYear();
+    const dataFinal = `${dia}/${mes}/${ano}`;
+
     // Criar dados da realocação
     const dadosRealocacao = {
       titulo: formData.titulo,
@@ -99,9 +110,11 @@ export function PostagemRealocacao({ onClose, editData = null }) {
       quantidade: formData.quantidade,
       email: formData.email,
       whatsapp: formData.whatsapp,
+      prazo: dataFinal,
       descricao: formData.descricao,
       ong: "Sua ONG",
       imageUrl: finalImageUrl,
+      validade: dataFinal
     };
 
     if (isEditing) {

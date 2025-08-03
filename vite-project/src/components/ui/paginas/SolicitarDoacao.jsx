@@ -94,6 +94,27 @@ export function SolicitarDoacao({ onClose, editData = null }) {
       finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
     }
 
+    // Calcular data final baseada no prazo selecionado
+    let dataFinal = "";
+    if (formData.prazo) {
+      const hoje = new Date();
+      let diasPrazo = 60; // padrão
+      
+      if (formData.prazo === "15 dias") diasPrazo = 15;
+      else if (formData.prazo === "30 dias") diasPrazo = 30;
+      else if (formData.prazo === "45 dias") diasPrazo = 45;
+      else if (formData.prazo === "60 dias") diasPrazo = 60;
+      
+      const dataLimite = new Date(hoje);
+      dataLimite.setDate(hoje.getDate() + diasPrazo);
+      
+      // Formatar data como DD/MM/YYYY
+      const dia = String(dataLimite.getDate()).padStart(2, '0');
+      const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+      const ano = dataLimite.getFullYear();
+      dataFinal = `${dia}/${mes}/${ano}`;
+    }
+
     // Criar dados da doação
     const dadosDoacao = {
       titulo: formData.titulo,
@@ -102,11 +123,11 @@ export function SolicitarDoacao({ onClose, editData = null }) {
       email: formData.email,
       whatsapp: formData.whatsapp,
       urgencia: formData.urgencia || "Baixa",
-      prazo: formData.prazo,
+      prazo: dataFinal,
       descricao: formData.descricao,
       ong: "Sua ONG", // Seria pego do usuário logado
       imageUrl: finalImageUrl, // Usar a imagem enviada ou padrão
-      validade: formData.prazo
+      validade: dataFinal
     };
 
     if (isEditing) {

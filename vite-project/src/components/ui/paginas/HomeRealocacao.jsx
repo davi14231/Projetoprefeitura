@@ -9,6 +9,7 @@ import ConfirmacaoDeletar from "./ConfirmacaoDeletar";
 import { PostagemRealocacao } from "./PostagemRealocacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
+import { TempoRestante } from "@/components/ui/TempoRestante";
 
 const footerColor = "#172233";
 
@@ -245,6 +246,7 @@ function HomeRealocacao() {
 											</div>
 											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
 												<span>Publicado: {pedido.publicado}</span>
+												<TempoRestante prazo={pedido.prazo || pedido.validade} publicado={pedido.publicado} />
 											</div>
 											<div className="mt-2 text-gray-700 text-base">
 												<span className="block w-full break-words">
