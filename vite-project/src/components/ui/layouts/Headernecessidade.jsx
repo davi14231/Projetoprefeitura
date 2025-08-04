@@ -1,11 +1,15 @@
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import TelaFlutuante from "../TelaFlutuante";
+import { SearchDropdown } from "../SearchDropdown";
 
 export function Headernecessidade() {
   const [telaFlutuanteVisible, setTelaFlutuanteVisible] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchVisible, setSearchVisible] = useState(false);
+  const searchRef = useRef(null);
 
   const handleMouseEnter = () => {
     if (timeoutId) {
@@ -31,6 +35,32 @@ export function Headernecessidade() {
     setTelaFlutuanteVisible(false);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setSearchVisible(e.target.value.length >= 2);
+  };
+
+  const handleSearchFocus = () => {
+    if (searchTerm.length >= 2) {
+      setSearchVisible(true);
+    }
+  };
+
+  const handleSearchClose = () => {
+    setSearchVisible(false);
+  };
+
+  // Fechar dropdown ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchVisible(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <header className="bg-gray-800 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
@@ -47,7 +77,7 @@ export function Headernecessidade() {
 
           {/* Campo de busca */}
           <div className="flex-1 flex justify-center md:justify-center my-2 md:my-0">
-            <div className="relative w-full max-w-md">
+            <div className="relative w-full max-w-md" ref={searchRef}>
               <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <img
                   src="/imagens/lupa.png"
@@ -60,7 +90,16 @@ export function Headernecessidade() {
                 type="text"
                 placeholder="Pesquisar necessidades ou itens das ONGs"
                 className="pl-10 pr-4 py-2 rounded-lg text-gray-800 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onFocus={handleSearchFocus}
               />
+              {searchVisible && (
+                <SearchDropdown 
+                  searchTerm={searchTerm} 
+                  onClose={handleSearchClose}
+                />
+              )}
             </div>
           </div>
 
