@@ -11,7 +11,7 @@ export function BlocoONG2() {
           Solicite itens de forma rápida e transparente
         </p>
         <div className="flex flex-wrap justify-center gap-8 mb-10">
-          <Link to="/login" className="bg-white rounded-lg shadow-md p-6 w-64 flex flex-col items-center relative hover:shadow-lg transition-shadow cursor-pointer">
+          <div className="bg-white rounded-lg shadow-md p-6 w-64 flex flex-col items-center relative">
             {/* Ícone acima do card */}
             <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
               <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
@@ -31,7 +31,7 @@ export function BlocoONG2() {
                 Faça o cadastro e seja validado pela equipe da plataforma
               </p>
             </div>
-          </Link>
+          </div>
           <div className="bg-white rounded-lg shadow-md p-6 w-64 flex flex-col items-center relative">
             {/* Ícone acima do card */}
             <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
