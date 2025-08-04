@@ -7,8 +7,12 @@ import ListagemHome2 from "@/components/ui/ListagemHome2";
 import Footer from "@/components/ui/layouts/Footer";
 import { Headerinicio } from "@/components/ui/layouts/Headerinicio";
 import DetalheDoacao from "./DetalheDoacao";
+import { useData } from "@/context/DataContext";
 
-export default function TelahomeONG({ imagensCarrossel, itens }) {
+export default function TelahomeONG({ imagensCarrossel }) {
+  // Usar dados do contexto em vez de props
+  const { doacoes, loading } = useData();
+  
   // As imagens do carrossel agora vêm separadas
   const [imgIndex, setImgIndex] = React.useState(0);
   const [showDetalheModal, setShowDetalheModal] = React.useState(false);
@@ -150,7 +154,7 @@ export default function TelahomeONG({ imagensCarrossel, itens }) {
                 <span className="text-red-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
                 <span className="font-bold text-lg">Prestes a Vencer</span>
               </div>
-              <ListagemHome itens={itens} carrosselId="carousel-prestes" onCardClick={handleOpenDetalheModal} />
+              <ListagemHome itens={doacoes} carrosselId="carousel-prestes" onCardClick={handleOpenDetalheModal} />
             </div>
 
             {/* Carrossel 2: Todas as Necessidades */}
@@ -159,7 +163,7 @@ export default function TelahomeONG({ imagensCarrossel, itens }) {
                 <span className="text-purple-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20m10-10H2"/></svg></span>
                 <span className="font-bold text-lg">Todas as Necessidades</span>
               </div>
-              <ListagemHome2 itens={itens} carrosselId="carousel-todas" onCardClick={handleOpenDetalheModal} />
+              <ListagemHome2 itens={doacoes} carrosselId="carousel-todas" onCardClick={handleOpenDetalheModal} />
               <div className="flex justify-end mt-6">
                 <button 
                   onClick={() => navigate("/todas-doacoes")}

@@ -1,8 +1,14 @@
 import { CardHome } from "@/components/ui/CardHome";
 import { useState } from "react";
 
-function ListagemHome({ itens, carrosselId = 'carousel-container', onCardClick }) {
+function ListagemHome({ itens = [], carrosselId = 'carousel-container', onCardClick }) {
   const [scrollPosition, setScrollPosition] = useState(0);
+
+  // Verificar se itens é um array válido
+  if (!Array.isArray(itens)) {
+    console.warn('ListagemHome: itens deve ser um array, recebido:', itens);
+    return <div>Carregando...</div>;
+  }
 
   const scrollLeft = () => {
     const container = document.getElementById(carrosselId);
@@ -34,14 +40,14 @@ function ListagemHome({ itens, carrosselId = 'carousel-container', onCardClick }
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {itens.map(item => (
-          <div key={item.id} className="flex-shrink-0">
+          <div key={item.id_produto || item.id} className="flex-shrink-0">
             <CardHome
-              imageUrl={item.imageUrl}
-              categoria={item.categoria}
+              imageUrl={item.url_imagem || item.imageUrl}
+              categoria={item.tipo_item || item.categoria}
               urgencia={item.urgencia}
-              ong={item.ong}
+              ong={item.ong?.nome || item.ong}
               titulo={item.titulo}
-              validade={item.validade}
+              validade={item.prazo_necessidade || item.validade}
               descricao={item.descricao}
               quantidade={item.quantidade}
               onClick={() => onCardClick && onCardClick(item)}

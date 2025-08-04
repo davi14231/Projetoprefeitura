@@ -1,4 +1,5 @@
 import api from './api';
+import { mapRealocacoesFromBackend, mapRealocacaoFromBackend } from '../utils/dataMapper';
 
 export const realocacoesService = {
   // 🔍 Listar realocações públicas
@@ -14,7 +15,7 @@ export const realocacoesService = {
       });
       
       const response = await api.get(`/realocacoes/catalogo?${params.toString()}`);
-      return response.data;
+      return mapRealocacoesFromBackend(response.data); // Mapear dados do backend
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Erro ao carregar realocações');
     }

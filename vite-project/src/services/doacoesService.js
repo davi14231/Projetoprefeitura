@@ -1,4 +1,5 @@
 import api from './api';
+import { mapDoacoesFromBackend, mapDoacaoFromBackend } from '../utils/dataMapper';
 
 export const doacoesService = {
   // 🔍 Listar doações públicas
@@ -14,7 +15,10 @@ export const doacoesService = {
       });
       
       const response = await api.get(`/doacoes?${params.toString()}`);
-      return response.data;
+      console.log('🔍 doacoesService - Response completa:', response.data);
+      
+      // O backend retorna diretamente o array de doações, mapeamos para o formato esperado
+      return mapDoacoesFromBackend(response.data); 
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Erro ao carregar doações');
     }
@@ -24,7 +28,7 @@ export const doacoesService = {
   async listarMinhasDoacoes(filtros = {}) {
     try {
       const response = await api.get('/doacoes/minhas/ativas');
-      return response.data;
+      return mapDoacoesFromBackend(response.data); // Mapear dados do backend
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Erro ao carregar suas doações');
     }
@@ -34,7 +38,7 @@ export const doacoesService = {
   async listarMinhasDoacoesFinalizadas() {
     try {
       const response = await api.get('/doacoes/minhas/finalizadas');
-      return response.data;
+      return mapDoacoesFromBackend(response.data); // Mapear dados do backend
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Erro ao carregar doações finalizadas');
     }
@@ -44,7 +48,7 @@ export const doacoesService = {
   async obterDoacao(id) {
     try {
       const response = await api.get(`/doacoes/${id}`);
-      return response.data;
+      return mapDoacaoFromBackend(response.data); // Mapear dados do backend
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Erro ao carregar doação');
     }

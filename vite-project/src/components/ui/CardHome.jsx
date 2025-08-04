@@ -14,8 +14,8 @@ export function CardHome({
 }) {
   // Define a cor do badge de urgência conforme o valor
   let urgenciaColor = "bg-red-400/90 text-white";
-  if (urgencia === "Média") urgenciaColor = "bg-yellow-400/90 text-yellow-900";
-  if (urgencia === "Baixa") urgenciaColor = "bg-green-400/90 text-white";
+  if (urgencia === "Média" || urgencia === "Media" || urgencia === "MEDIA") urgenciaColor = "bg-yellow-400/90 text-yellow-900";
+  if (urgencia === "Baixa" || urgencia === "BAIXA") urgenciaColor = "bg-green-400/90 text-white";
 
   return (
     <Card 

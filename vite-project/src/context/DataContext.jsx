@@ -40,7 +40,7 @@ export const DataProvider = ({ children }) => {
       } else {
         // Usar API
         const apiDoacoes = await doacoesService.listarDoacoes(filtros);
-        setDoacoes(apiDoacoes);
+        setDoacoes(Array.isArray(apiDoacoes) ? apiDoacoes : []);
       }
     } catch (error) {
       console.error('Erro ao carregar doações:', error);
@@ -62,7 +62,7 @@ export const DataProvider = ({ children }) => {
       } else {
         // Usar API
         const apiRealocacoes = await realocacoesService.listarRealocacoes(filtros);
-        setRealocacoes(apiRealocacoes);
+        setRealocacoes(Array.isArray(apiRealocacoes) ? apiRealocacoes : []);
       }
     } catch (error) {
       console.error('Erro ao carregar realocações:', error);
