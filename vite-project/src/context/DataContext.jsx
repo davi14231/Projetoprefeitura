@@ -21,7 +21,7 @@ export const DataProvider = ({ children }) => {
   const [realocacoes, setRealocacoes] = useState([]);
   const [forceUpdate, setForceUpdate] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [useLocalData, setUseLocalData] = useState(true); // ⚠️ VOLTANDO PARA LOCAL até resolver API
+  const [useLocalData, setUseLocalData] = useState(false); // ✅ USANDO API
 
   // Carregar dados iniciais
   useEffect(() => {
