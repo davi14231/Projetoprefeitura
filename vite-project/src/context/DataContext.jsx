@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { doacoesService } from '../services/doacoesService';
 import { realocacoesService } from '../services/realocacoesService';
-import dataStore from '../store/DataStore'; // Fallback para dados locais
 
 // Criar o Context
 const DataContext = createContext();
@@ -19,33 +18,29 @@ export const useData = () => {
 export const DataProvider = ({ children }) => {
   const [doacoes, setDoacoes] = useState([]);
   const [realocacoes, setRealocacoes] = useState([]);
-  const [forceUpdate, setForceUpdate] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [useLocalData, setUseLocalData] = useState(false); // ✅ USANDO API
+  const [error, setError] = useState(null);
+  const [apiConnected, setApiConnected] = useState(false);
 
   // Carregar dados iniciais
   useEffect(() => {
     loadDoacoes();
     loadRealocacoes();
-  }, [useLocalData]);
+  }, []);
 
   // Função para carregar doações
   const loadDoacoes = async (filtros = {}) => {
     setLoading(true);
+    setError(null);
     try {
-      if (useLocalData) {
-        // Usar dados locais (fallback)
-        const localDoacoes = dataStore.getDoacoes();
-        setDoacoes(localDoacoes);
-      } else {
-        // Usar API
-        const apiDoacoes = await doacoesService.listarDoacoes(filtros);
-        setDoacoes(Array.isArray(apiDoacoes) ? apiDoacoes : []);
-      }
+      const apiDoacoes = await doacoesService.listarDoacoes(filtros);
+      setDoacoes(Array.isArray(apiDoacoes) ? apiDoacoes : []);
+      setApiConnected(true);
     } catch (error) {
       console.error('Erro ao carregar doações:', error);
-      // Fallback para dados locais em caso de erro
-      setDoacoes(dataStore.getDoacoes());
+      setError('Erro ao carregar doações da API');
+      setDoacoes([]);
+      setApiConnected(false);
     } finally {
       setLoading(false);
     }
@@ -54,88 +49,75 @@ export const DataProvider = ({ children }) => {
   // Função para carregar realocações
   const loadRealocacoes = async (filtros = {}) => {
     setLoading(true);
+    setError(null);
     try {
-      if (useLocalData) {
-        // Usar dados locais (fallback)
-        const localRealocacoes = dataStore.getRealocacoes();
-        setRealocacoes(localRealocacoes);
-      } else {
-        // Usar API
-        const apiRealocacoes = await realocacoesService.listarRealocacoes(filtros);
-        setRealocacoes(Array.isArray(apiRealocacoes) ? apiRealocacoes : []);
-      }
+      const apiRealocacoes = await realocacoesService.listarRealocacoes(filtros);
+      setRealocacoes(Array.isArray(apiRealocacoes) ? apiRealocacoes : []);
+      setApiConnected(true);
     } catch (error) {
       console.error('Erro ao carregar realocações:', error);
-      // Fallback para dados locais em caso de erro
-      setRealocacoes(dataStore.getRealocacoes());
+      setError('Erro ao carregar realocações da API');
+      setRealocacoes([]);
+      setApiConnected(false);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Verificar conexão com API
+  const checkApiConnection = async () => {
+    try {
+      const response = await doacoesService.listarDoacoes();
+      setApiConnected(true);
+      return true;
+    } catch (error) {
+      setApiConnected(false);
+      return false;
     }
   };
 
   // === MÉTODOS PARA DOAÇÕES ===
   const addDoacao = async (doacao) => {
     try {
-      if (useLocalData) {
-        const result = dataStore.addDoacao(doacao);
-        setDoacoes(dataStore.getDoacoes());
-        setForceUpdate(prev => prev + 1);
-        return result;
-      } else {
-        const result = await doacoesService.criarDoacao(doacao);
-        await loadDoacoes();
-        return result;
-      }
+      const result = await doacoesService.criarDoacao(doacao);
+      await loadDoacoes();
+      return result;
     } catch (error) {
       console.error('Erro ao adicionar doação:', error);
+      setError('Erro ao adicionar doação');
       throw error;
     }
   };
 
   const removeDoacao = async (id) => {
     try {
-      if (useLocalData) {
-        dataStore.removeDoacao(id);
-        setDoacoes(dataStore.getDoacoes());
-        setForceUpdate(prev => prev + 1);
-      } else {
-        await doacoesService.deletarDoacao(id);
-        await loadDoacoes();
-      }
+      await doacoesService.deletarDoacao(id);
+      await loadDoacoes();
     } catch (error) {
       console.error('Erro ao remover doação:', error);
+      setError('Erro ao remover doação');
       throw error;
     }
   };
 
   const updateDoacao = async (id, dadosAtualizados) => {
     try {
-      if (useLocalData) {
-        dataStore.updateDoacao(id, dadosAtualizados);
-        setDoacoes(dataStore.getDoacoes());
-        setForceUpdate(prev => prev + 1);
-      } else {
-        await doacoesService.editarDoacao(id, dadosAtualizados);
-        await loadDoacoes();
-      }
+      await doacoesService.editarDoacao(id, dadosAtualizados);
+      await loadDoacoes();
     } catch (error) {
       console.error('Erro ao atualizar doação:', error);
+      setError('Erro ao atualizar doação');
       throw error;
     }
   };
 
   const encerrarDoacao = async (id) => {
     try {
-      if (useLocalData) {
-        dataStore.encerrarDoacao(id);
-        setDoacoes(dataStore.getDoacoes());
-        setForceUpdate(prev => prev + 1);
-      } else {
-        await doacoesService.alterarStatus(id, 'FINALIZADA');
-        await loadDoacoes();
-      }
+      await doacoesService.alterarStatus(id, 'FINALIZADA');
+      await loadDoacoes();
     } catch (error) {
       console.error('Erro ao encerrar doação:', error);
+      setError('Erro ao encerrar doação');
       throw error;
     }
   };
@@ -143,123 +125,122 @@ export const DataProvider = ({ children }) => {
   // === MÉTODOS PARA REALOCAÇÕES ===
   const addRealocacao = async (realocacao) => {
     try {
-      if (useLocalData) {
-        const result = dataStore.addRealocacao(realocacao);
-        setRealocacoes(dataStore.getRealocacoes());
-        setForceUpdate(prev => prev + 1);
-        return result;
-      } else {
-        const result = await realocacoesService.criarRealocacao(realocacao);
-        await loadRealocacoes();
-        return result;
-      }
+      const result = await realocacoesService.criarRealocacao(realocacao);
+      await loadRealocacoes();
+      return result;
     } catch (error) {
       console.error('Erro ao adicionar realocação:', error);
+      setError('Erro ao adicionar realocação');
       throw error;
     }
   };
 
   const removeRealocacao = async (id) => {
     try {
-      if (useLocalData) {
-        dataStore.removeRealocacao(id);
-        setRealocacoes(dataStore.getRealocacoes());
-        setForceUpdate(prev => prev + 1);
-      } else {
-        await realocacoesService.deletarRealocacao(id);
-        await loadRealocacoes();
-      }
+      await realocacoesService.deletarRealocacao(id);
+      await loadRealocacoes();
     } catch (error) {
       console.error('Erro ao remover realocação:', error);
+      setError('Erro ao remover realocação');
       throw error;
     }
   };
 
   const updateRealocacao = async (id, dadosAtualizados) => {
     try {
-      if (useLocalData) {
-        dataStore.updateRealocacao(id, dadosAtualizados);
-        setRealocacoes(dataStore.getRealocacoes());
-        setForceUpdate(prev => prev + 1);
-      } else {
-        await realocacoesService.editarRealocacao(id, dadosAtualizados);
-        await loadRealocacoes();
-      }
+      await realocacoesService.editarRealocacao(id, dadosAtualizados);
+      await loadRealocacoes();
     } catch (error) {
       console.error('Erro ao atualizar realocação:', error);
+      setError('Erro ao atualizar realocação');
       throw error;
     }
   };
 
   const encerrarRealocacao = async (id) => {
     try {
-      if (useLocalData) {
-        dataStore.encerrarRealocacao(id);
-        setRealocacoes(dataStore.getRealocacoes());
-        setForceUpdate(prev => prev + 1);
-      } else {
-        await realocacoesService.alterarStatus(id, 'FINALIZADA');
-        await loadRealocacoes();
-      }
+      await realocacoesService.alterarStatus(id, 'FINALIZADA');
+      await loadRealocacoes();
     } catch (error) {
       console.error('Erro ao encerrar realocação:', error);
+      setError('Erro ao encerrar realocação');
       throw error;
     }
   };
 
-  // === MÉTODOS DE PAGINAÇÃO (compatibilidade) ===
+  // === MÉTODOS DE PAGINAÇÃO ===
   const getDoacoesPaginadas = (options = {}) => {
-    if (useLocalData) {
-      return dataStore.getDoacoesPaginadas(options);
-    } else {
-      // Para API, implementar paginação aqui ou retornar dados já carregados
-      const { page = 1, limit = 6 } = options;
-      const startIndex = (page - 1) * limit;
-      const endIndex = startIndex + limit;
-      const items = doacoes.slice(startIndex, endIndex);
-      
-      return {
-        items,
-        currentPage: page,
-        totalPages: Math.ceil(doacoes.length / limit),
-        totalItems: doacoes.length,
-        total: doacoes.length,
-        hasNextPage: endIndex < doacoes.length,
-        hasPrevPage: page > 1
-      };
-    }
+    const { page = 1, limit = 6 } = options;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const items = doacoes.slice(startIndex, endIndex);
+    
+    return {
+      items,
+      currentPage: page,
+      totalPages: Math.ceil(doacoes.length / limit),
+      totalItems: doacoes.length,
+      total: doacoes.length,
+      hasNextPage: endIndex < doacoes.length,
+      hasPrevPage: page > 1
+    };
   };
 
   const getRealocacoesPaginadas = (options = {}) => {
-    if (useLocalData) {
-      return dataStore.getRealocacoesPaginadas(options);
-    } else {
-      // Para API, implementar paginação aqui ou retornar dados já carregados
-      const { page = 1, limit = 6 } = options;
-      const startIndex = (page - 1) * limit;
-      const endIndex = startIndex + limit;
-      const items = realocacoes.slice(startIndex, endIndex);
-      
-      return {
-        items,
-        currentPage: page,
-        totalPages: Math.ceil(realocacoes.length / limit),
-        totalItems: realocacoes.length,
-        total: realocacoes.length,
-        hasNextPage: endIndex < realocacoes.length,
-        hasPrevPage: page > 1
-      };
-    }
+    const { page = 1, limit = 6 } = options;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const items = realocacoes.slice(startIndex, endIndex);
+    
+    return {
+      items,
+      currentPage: page,
+      totalPages: Math.ceil(realocacoes.length / limit),
+      totalItems: realocacoes.length,
+      total: realocacoes.length,
+      hasNextPage: endIndex < realocacoes.length,
+      hasPrevPage: page > 1
+    };
   };
 
   // === FUNÇÕES UTILITÁRIAS ===
-  const toggleDataSource = () => {
-    setUseLocalData(prev => !prev);
-  };
-
   const refreshData = async () => {
     await loadDoacoes();
     await loadRealocacoes();
+  };
+
+  // Filtrar doações por categoria
+  const getDoacoesPorCategoria = (categoria) => {
+    return doacoes.filter(doacao => 
+      categoria === 'Todos' || doacao.categoria === categoria
+    );
+  };
+
+  // Filtrar realocações por categoria
+  const getRealocacoesPorCategoria = (categoria) => {
+    return realocacoes.filter(realocacao => 
+      categoria === 'Todos' || realocacao.categoria === categoria
+    );
+  };
+
+  // Buscar doações por termo
+  const searchDoacoes = (termo) => {
+    if (!termo) return doacoes;
+    return doacoes.filter(doacao =>
+      doacao.titulo?.toLowerCase().includes(termo.toLowerCase()) ||
+      doacao.categoria?.toLowerCase().includes(termo.toLowerCase()) ||
+      doacao.ong?.toLowerCase().includes(termo.toLowerCase())
+    );
+  };
+
+  // Buscar realocações por termo
+  const searchRealocacoes = (termo) => {
+    if (!termo) return realocacoes;
+    return realocacoes.filter(realocacao =>
+      realocacao.titulo?.toLowerCase().includes(termo.toLowerCase()) ||
+      realocacao.categoria?.toLowerCase().includes(termo.toLowerCase()) ||
+      realocacao.ong?.toLowerCase().includes(termo.toLowerCase())
+    );
   };
 
   // Valor do contexto
@@ -268,8 +249,8 @@ export const DataProvider = ({ children }) => {
     doacoes,
     realocacoes,
     loading,
-    forceUpdate,
-    useLocalData,
+    error,
+    apiConnected,
     
     // Métodos para doações
     addDoacao,
@@ -285,11 +266,18 @@ export const DataProvider = ({ children }) => {
     encerrarRealocacao,
     getRealocacoesPaginadas,
     
+    // Métodos de busca e filtro
+    getDoacoesPorCategoria,
+    getRealocacoesPorCategoria,
+    searchDoacoes,
+    searchRealocacoes,
+    
     // Utilitários
     loadDoacoes,
     loadRealocacoes,
-    toggleDataSource,
-    refreshData
+    refreshData,
+    checkApiConnection,
+    clearError: () => setError(null)
   };
 
   return (
