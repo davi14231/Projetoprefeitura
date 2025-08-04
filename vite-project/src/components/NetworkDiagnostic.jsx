@@ -12,7 +12,7 @@ export const NetworkDiagnostic = () => {
     // Testar diferentes URLs base
     const baseUrls = [
       'http://localhost:3000',
-      'http://localhost:3000/api',
+      'http://localhost:3001',
       'http://localhost:8000',
       'http://localhost:5000'
     ];
@@ -85,7 +85,7 @@ export const NetworkDiagnostic = () => {
         const response = await fetch('http://localhost:3000', {
           method: 'OPTIONS',
           headers: {
-            'Origin': 'http://localhost:5173',
+            'Origin': 'http://localhost:5174',
             'Access-Control-Request-Method': 'POST',
             'Access-Control-Request-Headers': 'Content-Type'
           }

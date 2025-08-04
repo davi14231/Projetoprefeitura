@@ -1,15 +1,14 @@
-import path from "path"
-import tailwindcss from "@tailwindcss/vite"
-import react from "@vitejs/plugin-react"
-import { defineConfig } from "vite"
+// Proxy para contornar problemas de CORS durante desenvolvimento
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     port: 5173,
     proxy: {
-      // Proxy para contornar CORS - redireciona /api/* para localhost:3000/*
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,

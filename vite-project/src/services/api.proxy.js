@@ -2,8 +2,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 // ⚠️ VERSÃO COM PROXY PARA CONTORNAR CORS
-// O Vite fará proxy de /api/* para http://localhost:3000/*
-const API_BASE_URL = '/api';
+// Use esta configuração se o backend não aceitar a porta do frontend
+const API_BASE_URL = '/api'; // Usa proxy do Vite
 
 // Criar instância do axios
 const api = axios.create({
@@ -14,7 +14,7 @@ const api = axios.create({
   },
 });
 
-// Interceptor para adicionar token automaticamente
+// Interceptor para adicionar token JWT automaticamente
 api.interceptors.request.use(
   (config) => {
     const token = Cookies.get('auth_token');
@@ -28,16 +28,16 @@ api.interceptors.request.use(
   }
 );
 
-// Interceptor para lidar com respostas
+// Interceptor para lidar com respostas de erro
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       // Token expirado ou inválido
+      console.warn('🔑 Token inválido. Redirecionando para login...');
       Cookies.remove('auth_token');
       Cookies.remove('user_data');
+      // Redirecionar para login se necessário
       window.location.href = '/login';
     }
     return Promise.reject(error);

@@ -6,7 +6,7 @@
 📍 **IMPORTANTE**: Configure a URL do seu backend no arquivo:
 ```javascript
 // src/services/api.js (linha 4)
-const API_BASE_URL = 'http://localhost:3001/api'; // ⚠️ ALTERE PARA SUA URL
+const API_BASE_URL = 'http://localhost:5173/'; // ⚠️ ALTERE PARA SUA URL
 ```
 
 ### 2. **Dependências Instaladas**

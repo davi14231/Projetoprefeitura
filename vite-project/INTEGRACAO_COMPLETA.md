@@ -73,7 +73,7 @@
 ### **1. URL do Backend configurada:**
 ```javascript
 // src/services/api.js - linha 5
-const API_BASE_URL = 'http://localhost:3000/'; // ← Sua URL aqui
+const API_BASE_URL = 'http://localhost:5173/'; // ← Sua URL aqui
 ```
 
 ### **2. Modo API ativado:**
