@@ -96,8 +96,8 @@ function App() {
           nomeONG="Instituto Beneficente"
         />
         
-        {/* Componente para monitorar conexão com backend */}
-        <BackendConnectionTest />
+        {/* Componente para monitorar conexão com backend - TEMPORARIAMENTE DESABILITADO */}
+        {/* <BackendConnectionTest /> */}
         </BrowserRouter>
       </DataProvider>
     </AuthProvider>

@@ -34,11 +34,12 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    // Remover redirecionamento automático que causa loops
     if (error.response?.status === 401) {
-      // Token expirado ou inválido
+      console.log('❌ Token inválido ou expirado');
       Cookies.remove('auth_token');
       Cookies.remove('user_data');
-      window.location.href = '/login';
+      // Deixar o componente decidir o redirecionamento
     }
     return Promise.reject(error);
   }

@@ -22,10 +22,19 @@ export const DataProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [apiConnected, setApiConnected] = useState(false);
 
-  // Carregar dados iniciais
+  // Carregar dados iniciais - com tratamento de erro melhorado
   useEffect(() => {
-    loadDoacoes();
-    loadRealocacoes();
+    const loadInitialData = async () => {
+      try {
+        await loadDoacoes();
+        await loadRealocacoes();
+      } catch (error) {
+        console.warn('Erro ao carregar dados iniciais:', error);
+        // Não quebrar a aplicação se houver erro na API
+      }
+    };
+    
+    loadInitialData();
   }, []);
 
   // Função para carregar doações

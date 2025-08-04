@@ -59,7 +59,8 @@ export const authService = {
   logout() {
     Cookies.remove('auth_token');
     Cookies.remove('user_data');
-    window.location.href = '/';
+    // Remover redirecionamento automático - deixar o componente decidir
+    console.log('👋 Usuário deslogado');
   },
 
   // Verificar se está logado
