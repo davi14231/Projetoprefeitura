@@ -21,6 +21,12 @@ export const DataProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [apiConnected, setApiConnected] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(0);
+
+  // Função para forçar atualização dos componentes
+  const triggerUpdate = () => {
+    setForceUpdate(prev => prev + 1);
+  };
 
   // Carregar dados iniciais - com tratamento de erro melhorado
   useEffect(() => {
@@ -88,11 +94,15 @@ export const DataProvider = ({ children }) => {
   // === MÉTODOS PARA DOAÇÕES ===
   const addDoacao = async (doacao) => {
     try {
+      console.log('🆕 Adicionando doação:', doacao);
       const result = await doacoesService.criarDoacao(doacao);
+      console.log('✅ Doação criada, recarregando lista...');
       await loadDoacoes();
+      triggerUpdate(); // Forçar atualização dos componentes
+      console.log('🔄 Lista atualizada');
       return result;
     } catch (error) {
-      console.error('Erro ao adicionar doação:', error);
+      console.error('❌ Erro ao adicionar doação:', error);
       setError('Erro ao adicionar doação');
       throw error;
     }
@@ -134,11 +144,15 @@ export const DataProvider = ({ children }) => {
   // === MÉTODOS PARA REALOCAÇÕES ===
   const addRealocacao = async (realocacao) => {
     try {
+      console.log('🆕 Adicionando realocação:', realocacao);
       const result = await realocacoesService.criarRealocacao(realocacao);
+      console.log('✅ Realocação criada, recarregando lista...');
       await loadRealocacoes();
+      triggerUpdate(); // Forçar atualização dos componentes
+      console.log('🔄 Lista atualizada');
       return result;
     } catch (error) {
-      console.error('Erro ao adicionar realocação:', error);
+      console.error('❌ Erro ao adicionar realocação:', error);
       setError('Erro ao adicionar realocação');
       throw error;
     }
@@ -260,6 +274,7 @@ export const DataProvider = ({ children }) => {
     loading,
     error,
     apiConnected,
+    forceUpdate,
     
     // Métodos para doações
     addDoacao,
@@ -286,6 +301,7 @@ export const DataProvider = ({ children }) => {
     loadRealocacoes,
     refreshData,
     checkApiConnection,
+    triggerUpdate,
     clearError: () => setError(null)
   };
 

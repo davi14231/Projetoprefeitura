@@ -57,6 +57,20 @@ export const doacoesService = {
   // ➕ Criar doação
   async criarDoacao(dadosDoacao) {
     try {
+      console.log('➕ Criando doação:', dadosDoacao);
+      
+      // Converter URL relativa para URL completa se necessário
+      let urlImagem = dadosDoacao.imageUrl || dadosDoacao.url_imagem;
+      if (urlImagem && !urlImagem.startsWith('http')) {
+        // Se for URL relativa, usar uma URL de placeholder mais simples
+        urlImagem = 'https://picsum.photos/400/300';
+      }
+      
+      // Se não há URL, usar placeholder
+      if (!urlImagem) {
+        urlImagem = 'https://picsum.photos/400/300';
+      }
+      
       // Converter formato do frontend para backend
       const dadosFormatados = {
         titulo: dadosDoacao.titulo,
@@ -67,12 +81,17 @@ export const doacoesService = {
         email: dadosDoacao.email,
         whatsapp: dadosDoacao.whatsapp,
         prazo_necessidade: dadosDoacao.prazo, // formato: yyyy-mm-dd
-        url_imagem: dadosDoacao.imageUrl // usar URL da imagem
+        url_imagem: urlImagem // URL válida garantida
       };
       
+      console.log('📦 Dados formatados para backend:', dadosFormatados);
+      
       const response = await api.post('/doacoes', dadosFormatados);
+      console.log('✅ Doação criada:', response.data);
+      
       return response.data;
     } catch (error) {
+      console.error('❌ Erro ao criar doação:', error);
       throw new Error(error.response?.data?.message || 'Erro ao criar doação');
     }
   },

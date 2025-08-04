@@ -54,6 +54,20 @@ export const realocacoesService = {
   // ➕ Criar realocação
   async criarRealocacao(dadosRealocacao) {
     try {
+      console.log('➕ Criando realocação:', dadosRealocacao);
+      
+      // Converter URL relativa para URL completa se necessário
+      let urlImagem = dadosRealocacao.imageUrl || dadosRealocacao.url_imagem;
+      if (urlImagem && !urlImagem.startsWith('http')) {
+        // Se for URL relativa, usar uma URL de placeholder mais simples
+        urlImagem = 'https://picsum.photos/400/300';
+      }
+      
+      // Se não há URL, usar placeholder
+      if (!urlImagem) {
+        urlImagem = 'https://picsum.photos/400/300';
+      }
+      
       // Converter formato do frontend para backend
       const dadosFormatados = {
         titulo: dadosRealocacao.titulo,
@@ -64,12 +78,17 @@ export const realocacoesService = {
         email: dadosRealocacao.email,
         whatsapp: dadosRealocacao.whatsapp,
         prazo_necessidade: dadosRealocacao.prazo, // formato: yyyy-mm-dd
-        url_imagem: dadosRealocacao.imageUrl // usar URL da imagem
+        url_imagem: urlImagem // URL válida garantida // URL válida ou placeholder
       };
       
+      console.log('📦 Dados formatados para backend:', dadosFormatados);
+      
       const response = await api.post('/realocacoes', dadosFormatados);
+      console.log('✅ Realocação criada:', response.data);
+      
       return response.data;
     } catch (error) {
+      console.error('❌ Erro ao criar realocação:', error);
       throw new Error(error.response?.data?.message || 'Erro ao criar realocação');
     }
   },

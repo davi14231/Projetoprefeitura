@@ -33,7 +33,7 @@ export function RealocacaoListagem() {
   const [showDetalheModal, setShowDetalheModal] = useState(false);
   const [dadosDetalhe, setDadosDetalhe] = useState(null);
   const [showPostagemModal, setShowPostagemModal] = useState(false);
-  const { filterRealocacoes, getRealocacoesPaginadas } = useData();
+  const { filterRealocacoes, getRealocacoesPaginadas, forceUpdate } = useData();
 
   const itemsPerPage = 6;
 
@@ -43,6 +43,11 @@ export function RealocacaoListagem() {
     const page = parseInt(searchParams.get('page')) || 1;
     setCurrentPage(page);
   }, [location.search]);
+
+  // Efeito para forçar re-renderização quando forceUpdate muda (nova realocação adicionada)
+  useEffect(() => {
+    // Este useEffect garante que o componente re-renderize quando uma nova realocação é adicionada
+  }, [forceUpdate]);
 
   // Obter dados paginados usando Context
   const paginatedData = getRealocacoesPaginadas({

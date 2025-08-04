@@ -97,24 +97,23 @@ export function PostagemRealocacao({ onClose, editData = null }) {
     const dataLimite = new Date(hoje);
     dataLimite.setDate(hoje.getDate() + 60); // 60 dias padrão
     
-    // Formatar data como DD/MM/YYYY
-    const dia = String(dataLimite.getDate()).padStart(2, '0');
-    const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+    // Formatar data como YYYY-MM-DD para o backend
     const ano = dataLimite.getFullYear();
-    const dataFinal = `${dia}/${mes}/${ano}`;
+    const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+    const dia = String(dataLimite.getDate()).padStart(2, '0');
+    const dataFinal = `${ano}-${mes}-${dia}`;
 
     // Criar dados da realocação
     const dadosRealocacao = {
       titulo: formData.titulo,
-      categoria: formData.categoria,
-      quantidade: formData.quantidade,
+      categoria: formData.categoria, // Será mapeado para tipo_item na API
+      quantidade: parseInt(formData.quantidade) || 1,
       email: formData.email,
       whatsapp: formData.whatsapp,
-      prazo: dataFinal,
+      urgencia: "MEDIA", // Padrão para realocações
+      prazo: dataFinal, // Será convertido para prazo_necessidade na API
       descricao: formData.descricao,
-      ong: "Sua ONG",
-      imageUrl: finalImageUrl,
-      validade: dataFinal
+      imageUrl: finalImageUrl // Será mapeado para url_imagem na API
     };
 
     if (isEditing) {

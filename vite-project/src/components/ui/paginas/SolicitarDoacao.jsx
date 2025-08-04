@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, X } from "lucide-react";
 import { useData } from "@/context/DataContext";
+import { uploadService } from "@/services/uploadService";
 
 export function SolicitarDoacao({ onClose, editData = null }) {
   const [imageFile, setImageFile] = useState(null);
@@ -68,7 +69,7 @@ export function SolicitarDoacao({ onClose, editData = null }) {
     }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     
     // Validação básica
@@ -77,22 +78,29 @@ export function SolicitarDoacao({ onClose, editData = null }) {
       return;
     }
 
-    // Se não há imagem enviada, usar uma imagem padrão baseada na categoria
-    let finalImageUrl = formData.imageUrl;
-    if (!finalImageUrl) {
-      const defaultImages = {
-        "Roupas e Calçados": "/imagens/roupas.jpg",
-        "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
-        "Saúde e Higiene": "/imagens/med.jpg",
-        "Utensílios Gerais": "/imagens/alimentos.jpg",
-        "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
-        "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
-        "Itens Pet": "/imagens/outros.jpg",
-        "Eletrônicos": "/imagens/Laptops.jpg",
-        "Outros": "/imagens/outros.jpg"
-      };
-      finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
-    }
+    try {
+      // Se há uma imagem para upload, fazer o upload primeiro
+      let finalImageUrl = formData.imageUrl;
+      
+      if (imageFile) {
+        console.log('📤 Fazendo upload da imagem...');
+        finalImageUrl = await uploadService.uploadImage(imageFile);
+        console.log('✅ URL da imagem:', finalImageUrl);
+      } else if (!finalImageUrl) {
+        // Se não há imagem enviada, usar uma imagem padrão baseada na categoria
+        const defaultImages = {
+          "Roupas e Calçados": "/imagens/roupas.jpg",
+          "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
+          "Saúde e Higiene": "/imagens/med.jpg",
+          "Utensílios Gerais": "/imagens/alimentos.jpg",
+          "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
+          "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
+          "Itens Pet": "/imagens/outros.jpg",
+          "Eletrônicos": "/imagens/Laptops.jpg",
+          "Outros": "/imagens/outros.jpg"
+        };
+        finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
+      }
 
     // Calcular data final baseada no prazo selecionado
     let dataFinal = "";
@@ -108,26 +116,24 @@ export function SolicitarDoacao({ onClose, editData = null }) {
       const dataLimite = new Date(hoje);
       dataLimite.setDate(hoje.getDate() + diasPrazo);
       
-      // Formatar data como DD/MM/YYYY
-      const dia = String(dataLimite.getDate()).padStart(2, '0');
-      const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+      // Formatar data como YYYY-MM-DD para o backend
       const ano = dataLimite.getFullYear();
-      dataFinal = `${dia}/${mes}/${ano}`;
+      const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+      const dia = String(dataLimite.getDate()).padStart(2, '0');
+      dataFinal = `${ano}-${mes}-${dia}`;
     }
 
     // Criar dados da doação
     const dadosDoacao = {
       titulo: formData.titulo,
-      categoria: formData.categoria,
-      quantidade: formData.quantidade,
+      categoria: formData.categoria, // Será mapeado para tipo_item na API
+      quantidade: parseInt(formData.quantidade) || 1,
       email: formData.email,
       whatsapp: formData.whatsapp,
-      urgencia: formData.urgencia || "Baixa",
-      prazo: dataFinal,
+      urgencia: formData.urgencia || "BAIXA", // Backend espera MAIÚSCULO
+      prazo: dataFinal, // Será convertido para prazo_necessidade na API
       descricao: formData.descricao,
-      ong: "Sua ONG", // Seria pego do usuário logado
-      imageUrl: finalImageUrl, // Usar a imagem enviada ou padrão
-      validade: dataFinal
+      imageUrl: finalImageUrl // Será mapeado para url_imagem na API
     };
 
     if (isEditing) {
@@ -144,9 +150,13 @@ export function SolicitarDoacao({ onClose, editData = null }) {
     if (onClose) {
       onClose();
     }
+  } catch (error) {
+    console.error('Erro ao processar doação:', error);
+    alert('Erro ao processar a solicitação. Tente novamente.');
   }
+}
 
-  function handleBackdropClick(e) {
+function handleBackdropClick(e) {
     // Fechar modal se clicar no backdrop (fundo escuro)
     if (e.target === e.currentTarget) {
       handleCancel();
