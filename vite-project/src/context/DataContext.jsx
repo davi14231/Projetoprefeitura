@@ -43,6 +43,25 @@ export const DataProvider = ({ children }) => {
     loadInitialData();
   }, []);
 
+  // Função para carregar minhas doações (com dados de contato)
+  const loadMinhasDoacoes = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const apiDoacoes = await doacoesService.listarMinhasDoacoes();
+      console.log('🔍 Minhas doações carregadas:', apiDoacoes);
+      setDoacoes(Array.isArray(apiDoacoes) ? apiDoacoes : []);
+      setApiConnected(true);
+    } catch (error) {
+      console.error('Erro ao carregar minhas doações:', error);
+      setError('Erro ao carregar suas doações da API');
+      setDoacoes([]);
+      setApiConnected(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Função para carregar doações
   const loadDoacoes = async (filtros = {}) => {
     setLoading(true);
@@ -72,6 +91,25 @@ export const DataProvider = ({ children }) => {
     } catch (error) {
       console.error('Erro ao carregar realocações:', error);
       setError('Erro ao carregar realocações da API');
+      setRealocacoes([]);
+      setApiConnected(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função para carregar minhas realocações (com dados de contato)
+  const loadMinhasRealocacoes = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const apiRealocacoes = await realocacoesService.listarMinhasRealocacoes();
+      console.log('🔍 Minhas realocações carregadas:', apiRealocacoes);
+      setRealocacoes(Array.isArray(apiRealocacoes) ? apiRealocacoes : []);
+      setApiConnected(true);
+    } catch (error) {
+      console.error('Erro ao carregar minhas realocações:', error);
+      setError('Erro ao carregar suas realocações da API');
       setRealocacoes([]);
       setApiConnected(false);
     } finally {
@@ -121,10 +159,13 @@ export const DataProvider = ({ children }) => {
 
   const updateDoacao = async (id, dadosAtualizados) => {
     try {
+      console.log('🔄 Atualizando doação:', id, dadosAtualizados);
       await doacoesService.editarDoacao(id, dadosAtualizados);
+      console.log('✅ Doação atualizada, recarregando lista...');
       await loadDoacoes();
+      console.log('🔁 Lista de doações recarregada');
     } catch (error) {
-      console.error('Erro ao atualizar doação:', error);
+      console.error('❌ Erro ao atualizar doação:', error);
       setError('Erro ao atualizar doação');
       throw error;
     }
@@ -171,10 +212,13 @@ export const DataProvider = ({ children }) => {
 
   const updateRealocacao = async (id, dadosAtualizados) => {
     try {
+      console.log('🔄 Atualizando realocação:', id, dadosAtualizados);
       await realocacoesService.editarRealocacao(id, dadosAtualizados);
+      console.log('✅ Realocação atualizada, recarregando lista...');
       await loadRealocacoes();
+      console.log('🔁 Lista de realocações recarregada');
     } catch (error) {
-      console.error('Erro ao atualizar realocação:', error);
+      console.error('❌ Erro ao atualizar realocação:', error);
       setError('Erro ao atualizar realocação');
       throw error;
     }
@@ -298,7 +342,9 @@ export const DataProvider = ({ children }) => {
     
     // Utilitários
     loadDoacoes,
+    loadMinhasDoacoes,
     loadRealocacoes,
+    loadMinhasRealocacoes,
     refreshData,
     checkApiConnection,
     triggerUpdate,

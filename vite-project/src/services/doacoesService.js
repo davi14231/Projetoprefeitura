@@ -15,7 +15,6 @@ export const doacoesService = {
       });
       
       const response = await api.get(`/doacoes?${params.toString()}`);
-      console.log('🔍 doacoesService - Response completa:', response.data);
       
       // O backend retorna diretamente o array de doações, mapeamos para o formato esperado
       return mapDoacoesFromBackend(response.data); 
@@ -104,7 +103,7 @@ export const doacoesService = {
         titulo: dadosDoacao.titulo,
         descricao: dadosDoacao.descricao,
         tipo_item: dadosDoacao.categoria,
-        urgencia: dadosDoacao.urgencia,
+        urgencia: dadosDoacao.urgencia?.toUpperCase() || 'BAIXA',
         quantidade: parseInt(dadosDoacao.quantidade),
         email: dadosDoacao.email,
         whatsapp: dadosDoacao.whatsapp,
@@ -112,9 +111,12 @@ export const doacoesService = {
         url_imagem: dadosDoacao.imageUrl
       };
       
+      console.log('🔄 Editando doação:', id, dadosFormatados);
       const response = await api.put(`/doacoes/${id}`, dadosFormatados);
+      console.log('✅ Doação editada:', response.data);
       return response.data;
     } catch (error) {
+      console.error('❌ Erro ao editar doação:', error);
       throw new Error(error.response?.data?.message || 'Erro ao editar doação');
     }
   },

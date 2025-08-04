@@ -101,7 +101,7 @@ export const realocacoesService = {
         titulo: dadosRealocacao.titulo,
         descricao: dadosRealocacao.descricao,
         tipo_item: dadosRealocacao.categoria,
-        urgencia: dadosRealocacao.urgencia,
+        urgencia: dadosRealocacao.urgencia?.toUpperCase() || 'MEDIA',
         quantidade: parseInt(dadosRealocacao.quantidade),
         email: dadosRealocacao.email,
         whatsapp: dadosRealocacao.whatsapp,
@@ -109,9 +109,12 @@ export const realocacoesService = {
         url_imagem: dadosRealocacao.imageUrl
       };
       
+      console.log('🔄 Editando realocação:', id, dadosFormatados);
       const response = await api.put(`/realocacoes/${id}`, dadosFormatados);
+      console.log('✅ Realocação editada:', response.data);
       return response.data;
     } catch (error) {
+      console.error('❌ Erro ao editar realocação:', error);
       throw new Error(error.response?.data?.message || 'Erro ao editar realocação');
     }
   },

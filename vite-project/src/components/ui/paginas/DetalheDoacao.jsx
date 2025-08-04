@@ -2,6 +2,11 @@ import React from 'react';
 import { X, Share, Mail, Phone } from 'lucide-react';
 
 export default function DetalheDoacao({ dados, onClose }) {
+  // 🐛 Debug: Verificar dados recebidos
+  console.log('🔍 DetalheDoacao - dados completos:', dados);
+  console.log('🔍 DetalheDoacao - WhatsApp:', dados?.whatsapp);
+  console.log('🔍 DetalheDoacao - Email:', dados?.email);
+
   // Função para compartilhar nas redes sociais
   const handleShare = async () => {
     const url = window.location.href;
@@ -104,24 +109,24 @@ export default function DetalheDoacao({ dados, onClose }) {
             {/* Email centralizado na área da descrição */}
             <div className="lg:col-span-2 flex justify-center">
               <a 
-                href={`mailto:${dados.email || 'kellysayonara854@gmail.com'}`}
+                href={`mailto:${dados.email || 'contato@example.com'}`}
                 className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition"
               >
                 <Mail size={18} />
-                <span className="font-medium">{dados.email || 'kellysayonara854@gmail.com'}</span>
+                <span className="font-medium">{dados.email || 'Sem email cadastrado'}</span>
               </a>
             </div>
 
             {/* Telefone alinhado à direita */}
             <div className="lg:col-span-1 flex justify-end">
               <a 
-                href={`https://wa.me/5581984465009?text=${encodeURIComponent(`Olá! Vi sua doação "${dados.titulo}" e tenho interesse.`)}`}
+                href={`https://wa.me/55${dados.whatsapp?.replace(/\D/g, '') || '81999999999'}?text=${encodeURIComponent(`Olá! Vi sua doação "${dados.titulo}" e tenho interesse.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition"
               >
                 <Phone size={18} />
-                <span className="font-medium">{dados.whatsapp || dados.telefone || "(81) 8446-5009"}</span>
+                <span className="font-medium">{dados.whatsapp || 'Sem WhatsApp cadastrado'}</span>
               </a>
             </div>
           </div>

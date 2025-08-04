@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,6 +21,24 @@ export function SolicitarDoacao({ onClose, editData = null }) {
     descricao: editData?.descricao || "",
     imageUrl: editData?.imageUrl || ""
   });
+
+  // 🔧 Atualizar formData quando editData mudar
+  useEffect(() => {
+    if (editData) {
+      setFormData({
+        titulo: editData.titulo || "",
+        categoria: editData.categoria || "",
+        quantidade: editData.quantidade || "",
+        urgencia: editData.urgencia || "",
+        prazo: editData.prazo || "",
+        whatsapp: editData.whatsapp || "",
+        email: editData.email || "",
+        descricao: editData.descricao || "",
+        imageUrl: editData.imageUrl || ""
+      });
+      setImagePreview(editData.imageUrl || null);
+    }
+  }, [editData]);
   
   const navigate = useNavigate();
   const { addDoacao, updateDoacao } = useData();
@@ -130,7 +148,7 @@ export function SolicitarDoacao({ onClose, editData = null }) {
       quantidade: parseInt(formData.quantidade) || 1,
       email: formData.email,
       whatsapp: formData.whatsapp,
-      urgencia: formData.urgencia || "BAIXA", // Backend espera MAIÚSCULO
+      urgencia: (formData.urgencia || "BAIXA").toUpperCase(), // Backend espera MAIÚSCULO
       prazo: dataFinal, // Será convertido para prazo_necessidade na API
       descricao: formData.descricao,
       imageUrl: finalImageUrl // Será mapeado para url_imagem na API
@@ -138,11 +156,11 @@ export function SolicitarDoacao({ onClose, editData = null }) {
 
     if (isEditing) {
       // Atualizar doação existente
-      updateDoacao(editData.id, dadosDoacao);
+      await updateDoacao(editData.id, dadosDoacao);
       alert("Doação atualizada com sucesso!");
     } else {
       // Adicionar nova doação
-      addDoacao(dadosDoacao);
+      await addDoacao(dadosDoacao);
       alert("Solicitação de doação criada com sucesso!");
     }
     
@@ -267,9 +285,9 @@ function handleBackdropClick(e) {
                     value={formData.urgencia}
                     onChange={handleInputChange}
                   >
-                    <option value="Alta">Alta</option>
-                    <option value="Média">Média</option>
-                    <option value="Baixa">Baixa</option>
+                    <option value="ALTA">Alta</option>
+                    <option value="MEDIA">Média</option>
+                    <option value="BAIXA">Baixa</option>
                   </select>
                 </div>
                 <div>
@@ -316,9 +334,7 @@ function handleBackdropClick(e) {
               </div>
             </div>
 
-            {/* Upload de imagem */}
-
-            {/* Upload de imagem */}
+            {/* Descrição */}
             <div>
               <Label htmlFor="descricao" className="mb-1 block text-base font-medium">
                 Descrição e propósito do Item (para que fim o item vai ser utilizado):
@@ -331,9 +347,6 @@ function handleBackdropClick(e) {
                 value={formData.descricao}
                 onChange={handleInputChange}
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Se não inserir uma imagem, usaremos uma imagem padrão da categoria
-              </p>
               <p className="text-xs text-gray-500 mt-1">
                 Se não inserir uma imagem, usaremos uma imagem padrão da categoria
               </p>

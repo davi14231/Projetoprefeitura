@@ -19,6 +19,7 @@ export const mapDoacaoFromBackend = (backendData) => {
     url_imagem: backendData.url_imagem,
     validade: backendData.prazo_necessidade,
     prazo_necessidade: backendData.prazo_necessidade,
+    prazo: backendData.prazo_necessidade,
     ong: backendData.ong?.nome || backendData.ong,
     ongData: backendData.ong,
     status: backendData.status,

@@ -23,8 +23,18 @@ function HomeRealocacao() {
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const { getRealocacoesPaginadas, removeRealocacao, encerrarRealocacao, forceUpdate } = useData();
+	const { getRealocacoesPaginadas, removeRealocacao, encerrarRealocacao, forceUpdate, loadMinhasRealocacoes } = useData();
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
+
+	// Carregar minhas realocações ao montar o componente
+	useEffect(() => {
+		loadMinhasRealocacoes();
+	}, []);
+
+	// Efeito para forçar re-renderização quando forceUpdate muda (nova realocação adicionada)
+	useEffect(() => {
+		loadMinhasRealocacoes(); // Recarregar minhas realocações quando houver mudança
+	}, [forceUpdate]);
 
 	// Função para editar realocação
 	const handleEdit = (pedido) => {
