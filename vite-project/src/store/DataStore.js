@@ -353,13 +353,30 @@ class DataStore {
     return this.doacoes;
   }
 
-  getDoacoesPaginadas(page = 1, itemsPerPage = 6) {
+  getDoacoesPaginadas(options = {}) {
+    const { page = 1, limit = 6, filters = {} } = options;
+    
     // Filtrar doações não encerradas
-    const doacoesAtivas = this.doacoes.filter(doacao => !doacao.encerrado);
-    const startIndex = (page - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
+    let doacoesAtivas = this.doacoes.filter(doacao => !doacao.encerrado);
+    
+    // Aplicar filtros se existirem
+    if (filters.categoria && filters.categoria !== '') {
+      doacoesAtivas = doacoesAtivas.filter(d => d.categoria === filters.categoria);
+    }
+    
+    if (filters.termo && filters.termo !== '') {
+      const termo = filters.termo.toLowerCase();
+      doacoesAtivas = doacoesAtivas.filter(d => 
+        d.titulo.toLowerCase().includes(termo) ||
+        d.descricao.toLowerCase().includes(termo) ||
+        d.ong.toLowerCase().includes(termo)
+      );
+    }
+    
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
     const items = doacoesAtivas.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(doacoesAtivas.length / itemsPerPage);
+    const totalPages = Math.ceil(doacoesAtivas.length / limit);
     
     return {
       items,
@@ -367,7 +384,9 @@ class DataStore {
       totalPages,
       totalItems: doacoesAtivas.length,
       total: doacoesAtivas.length,
-      itemsPerPage
+      hasNextPage: endIndex < doacoesAtivas.length,
+      hasPrevPage: page > 1,
+      itemsPerPage: limit
     };
   }
 

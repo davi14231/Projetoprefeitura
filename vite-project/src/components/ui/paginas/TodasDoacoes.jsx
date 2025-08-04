@@ -35,7 +35,7 @@ export default function TodasDoacoes() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { filterDoacoes } = useData();
+	const { getDoacoesPaginadas } = useData();
 
 	const itemsPerPage = 6;
 
@@ -76,29 +76,16 @@ export default function TodasDoacoes() {
 		}
 	}, [location.search]);
 
-	// Aplicar filtros aos dados
-	const filteredDoacoes = filterDoacoes({
-		categoria,
-		busca
+	// Obter dados paginados usando Context
+	const paginatedData = getDoacoesPaginadas({
+		page: currentPage,
+		limit: itemsPerPage,
+		filters: { categoria, termo: busca }
 	});
 
-	// Obter dados paginados dos itens filtrados
-	const getPaginatedData = () => {
-		const startIndex = (currentPage - 1) * itemsPerPage;
-		const endIndex = startIndex + itemsPerPage;
-		const items = filteredDoacoes.slice(startIndex, endIndex);
-		const totalPages = Math.ceil(filteredDoacoes.length / itemsPerPage);
-		
-		return {
-			items,
-			currentPage,
-			totalPages,
-			totalItems: filteredDoacoes.length,
-			itemsPerPage
-		};
-	};
-
-	const paginatedData = getPaginatedData();
+	// Verificar se há dados antes de acessar
+	const items = paginatedData?.items || [];
+	const totalPages = paginatedData?.totalPages || 1;
 
 	// Função para mudar página
 	const handlePageChange = (page) => {
@@ -229,12 +216,13 @@ export default function TodasDoacoes() {
 
 				{/* Grid de cards */}
 				<section className="max-w-[900px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 px-2">
-					{paginatedData.items.map((item) => (
-						<div key={item.id}>
-							<div
-								className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full cursor-pointer"
-								onClick={() => handleOpenDetalheModal(item)}
-							>
+					{items && items.length > 0 ? (
+						items.map((item) => (
+							<div key={item.id}>
+								<div
+									className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full cursor-pointer"
+									onClick={() => handleOpenDetalheModal(item)}
+								>
 								{/* Imagem */}
 								<div className="relative">
 									<img
@@ -324,14 +312,27 @@ export default function TodasDoacoes() {
 								</div>
 							</div>
 						</div>
-					))}
+					))
+					) : (
+						<div className="col-span-full text-center py-12">
+							<Package className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+							<h3 className="text-lg font-medium text-gray-900 mb-2">
+								Nenhuma doação encontrada
+							</h3>
+							<p className="text-gray-500">
+								{categoria || busca 
+									? 'Tente ajustar os filtros de busca.' 
+									: 'Não há doações disponíveis no momento.'}
+							</p>
+						</div>
+					)}
 				</section>
 				<div className="max-w-[900px] mx-auto flex justify-center mb-12">
 					<Pagination
 						currentPage={currentPage}
-						totalPages={paginatedData.totalPages}
+						totalPages={totalPages}
 						onPageChange={handlePageChange}
-						baseUrl="/todas_doacoes"
+						baseUrl="/todas-doacoes"
 					/>
 				</div>
 
