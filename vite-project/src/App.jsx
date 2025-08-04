@@ -11,9 +11,11 @@ import { RealocacaoListagem } from "./components/ui/paginas/RealocacaoListagem";
 import ConfirmacaoEncerrarSolicitacao from "./components/ui/paginas/ConfirmacaoEncerrarSolicitacao";
 import ConfirmacaoEncerrarRealocacao from "./components/ui/paginas/ConfirmacaoEncerrarRealocacao";
 import { DataProvider } from "./context/DataContext";
+import { AuthProvider } from "./context/AuthContext";
 import ConfirmacaoDeletar from "./components/ui/paginas/ConfirmacaoDeletar";
 import TelaFlutuante from "./components/ui/TelaFlutuante";
 import React, { useState } from "react";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   // Imagens do carrossel (separadas)
@@ -105,21 +107,57 @@ function App() {
     };
 
   return (
-    <DataProvider>
-      <BrowserRouter>
+    <AuthProvider>
+      <DataProvider>
+        <BrowserRouter>
         <Routes>
+          {/* Rotas públicas */}
           <Route path="/" element={<Tela_Home imagensCarrossel={imagensCarrossel} itens={itens} />} />
           <Route path="/login" element={<Teladelogin />} />
-          <Route path="/edit-doacoes" element={<EditDoacoes />} />
-          <Route path="/home-realocacao" element={<HomeRealocacao />} />
-          <Route path="/solicitar-doacao" element={<SolicitarDoacao />} />
-          <Route path="/postagem-realocacao" element={<PostagemRealocacao />} />
           <Route path="/todas-doacoes" element={<TodasDoacoes />} />
-          <Route path="/home-ong" element={<TelahomeONG imagensCarrossel={imagensCarrossel} itens={itens} />} />
           <Route path="/realocacao-listagem" element={<RealocacaoListagem />} />
-          <Route path="/confirmar-encerrar-solicitacao" element={<ConfirmacaoEncerrarSolicitacao />} />
-          <Route path="/confirmar-encerrar-realocacao" element={<ConfirmacaoEncerrarRealocacao />} />
-          <Route path="/confirmar-deletar" element={<ConfirmacaoDeletar />} />
+          
+          {/* Rotas protegidas - requerem autenticação */}
+          <Route path="/edit-doacoes" element={
+            <ProtectedRoute>
+              <EditDoacoes />
+            </ProtectedRoute>
+          } />
+          <Route path="/home-realocacao" element={
+            <ProtectedRoute>
+              <HomeRealocacao />
+            </ProtectedRoute>
+          } />
+          <Route path="/solicitar-doacao" element={
+            <ProtectedRoute>
+              <SolicitarDoacao />
+            </ProtectedRoute>
+          } />
+          <Route path="/postagem-realocacao" element={
+            <ProtectedRoute>
+              <PostagemRealocacao />
+            </ProtectedRoute>
+          } />
+          <Route path="/home-ong" element={
+            <ProtectedRoute>
+              <TelahomeONG imagensCarrossel={imagensCarrossel} itens={itens} />
+            </ProtectedRoute>
+          } />
+          <Route path="/confirmar-encerrar-solicitacao" element={
+            <ProtectedRoute>
+              <ConfirmacaoEncerrarSolicitacao />
+            </ProtectedRoute>
+          } />
+          <Route path="/confirmar-encerrar-realocacao" element={
+            <ProtectedRoute>
+              <ConfirmacaoEncerrarRealocacao />
+            </ProtectedRoute>
+          } />
+          <Route path="/confirmar-deletar" element={
+            <ProtectedRoute>
+              <ConfirmacaoDeletar />
+            </ProtectedRoute>
+          } />
         </Routes>
 
         <TelaFlutuante 
@@ -127,10 +165,9 @@ function App() {
           onClose={fecharTelaFlutuante}
           nomeONG="Instituto Beneficente"
         />
-      </BrowserRouter>
-    </DataProvider>
-  );
-
-}
+        </BrowserRouter>
+      </DataProvider>
+    </AuthProvider>
+  );}
 
 export default App;

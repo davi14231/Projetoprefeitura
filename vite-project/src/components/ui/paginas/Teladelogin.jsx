@@ -5,21 +5,50 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAuth } from "@/context/AuthContext";
+import NetworkDiagnostic from "../../NetworkDiagnostic";
 
 export function Teladelogin() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Aqui você pode validar o login, se quiser
-    navigate('/edit-doacoes');
+    setLoading(true);
+    setError('');
+
+    try {
+      console.log('🔑 Iniciando login...');
+      console.log('📧 Email:', email);
+      console.log('🔒 Senha:', senha ? '*'.repeat(senha.length) : 'vazia');
+      
+      await login({ email, password: senha });
+      
+      console.log('✅ Login bem-sucedido! Redirecionando...');
+      // Login bem-sucedido, redirecionar para a página principal
+      navigate('/home-ong');
+    } catch (error) {
+      console.error('❌ Erro capturado no componente:', error);
+      setError(error.message || 'Erro ao fazer login');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCriarConta = () => {
     alert("Redirecionar para cadastro de conta/workspace.");
     // Exemplo: window.location.href = "/cadastro";
+  };
+
+  // Função para testar com credenciais do .env
+  const handleTestLogin = () => {
+    setEmail('ong1@gmail.com');
+    setSenha('123456');
+    console.log('🧪 Credenciais de teste carregadas do .env');
   };
 
   return (
@@ -76,8 +105,20 @@ export function Teladelogin() {
                   Esqueceu a senha?
                 </a>
               </div>
-              <Botao type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5">
-                Entrar
+              
+              {/* Exibir erro se houver */}
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                  {error}
+                </div>
+              )}
+              
+              <Botao 
+                type="submit" 
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 disabled:opacity-50"
+                disabled={loading}
+              >
+                {loading ? 'Entrando...' : 'Entrar'}
               </Botao>
               
               {/* Divisor "ou" */}
@@ -102,7 +143,21 @@ export function Teladelogin() {
                   Criar Conta
                 </button>
               </div>
+              
+              {/* Botão de teste */}
+              <div className="text-center mt-4">
+                <button
+                  type="button"
+                  onClick={handleTestLogin}
+                  className="text-xs text-gray-500 hover:text-gray-700 px-3 py-1 border border-gray-300 rounded hover:bg-gray-50"
+                >
+                  🧪 Usar credenciais de teste
+                </button>
+              </div>
             </form>
+            
+            {/* Componente de diagnóstico */}
+            <NetworkDiagnostic />
           </CardContent>
         </Card>
       </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import './TelaFlutuante.css';
 
 const TelaFlutuante = ({ 
@@ -8,24 +9,23 @@ const TelaFlutuante = ({
   nomeONG = "Nome da ONG"
 }) => {
   const navigate = useNavigate();
+  const { logout, user } = useAuth();
   
   if (!isVisible) return null;
 
   const handleLogout = () => {
-    // Limpar dados de sessão/localStorage se necessário
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    sessionStorage.clear();
+    // Usar o método logout do AuthContext
+    logout();
     
     // Mostrar mensagem de confirmação
     alert('Você foi deslogado com sucesso!');
     
     // Fechar o dropdown
     if (onClose) onClose();
-    
-    // Redirecionar para a tela inicial
-    navigate('/');
   };
+
+  // Usar o nome da ONG do usuário autenticado, se disponível
+  const displayName = user?.nome || user?.name || nomeONG;
 
   return (
     <div className="tela-flutuante-dropdown">
@@ -35,7 +35,7 @@ const TelaFlutuante = ({
             <span className="logo-text">ONG</span>
           </div>
         </div>
-        <span className="nome-ong">{nomeONG}</span>
+        <span className="nome-ong">{displayName}</span>
       </div>
       
       <div className="divider"></div>
