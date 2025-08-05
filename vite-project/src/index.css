@@ -145,3 +145,131 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ===== RESPONSIVIDADE SIMPLES PARA MOBILE ===== */
+
+/* Configurações base para mobile */
+@media screen and (max-width: 768px) {
+  
+  /* Prevenir zoom em inputs no iOS */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+  
+  /* Controle básico da largura */
+  body,
+  html {
+    overflow-x: hidden !important;
+  }
+  
+  /* Containers com menos padding */
+  .container,
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  .max-w-3xl,
+  .max-w-2xl,
+  .max-w-xl {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Headers com menos padding */
+  header {
+    padding: 0.5rem 1rem !important;
+  }
+  
+  /* Logos menores */
+  header img {
+    max-height: 2rem !important;
+  }
+  
+  /* Botões com touch targets adequados */
+  button,
+  .btn {
+    min-height: 44px !important;
+  }
+  
+  /* Textos um pouco menores */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Imagens responsivas */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
+/* Ajustes específicos para iPhone */
+@media screen and (max-width: 414px) {
+  
+  /* Containers com menos padding */
+  .container,
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  .max-w-3xl,
+  .max-w-2xl,
+  .max-w-xl {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  
+  /* Headers mais compactos */
+  header {
+    padding: 0.5rem !important;
+  }
+  
+  /* Logos menores */
+  header img {
+    max-height: 1.75rem !important;
+  }
+  
+  /* Textos um pouco menores */
+  h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  h2 {
+    font-size: 1.125rem !important;
+  }
+}
+
+/* Touch targets para melhor usabilidade mobile */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  [role="button"],
+  a {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+}
+
+/* Scrollbar mais fina no mobile */
+@media screen and (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 3px !important;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 3px !important;
+  }
+}
