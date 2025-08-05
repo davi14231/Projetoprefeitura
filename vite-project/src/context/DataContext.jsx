@@ -17,7 +17,9 @@ export const useData = () => {
 // Provider do Context
 export const DataProvider = ({ children }) => {
   const [doacoes, setDoacoes] = useState([]);
+  const [minhasDoacoes, setMinhasDoacoes] = useState([]); // Estado separado para minhas doações
   const [realocacoes, setRealocacoes] = useState([]);
+  const [minhasRealocacoes, setMinhasRealocacoes] = useState([]); // Estado separado para minhas realocações
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [apiConnected, setApiConnected] = useState(false);
@@ -50,12 +52,12 @@ export const DataProvider = ({ children }) => {
     try {
       const apiDoacoes = await doacoesService.listarMinhasDoacoes();
       console.log('🔍 Minhas doações carregadas:', apiDoacoes);
-      setDoacoes(Array.isArray(apiDoacoes) ? apiDoacoes : []);
+      setMinhasDoacoes(Array.isArray(apiDoacoes) ? apiDoacoes : []);
       setApiConnected(true);
     } catch (error) {
       console.error('Erro ao carregar minhas doações:', error);
       setError('Erro ao carregar suas doações da API');
-      setDoacoes([]);
+      setMinhasDoacoes([]);
       setApiConnected(false);
     } finally {
       setLoading(false);
@@ -105,12 +107,12 @@ export const DataProvider = ({ children }) => {
     try {
       const apiRealocacoes = await realocacoesService.listarMinhasRealocacoes();
       console.log('🔍 Minhas realocações carregadas:', apiRealocacoes);
-      setRealocacoes(Array.isArray(apiRealocacoes) ? apiRealocacoes : []);
+      setMinhasRealocacoes(Array.isArray(apiRealocacoes) ? apiRealocacoes : []);
       setApiConnected(true);
     } catch (error) {
       console.error('Erro ao carregar minhas realocações:', error);
       setError('Erro ao carregar suas realocações da API');
-      setRealocacoes([]);
+      setMinhasRealocacoes([]);
       setApiConnected(false);
     } finally {
       setLoading(false);
@@ -270,6 +272,42 @@ export const DataProvider = ({ children }) => {
     };
   };
 
+  // Paginação para MINHAS doações (usado na tela EditDoacoes)
+  const getMinhasDoacoesPaginadas = (options = {}) => {
+    const { page = 1, limit = 6 } = options;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const items = minhasDoacoes.slice(startIndex, endIndex);
+    
+    return {
+      items,
+      currentPage: page,
+      totalPages: Math.ceil(minhasDoacoes.length / limit),
+      totalItems: minhasDoacoes.length,
+      total: minhasDoacoes.length,
+      hasNextPage: endIndex < minhasDoacoes.length,
+      hasPrevPage: page > 1
+    };
+  };
+
+  // Paginação para MINHAS realocações (usado na tela HomeRealocacao)
+  const getMinhasRealocacoesPaginadas = (options = {}) => {
+    const { page = 1, limit = 6 } = options;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const items = minhasRealocacoes.slice(startIndex, endIndex);
+    
+    return {
+      items,
+      currentPage: page,
+      totalPages: Math.ceil(minhasRealocacoes.length / limit),
+      totalItems: minhasRealocacoes.length,
+      total: minhasRealocacoes.length,
+      hasNextPage: endIndex < minhasRealocacoes.length,
+      hasPrevPage: page > 1
+    };
+  };
+
   // === FUNÇÕES UTILITÁRIAS ===
   const refreshData = async () => {
     await loadDoacoes();
@@ -326,6 +364,7 @@ export const DataProvider = ({ children }) => {
     updateDoacao,
     encerrarDoacao,
     getDoacoesPaginadas,
+    getMinhasDoacoesPaginadas, // Nova função para minhas doações
     
     // Métodos para realocações
     addRealocacao,
@@ -333,6 +372,7 @@ export const DataProvider = ({ children }) => {
     updateRealocacao,
     encerrarRealocacao,
     getRealocacoesPaginadas,
+    getMinhasRealocacoesPaginadas, // Nova função para minhas realocações
     
     // Métodos de busca e filtro
     getDoacoesPorCategoria,

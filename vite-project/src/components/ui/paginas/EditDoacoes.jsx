@@ -24,7 +24,7 @@ export function EditDoacoes() {
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
-	const { getDoacoesPaginadas, removeDoacao, encerrarDoacao, forceUpdate, loadMinhasDoacoes } = useData();
+	const { getMinhasDoacoesPaginadas, removeDoacao, encerrarDoacao, forceUpdate, loadMinhasDoacoes } = useData();
 	const navigate = useNavigate();
 
 	const itemsPerPage = 6;
@@ -49,12 +49,12 @@ export function EditDoacoes() {
 
 	// Garantir que os dados sejam sempre atualizados
 	const refreshedData = React.useMemo(() => {
-		return getDoacoesPaginadas({
+		return getMinhasDoacoesPaginadas({
 			page: currentPage,
 			limit: itemsPerPage,
 			filters: {}
 		});
-	}, [currentPage, forceUpdate, getDoacoesPaginadas]);
+	}, [currentPage, forceUpdate, getMinhasDoacoesPaginadas]);
 
 	// Prevent background scroll when any modal is open
 	React.useEffect(() => {

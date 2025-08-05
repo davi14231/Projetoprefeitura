@@ -23,7 +23,7 @@ function HomeRealocacao() {
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const { getRealocacoesPaginadas, removeRealocacao, encerrarRealocacao, forceUpdate, loadMinhasRealocacoes } = useData();
+	const { getMinhasRealocacoesPaginadas, removeRealocacao, encerrarRealocacao, forceUpdate, loadMinhasRealocacoes } = useData();
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 
 	// Carregar minhas realocações ao montar o componente
@@ -94,7 +94,7 @@ function HomeRealocacao() {
 	}, [forceUpdate]);
 
 	// Obter dados paginados usando Context
-	const paginatedData = getRealocacoesPaginadas({
+	const paginatedData = getMinhasRealocacoesPaginadas({
 		page: currentPage,
 		limit: itemsPerPage,
 		filters: {}
@@ -102,12 +102,12 @@ function HomeRealocacao() {
 
 	// Garantir que os dados sejam sempre atualizados
 	const refreshedData = React.useMemo(() => {
-		return getRealocacoesPaginadas({
+		return getMinhasRealocacoesPaginadas({
 			page: currentPage,
 			limit: itemsPerPage,
 			filters: {}
 		});
-	}, [currentPage, forceUpdate, getRealocacoesPaginadas]);
+	}, [currentPage, forceUpdate, getMinhasRealocacoesPaginadas]);
 
 	// Prevent background scroll when any modal is open
 	React.useEffect(() => {
