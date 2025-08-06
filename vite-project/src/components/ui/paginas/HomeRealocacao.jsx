@@ -9,7 +9,6 @@ import ConfirmacaoDeletar from "./ConfirmacaoDeletar";
 import { PostagemRealocacao } from "./PostagemRealocacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
-import { TempoRestante } from "@/components/ui/TempoRestante";
 
 const footerColor = "#172233";
 
@@ -225,54 +224,6 @@ function HomeRealocacao() {
 				</section>
 
 				{/* Filtros */}
-				<section className="max-w-6xl mx-auto px-4 mb-6">
-					<Card className="w-full bg-white border">
-						<CardContent className="py-4 px-8">
-							<span className="flex items-center gap-2 text-gray-700 font-semibold text-[1rem] mb-4">
-								<img
-									src="/imagens/Emoji Filtro.png"
-									alt="Filtro"
-									className="w-5 h-5"
-									draggable={false}
-								/>
-								Filtros
-							</span>
-							<div style={{ display: "flex", gap: 16, width: "100%" }}>
-								{/* Campo de busca */}
-								<div style={{ flex: 1 }}>
-									<input
-										type="text"
-										placeholder="Buscar itens..."
-										value={busca}
-										onChange={(e) => setBusca(e.target.value)}
-										className="pl-4 pr-4 py-2 rounded-lg text-gray-800 text-sm bg-white border border-gray-200 shadow focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-										style={{
-											fontFamily: "Inter, sans-serif",
-											height: "40px",
-											boxShadow: "0 1px 4px 0 rgba(0,0,0,0.04)",
-										}}
-									/>
-								</div>
-								{/* Campo de categorias */}
-								<div style={{ flex: 1 }}>
-									<select
-										value={categoria}
-										onChange={(e) => setCategoria(e.target.value)}
-										className="border rounded-md px-3 py-2 bg-white text-gray-700 w-full text-[0.97rem]"
-										style={{ fontFamily: "Inter, sans-serif", height: "40px" }}
-									>
-										<option value="">Categorias</option>
-										{todasCategorias.map((cat) => (
-											<option key={cat} value={cat}>
-												{cat}
-											</option>
-										))}
-									</select>
-								</div>
-							</div>
-						</CardContent>
-					</Card>
-				</section>
 
 				{/* Listagem de pedidos */}
 				<section className="max-w-6xl mx-auto px-4 mb-8">
@@ -321,7 +272,6 @@ function HomeRealocacao() {
 											</div>
 											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
 												<span>Publicado: {pedido.publicado}</span>
-												<TempoRestante prazo={pedido.prazo || pedido.validade} publicado={pedido.publicado} />
 											</div>
 											<div className="mt-2 text-gray-700 text-base">
 												<span className="block w-full break-words">
