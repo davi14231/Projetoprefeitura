@@ -17,6 +17,8 @@ function HomeRealocacao() {
 	const [editData, setEditData] = useState(null);
 	const [editId, setEditId] = useState(null);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
+	const [busca, setBusca] = useState("");
+	const [categoria, setCategoria] = useState("");
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [showConfirmacaoDeletar, setShowConfirmacaoDeletar] = useState(false);
@@ -25,6 +27,19 @@ function HomeRealocacao() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const { getMinhasRealocacoesPaginadas, removeRealocacao, encerrarRealocacao, forceUpdate, loadMinhasRealocacoes } = useData();
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
+
+	// Lista completa de categorias disponíveis
+	const todasCategorias = [
+		"Roupas e Calçados",
+		"Materiais Educativos e Culturais", 
+		"Saúde e Higiene",
+		"Utensílios Gerais",
+		"Itens de Inclusão e Mobilidade",
+		"Eletrodomésticos e Móveis",
+		"Itens Pet",
+		"Eletrônicos",
+		"Outros"
+	];
 
 	// Carregar minhas realocações ao montar o componente
 	useEffect(() => {
@@ -97,7 +112,7 @@ function HomeRealocacao() {
 	const paginatedData = getMinhasRealocacoesPaginadas({
 		page: currentPage,
 		limit: itemsPerPage,
-		filters: {}
+		filters: { categoria, termo: busca }
 	});
 
 	// Garantir que os dados sejam sempre atualizados
@@ -105,9 +120,9 @@ function HomeRealocacao() {
 		return getMinhasRealocacoesPaginadas({
 			page: currentPage,
 			limit: itemsPerPage,
-			filters: {}
+			filters: { categoria, termo: busca }
 		});
-	}, [currentPage, forceUpdate, getMinhasRealocacoesPaginadas]);
+	}, [currentPage, forceUpdate, getMinhasRealocacoesPaginadas, categoria, busca]);
 
 	// Prevent background scroll when any modal is open
 	React.useEffect(() => {
@@ -205,6 +220,56 @@ function HomeRealocacao() {
 							>
 								+ Adicionar Nova Realocação
 							</button>
+						</CardContent>
+					</Card>
+				</section>
+
+				{/* Filtros */}
+				<section className="max-w-6xl mx-auto px-4 mb-6">
+					<Card className="w-full bg-white border">
+						<CardContent className="py-4 px-8">
+							<span className="flex items-center gap-2 text-gray-700 font-semibold text-[1rem] mb-4">
+								<img
+									src="/imagens/Emoji Filtro.png"
+									alt="Filtro"
+									className="w-5 h-5"
+									draggable={false}
+								/>
+								Filtros
+							</span>
+							<div style={{ display: "flex", gap: 16, width: "100%" }}>
+								{/* Campo de busca */}
+								<div style={{ flex: 1 }}>
+									<input
+										type="text"
+										placeholder="Buscar itens..."
+										value={busca}
+										onChange={(e) => setBusca(e.target.value)}
+										className="pl-4 pr-4 py-2 rounded-lg text-gray-800 text-sm bg-white border border-gray-200 shadow focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+										style={{
+											fontFamily: "Inter, sans-serif",
+											height: "40px",
+											boxShadow: "0 1px 4px 0 rgba(0,0,0,0.04)",
+										}}
+									/>
+								</div>
+								{/* Campo de categorias */}
+								<div style={{ flex: 1 }}>
+									<select
+										value={categoria}
+										onChange={(e) => setCategoria(e.target.value)}
+										className="border rounded-md px-3 py-2 bg-white text-gray-700 w-full text-[0.97rem]"
+										style={{ fontFamily: "Inter, sans-serif", height: "40px" }}
+									>
+										<option value="">Categorias</option>
+										{todasCategorias.map((cat) => (
+											<option key={cat} value={cat}>
+												{cat}
+											</option>
+										))}
+									</select>
+								</div>
+							</div>
 						</CardContent>
 					</Card>
 				</section>
