@@ -109,6 +109,8 @@ export default function TodasDoacoes() {
 
 	// Abrir modal DetalheDoacao
 	const handleOpenDetalheModal = (item) => {
+		console.log("Dados do item antes da formatação:", item);
+		
 		const dadosFormatados = {
 			instituto: item.ong,
 			publicadoEm: item.publicado,
@@ -118,8 +120,10 @@ export default function TodasDoacoes() {
 			imagemUrl: item.imageUrl,
 			descricao: item.descricao,
 			email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
-			telefone: item.whatsapp || "(81) 9999-9999"
+			whatsapp: item.whatsapp || "(81) 9999-9999"
 		};
+		
+		console.log("Dados formatados para o modal:", dadosFormatados);
 		setDadosDetalhe(dadosFormatados);
 		setShowDetalheModal(true);
 	};

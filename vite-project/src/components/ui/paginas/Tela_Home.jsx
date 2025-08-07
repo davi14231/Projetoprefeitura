@@ -34,6 +34,8 @@ export default function Tela_Home({ imagensCarrossel }) {
 
   // Abrir modal DetalheDoacao
   const handleOpenDetalheModal = (item) => {
+    console.log("Dados do item antes da formatação (Tela_Home):", item);
+    
     const dadosFormatados = {
       instituto: item.ong,
       publicadoEm: item.publicado || "Data não informada",
@@ -42,9 +44,11 @@ export default function Tela_Home({ imagensCarrossel }) {
       diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
       imagemUrl: item.imageUrl,
       descricao: item.descricao,
-      email: "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
-      telefone: "(81) 9999-9999"
+      email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
+      whatsapp: item.whatsapp || "(81) 9999-9999"
     };
+    
+    console.log("Dados formatados para o modal (Tela_Home):", dadosFormatados);
     setDadosDetalhe(dadosFormatados);
     setShowDetalheModal(true);
   };

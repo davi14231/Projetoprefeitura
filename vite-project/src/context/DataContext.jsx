@@ -239,145 +239,71 @@ export const DataProvider = ({ children }) => {
 
   // === MÉTODOS DE PAGINAÇÃO ===
   const getDoacoesPaginadas = (options = {}) => {
-    const { page = 1, limit = 6, filters = {} } = options;
-    const { categoria, termo } = filters;
-    
-    // Aplicar filtros primeiro
-    let filteredItems = doacoes;
-    
-    if (categoria && categoria !== '') {
-      filteredItems = filteredItems.filter(item => 
-        item.categoria && item.categoria.toLowerCase() === categoria.toLowerCase()
-      );
-    }
-    
-    if (termo && termo !== '') {
-      filteredItems = filteredItems.filter(item => 
-        (item.titulo && item.titulo.toLowerCase().includes(termo.toLowerCase())) ||
-        (item.descricao && item.descricao.toLowerCase().includes(termo.toLowerCase())) ||
-        (item.ong && item.ong.toLowerCase().includes(termo.toLowerCase()))
-      );
-    }
-    
+    const { page = 1, limit = 6 } = options;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
-    const items = filteredItems.slice(startIndex, endIndex);
+    const items = doacoes.slice(startIndex, endIndex);
     
     return {
       items,
       currentPage: page,
-      totalPages: Math.ceil(filteredItems.length / limit),
-      totalItems: filteredItems.length,
-      total: filteredItems.length,
-      hasNextPage: endIndex < filteredItems.length,
+      totalPages: Math.ceil(doacoes.length / limit),
+      totalItems: doacoes.length,
+      total: doacoes.length,
+      hasNextPage: endIndex < doacoes.length,
       hasPrevPage: page > 1
     };
   };
 
   const getRealocacoesPaginadas = (options = {}) => {
-    const { page = 1, limit = 6, filters = {} } = options;
-    const { categoria, termo } = filters;
-    
-    // Aplicar filtros primeiro
-    let filteredItems = realocacoes;
-    
-    if (categoria && categoria !== '') {
-      filteredItems = filteredItems.filter(item => 
-        item.categoria && item.categoria.toLowerCase() === categoria.toLowerCase()
-      );
-    }
-    
-    if (termo && termo !== '') {
-      filteredItems = filteredItems.filter(item => 
-        (item.titulo && item.titulo.toLowerCase().includes(termo.toLowerCase())) ||
-        (item.descricao && item.descricao.toLowerCase().includes(termo.toLowerCase())) ||
-        (item.ong && item.ong.toLowerCase().includes(termo.toLowerCase()))
-      );
-    }
-    
+    const { page = 1, limit = 6 } = options;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
-    const items = filteredItems.slice(startIndex, endIndex);
+    const items = realocacoes.slice(startIndex, endIndex);
     
     return {
       items,
       currentPage: page,
-      totalPages: Math.ceil(filteredItems.length / limit),
-      totalItems: filteredItems.length,
-      total: filteredItems.length,
-      hasNextPage: endIndex < filteredItems.length,
+      totalPages: Math.ceil(realocacoes.length / limit),
+      totalItems: realocacoes.length,
+      total: realocacoes.length,
+      hasNextPage: endIndex < realocacoes.length,
       hasPrevPage: page > 1
     };
   };
 
   // Paginação para MINHAS doações (usado na tela EditDoacoes)
   const getMinhasDoacoesPaginadas = (options = {}) => {
-    const { page = 1, limit = 6, filters = {} } = options;
-    const { categoria, termo } = filters;
-    
-    // Aplicar filtros primeiro
-    let filteredItems = minhasDoacoes;
-    
-    if (categoria && categoria !== '') {
-      filteredItems = filteredItems.filter(item => 
-        item.categoria && item.categoria.toLowerCase() === categoria.toLowerCase()
-      );
-    }
-    
-    if (termo && termo !== '') {
-      filteredItems = filteredItems.filter(item => 
-        (item.titulo && item.titulo.toLowerCase().includes(termo.toLowerCase())) ||
-        (item.descricao && item.descricao.toLowerCase().includes(termo.toLowerCase()))
-      );
-    }
-    
+    const { page = 1, limit = 6 } = options;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
-    const items = filteredItems.slice(startIndex, endIndex);
+    const items = minhasDoacoes.slice(startIndex, endIndex);
     
     return {
       items,
       currentPage: page,
-      totalPages: Math.ceil(filteredItems.length / limit),
-      totalItems: filteredItems.length,
-      total: filteredItems.length,
-      hasNextPage: endIndex < filteredItems.length,
+      totalPages: Math.ceil(minhasDoacoes.length / limit),
+      totalItems: minhasDoacoes.length,
+      total: minhasDoacoes.length,
+      hasNextPage: endIndex < minhasDoacoes.length,
       hasPrevPage: page > 1
     };
   };
 
   // Paginação para MINHAS realocações (usado na tela HomeRealocacao)
   const getMinhasRealocacoesPaginadas = (options = {}) => {
-    const { page = 1, limit = 6, filters = {} } = options;
-    const { categoria, termo } = filters;
-    
-    // Aplicar filtros primeiro
-    let filteredItems = minhasRealocacoes;
-    
-    if (categoria && categoria !== '') {
-      filteredItems = filteredItems.filter(item => 
-        item.categoria && item.categoria.toLowerCase() === categoria.toLowerCase()
-      );
-    }
-    
-    if (termo && termo !== '') {
-      filteredItems = filteredItems.filter(item => 
-        (item.titulo && item.titulo.toLowerCase().includes(termo.toLowerCase())) ||
-        (item.descricao && item.descricao.toLowerCase().includes(termo.toLowerCase()))
-      );
-    }
-    
+    const { page = 1, limit = 6 } = options;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
-    const items = filteredItems.slice(startIndex, endIndex);
+    const items = minhasRealocacoes.slice(startIndex, endIndex);
     
     return {
       items,
       currentPage: page,
-      totalPages: Math.ceil(filteredItems.length / limit),
-      totalItems: filteredItems.length,
-      total: filteredItems.length,
-      hasNextPage: endIndex < filteredItems.length,
+      totalPages: Math.ceil(minhasRealocacoes.length / limit),
+      totalItems: minhasRealocacoes.length,
+      total: minhasRealocacoes.length,
+      hasNextPage: endIndex < minhasRealocacoes.length,
       hasPrevPage: page > 1
     };
   };
