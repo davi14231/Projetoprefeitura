@@ -94,8 +94,6 @@ export function RealocacaoListagem() {
 
   // Abrir modal DetalheDoacao
   const handleOpenDetalheModal = (item) => {
-    console.log("Dados do item antes da formatação (RealocacaoListagem):", item);
-    
     const dadosFormatados = {
       instituto: item.ong,
       publicadoEm: item.publicado || "Data não informada",
@@ -104,11 +102,9 @@ export function RealocacaoListagem() {
       diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
       imagemUrl: item.imageUrl,
       descricao: item.descricao,
-      email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
-      whatsapp: item.whatsapp || "(81) 9999-9999"
+      email: "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
+      telefone: "(81) 9999-9999"
     };
-    
-    console.log("Dados formatados para o modal (RealocacaoListagem):", dadosFormatados);
     setDadosDetalhe(dadosFormatados);
     setShowDetalheModal(true);
   };

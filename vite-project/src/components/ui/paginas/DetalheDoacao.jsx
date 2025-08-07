@@ -2,11 +2,10 @@ import React from 'react';
 import { X, Share, Mail, Phone } from 'lucide-react';
 
 export default function DetalheDoacao({ dados, onClose }) {
-  // 🐛 Debug: Verificar dados recebidos no modal
-  console.log('� MODAL DetalheDoacao recebeu:');
-  console.log('- WhatsApp:', dados?.whatsapp);
-  console.log('- Email:', dados?.email);
-  console.log('- Dados completos:', dados);
+  // 🐛 Debug: Verificar dados recebidos
+  console.log('🔍 DetalheDoacao - dados completos:', dados);
+  console.log('🔍 DetalheDoacao - WhatsApp:', dados?.whatsapp);
+  console.log('🔍 DetalheDoacao - Email:', dados?.email);
 
   // Função para compartilhar nas redes sociais
   const handleShare = async () => {

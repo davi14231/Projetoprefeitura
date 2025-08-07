@@ -6,6 +6,8 @@
 export const mapDoacaoFromBackend = (backendData) => {
   if (!backendData) return null;
   
+  console.log('🔍 DataMapper - URL da imagem do backend:', backendData.url_imagem);
+  
   return {
     id: backendData.id_produto,
     id_produto: backendData.id_produto,
@@ -32,6 +34,8 @@ export const mapDoacaoFromBackend = (backendData) => {
 // Mapear dados de realocação do backend para o formato esperado pelo frontend
 export const mapRealocacaoFromBackend = (backendData) => {
   if (!backendData) return null;
+  
+  console.log('🔍 DataMapper Realocação - URL da imagem do backend:', backendData.url_imagem);
   
   return {
     id: backendData.id_produto,

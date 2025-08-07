@@ -5,6 +5,7 @@ export const uploadService = {
   async uploadImage(file) {
     try {
       console.log('📤 Fazendo upload da imagem:', file.name);
+      console.log('📊 Tamanho do arquivo:', (file.size / 1024 / 1024).toFixed(2) + 'MB');
       
       const formData = new FormData();
       formData.append('image', file);
@@ -16,12 +17,16 @@ export const uploadService = {
       });
       
       console.log('✅ Upload concluído:', response.data);
+      console.log('🔗 URL retornada:', response.data.url);
       return response.data.url; // Retorna a URL da imagem no Cloudinary
     } catch (error) {
       console.error('❌ Erro no upload:', error);
+      console.error('📍 Detalhes do erro:', error.response?.data);
       
       // Se o upload falhar, retornar uma URL de placeholder
-      return 'https://picsum.photos/400/300';
+      const fallbackUrl = 'https://picsum.photos/400/300';
+      console.log('🔄 Usando URL de fallback:', fallbackUrl);
+      return fallbackUrl;
     }
   },
   
