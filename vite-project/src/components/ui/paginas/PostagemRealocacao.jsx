@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, X } from "lucide-react";
 import { useData } from "@/context/DataContext";
+import { uploadService } from "@/services/uploadService";
 
 export function PostagemRealocacao({ onClose, editData = null }) {
   const [imageFile, setImageFile] = useState(null);
@@ -18,6 +19,22 @@ export function PostagemRealocacao({ onClose, editData = null }) {
     descricao: editData?.descricao || "",
     imageUrl: editData?.imageUrl || ""
   });
+  
+  // 🔧 Atualizar formData quando editData mudar
+  useEffect(() => {
+    if (editData) {
+      setFormData({
+        titulo: editData.titulo || "",
+        categoria: editData.categoria || "",
+        quantidade: editData.quantidade || "",
+        email: editData.email || "",
+        whatsapp: editData.whatsapp || "",
+        descricao: editData.descricao || "",
+        imageUrl: editData.imageUrl || ""
+      });
+      setImagePreview(editData.imageUrl || null);
+    }
+  }, [editData]);
   
   const navigate = useNavigate();
   const { addRealocacao, updateRealocacao } = useData();
@@ -66,7 +83,7 @@ export function PostagemRealocacao({ onClose, editData = null }) {
     }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     
     // Validação básica
@@ -75,58 +92,69 @@ export function PostagemRealocacao({ onClose, editData = null }) {
       return;
     }
 
-    // Se não há imagem enviada, usar uma imagem padrão baseada na categoria
-    let finalImageUrl = formData.imageUrl;
-    if (!finalImageUrl) {
-      const defaultImages = {
-        "Roupas e Calçados": "/imagens/roupas.jpg",
-        "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
-        "Saúde e Higiene": "/imagens/med.jpg",
-        "Utensílios Gerais": "/imagens/alimentos.jpg",
-        "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
-        "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
-        "Itens Pet": "/imagens/outros.jpg",
-        "Eletrônicos": "/imagens/Laptops.jpg",
-        "Outros": "/imagens/outros.jpg"
+    try {
+      // Se há uma imagem para upload, fazer o upload primeiro
+      let finalImageUrl = formData.imageUrl;
+      
+      if (imageFile) {
+        console.log('📤 Fazendo upload da imagem...');
+        finalImageUrl = await uploadService.uploadImage(imageFile);
+        console.log('✅ URL da imagem:', finalImageUrl);
+      } else if (!finalImageUrl) {
+        // Se não há imagem enviada, usar uma imagem padrão baseada na categoria
+        const defaultImages = {
+          "Roupas e Calçados": "/imagens/roupas.jpg",
+          "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
+          "Saúde e Higiene": "/imagens/med.jpg",
+          "Utensílios Gerais": "/imagens/alimentos.jpg",
+          "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
+          "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
+          "Itens Pet": "/imagens/outros.jpg",
+          "Eletrônicos": "/imagens/Laptops.jpg",
+          "Outros": "/imagens/outros.jpg"
+        };
+        finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
+      }
+
+      // Calcular data final com prazo padrão de 60 dias
+      const hoje = new Date();
+      const dataLimite = new Date(hoje);
+      dataLimite.setDate(hoje.getDate() + 60); // 60 dias padrão
+      
+      // Formatar data como YYYY-MM-DD para o backend
+      const ano = dataLimite.getFullYear();
+      const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+      const dia = String(dataLimite.getDate()).padStart(2, '0');
+      const dataFinal = `${ano}-${mes}-${dia}`;
+
+      // Criar dados da realocação
+      const dadosRealocacao = {
+        titulo: formData.titulo,
+        categoria: formData.categoria, // Será mapeado para tipo_item na API
+        quantidade: parseInt(formData.quantidade) || 1,
+        email: formData.email,
+        whatsapp: formData.whatsapp,
+        urgencia: "MEDIA", // Padrão para realocações
+        prazo: dataFinal, // Será convertido para prazo_necessidade na API
+        descricao: formData.descricao,
+        imageUrl: finalImageUrl // Será mapeado para url_imagem na API
       };
-      finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
+
+      if (isEditing) {
+        // Atualizar realocação existente
+        await updateRealocacao(editData.id, dadosRealocacao);
+        alert("Realocação atualizada com sucesso!");
+      } else {
+        // Adicionar nova realocação
+        await addRealocacao(dadosRealocacao);
+        alert("Postagem de realocação criada com sucesso!");
+      }
+      
+      handleCancel(); // Fecha o modal ou navega para a página anterior
+    } catch (error) {
+      console.error('Erro ao processar realocação:', error);
+      alert('Erro ao processar a realocação. Tente novamente.');
     }
-
-    // Calcular data final com prazo padrão de 60 dias
-    const hoje = new Date();
-    const dataLimite = new Date(hoje);
-    dataLimite.setDate(hoje.getDate() + 60); // 60 dias padrão
-    
-    // Formatar data como YYYY-MM-DD para o backend
-    const ano = dataLimite.getFullYear();
-    const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
-    const dia = String(dataLimite.getDate()).padStart(2, '0');
-    const dataFinal = `${ano}-${mes}-${dia}`;
-
-    // Criar dados da realocação
-    const dadosRealocacao = {
-      titulo: formData.titulo,
-      categoria: formData.categoria, // Será mapeado para tipo_item na API
-      quantidade: parseInt(formData.quantidade) || 1,
-      email: formData.email,
-      whatsapp: formData.whatsapp,
-      urgencia: "MEDIA", // Padrão para realocações
-      prazo: dataFinal, // Será convertido para prazo_necessidade na API
-      descricao: formData.descricao,
-      imageUrl: finalImageUrl // Será mapeado para url_imagem na API
-    };
-
-    if (isEditing) {
-      // Atualizar realocação existente
-      updateRealocacao(editData.id, dadosRealocacao);
-      alert("Realocação atualizada com sucesso!");
-    } else {
-      // Adicionar nova realocação
-      addRealocacao(dadosRealocacao);
-      alert("Postagem de realocação criada com sucesso!");
-    }
-    
-    handleCancel(); // Fecha o modal ou navega para a página anterior
   }
 
   function handleBackdropClick(e) {

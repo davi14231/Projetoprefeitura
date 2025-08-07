@@ -116,11 +116,19 @@ function HomeRealocacao() {
 
 	// Garantir que os dados sejam sempre atualizados
 	const refreshedData = React.useMemo(() => {
-		return getMinhasRealocacoesPaginadas({
+		const data = getMinhasRealocacoesPaginadas({
 			page: currentPage,
 			limit: itemsPerPage,
 			filters: { categoria, termo: busca }
 		});
+		
+		// DEBUG: Verificar se as URLs das imagens estão presentes
+		console.log('🖼️ HomeRealocacao - Dados das minhas realocações:', data.items);
+		data.items.forEach((item, index) => {
+			console.log(`🖼️ Item ${index + 1}: ${item.titulo} - imageUrl: ${item.imageUrl}`);
+		});
+		
+		return data;
 	}, [currentPage, forceUpdate, getMinhasRealocacoesPaginadas, categoria, busca]);
 
 	// Prevent background scroll when any modal is open

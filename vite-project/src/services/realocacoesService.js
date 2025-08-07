@@ -25,7 +25,7 @@ export const realocacoesService = {
   async listarMinhasRealocacoes() {
     try {
       const response = await api.get('/realocacoes/minhas/ativas');
-      return response.data;
+      return mapRealocacoesFromBackend(response.data); // Mapear dados do backend
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Erro ao carregar suas realocações');
     }
@@ -35,7 +35,7 @@ export const realocacoesService = {
   async listarMinhasRealocacoesFinalizadas() {
     try {
       const response = await api.get('/realocacoes/minhas/finalizadas');
-      return response.data;
+      return mapRealocacoesFromBackend(response.data); // Mapear dados do backend
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Erro ao carregar realocações finalizadas');
     }
