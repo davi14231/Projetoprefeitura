@@ -75,7 +75,12 @@ export const formatDate = (dateString) => {
   
   try {
     const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR');
+    // Garantir que retorna apenas DD/MM/AAAA sem informações extras
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
   } catch (error) {
     return dateString;
   }
