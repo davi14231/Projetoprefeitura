@@ -136,11 +136,10 @@ export const DataProvider = ({ children }) => {
     try {
       console.log('🆕 Adicionando doação:', doacao);
       const result = await doacoesService.criarDoacao(doacao);
-      console.log('✅ Doação criada, recarregando listas...');
-      await loadDoacoes(); // Recarregar doações públicas
-      await loadMinhasDoacoes(); // Recarregar minhas doações
+      console.log('✅ Doação criada, recarregando lista...');
+      await loadDoacoes();
       triggerUpdate(); // Forçar atualização dos componentes
-      console.log('🔄 Listas atualizadas');
+      console.log('🔄 Lista atualizada');
       return result;
     } catch (error) {
       console.error('❌ Erro ao adicionar doação:', error);
@@ -152,9 +151,7 @@ export const DataProvider = ({ children }) => {
   const removeDoacao = async (id) => {
     try {
       await doacoesService.deletarDoacao(id);
-      await loadDoacoes(); // Recarregar doações públicas
-      await loadMinhasDoacoes(); // Recarregar minhas doações
-      triggerUpdate(); // Forçar atualização dos componentes
+      await loadDoacoes();
     } catch (error) {
       console.error('Erro ao remover doação:', error);
       setError('Erro ao remover doação');
@@ -166,11 +163,9 @@ export const DataProvider = ({ children }) => {
     try {
       console.log('🔄 Atualizando doação:', id, dadosAtualizados);
       await doacoesService.editarDoacao(id, dadosAtualizados);
-      console.log('✅ Doação atualizada, recarregando listas...');
-      await loadDoacoes(); // Recarregar doações públicas
-      await loadMinhasDoacoes(); // Recarregar minhas doações
-      triggerUpdate(); // Forçar atualização dos componentes
-      console.log('🔁 Listas de doações recarregadas');
+      console.log('✅ Doação atualizada, recarregando lista...');
+      await loadDoacoes();
+      console.log('🔁 Lista de doações recarregada');
     } catch (error) {
       console.error('❌ Erro ao atualizar doação:', error);
       setError('Erro ao atualizar doação');
@@ -181,9 +176,7 @@ export const DataProvider = ({ children }) => {
   const encerrarDoacao = async (id) => {
     try {
       await doacoesService.alterarStatus(id, 'FINALIZADA');
-      await loadDoacoes(); // Recarregar doações públicas
-      await loadMinhasDoacoes(); // Recarregar minhas doações
-      triggerUpdate(); // Forçar atualização dos componentes
+      await loadDoacoes();
     } catch (error) {
       console.error('Erro ao encerrar doação:', error);
       setError('Erro ao encerrar doação');
@@ -196,11 +189,10 @@ export const DataProvider = ({ children }) => {
     try {
       console.log('🆕 Adicionando realocação:', realocacao);
       const result = await realocacoesService.criarRealocacao(realocacao);
-      console.log('✅ Realocação criada, recarregando listas...');
-      await loadRealocacoes(); // Recarregar realocações públicas
-      await loadMinhasRealocacoes(); // Recarregar minhas realocações
+      console.log('✅ Realocação criada, recarregando lista...');
+      await loadRealocacoes();
       triggerUpdate(); // Forçar atualização dos componentes
-      console.log('🔄 Listas atualizadas');
+      console.log('🔄 Lista atualizada');
       return result;
     } catch (error) {
       console.error('❌ Erro ao adicionar realocação:', error);
@@ -212,9 +204,7 @@ export const DataProvider = ({ children }) => {
   const removeRealocacao = async (id) => {
     try {
       await realocacoesService.deletarRealocacao(id);
-      await loadRealocacoes(); // Recarregar realocações públicas
-      await loadMinhasRealocacoes(); // Recarregar minhas realocações
-      triggerUpdate(); // Forçar atualização dos componentes
+      await loadRealocacoes();
     } catch (error) {
       console.error('Erro ao remover realocação:', error);
       setError('Erro ao remover realocação');
@@ -226,11 +216,9 @@ export const DataProvider = ({ children }) => {
     try {
       console.log('🔄 Atualizando realocação:', id, dadosAtualizados);
       await realocacoesService.editarRealocacao(id, dadosAtualizados);
-      console.log('✅ Realocação atualizada, recarregando listas...');
-      await loadRealocacoes(); // Recarregar realocações públicas
-      await loadMinhasRealocacoes(); // Recarregar minhas realocações
-      triggerUpdate(); // Forçar atualização dos componentes
-      console.log('🔁 Listas de realocações recarregadas');
+      console.log('✅ Realocação atualizada, recarregando lista...');
+      await loadRealocacoes();
+      console.log('🔁 Lista de realocações recarregada');
     } catch (error) {
       console.error('❌ Erro ao atualizar realocação:', error);
       setError('Erro ao atualizar realocação');
@@ -241,9 +229,7 @@ export const DataProvider = ({ children }) => {
   const encerrarRealocacao = async (id) => {
     try {
       await realocacoesService.alterarStatus(id, 'FINALIZADA');
-      await loadRealocacoes(); // Recarregar realocações públicas
-      await loadMinhasRealocacoes(); // Recarregar minhas realocações
-      triggerUpdate(); // Forçar atualização dos componentes
+      await loadRealocacoes();
     } catch (error) {
       console.error('Erro ao encerrar realocação:', error);
       setError('Erro ao encerrar realocação');
