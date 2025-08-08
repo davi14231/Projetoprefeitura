@@ -239,73 +239,35 @@ export const DataProvider = ({ children }) => {
 
   // === MÉTODOS DE PAGINAÇÃO ===
   const getDoacoesPaginadas = (options = {}) => {
-    const { page = 1, limit = 6, filters = {} } = options;
-    let doacoesFiltradas = [...doacoes];
-    
-    // Aplicar filtro de categoria se fornecido
-    if (filters.categoria && filters.categoria !== 'Todos') {
-      doacoesFiltradas = doacoesFiltradas.filter(doacao => 
-        doacao.categoria === filters.categoria
-      );
-    }
-    
-    // Aplicar filtro de busca por termo se fornecido
-    if (filters.termo && filters.termo.trim() !== '') {
-      const termo = filters.termo.toLowerCase();
-      doacoesFiltradas = doacoesFiltradas.filter(doacao =>
-        doacao.titulo?.toLowerCase().includes(termo) ||
-        doacao.categoria?.toLowerCase().includes(termo) ||
-        doacao.ong?.toLowerCase().includes(termo)
-      );
-    }
-    
+    const { page = 1, limit = 6 } = options;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
-    const items = doacoesFiltradas.slice(startIndex, endIndex);
+    const items = doacoes.slice(startIndex, endIndex);
     
     return {
       items,
       currentPage: page,
-      totalPages: Math.ceil(doacoesFiltradas.length / limit),
-      totalItems: doacoesFiltradas.length,
-      total: doacoesFiltradas.length,
-      hasNextPage: endIndex < doacoesFiltradas.length,
+      totalPages: Math.ceil(doacoes.length / limit),
+      totalItems: doacoes.length,
+      total: doacoes.length,
+      hasNextPage: endIndex < doacoes.length,
       hasPrevPage: page > 1
     };
   };
 
   const getRealocacoesPaginadas = (options = {}) => {
-    const { page = 1, limit = 6, filters = {} } = options;
-    let realocacoesFiltradas = [...realocacoes];
-    
-    // Aplicar filtro de categoria se fornecido
-    if (filters.categoria && filters.categoria !== 'Todos') {
-      realocacoesFiltradas = realocacoesFiltradas.filter(realocacao => 
-        realocacao.categoria === filters.categoria
-      );
-    }
-    
-    // Aplicar filtro de busca por termo se fornecido
-    if (filters.termo && filters.termo.trim() !== '') {
-      const termo = filters.termo.toLowerCase();
-      realocacoesFiltradas = realocacoesFiltradas.filter(realocacao =>
-        realocacao.titulo?.toLowerCase().includes(termo) ||
-        realocacao.categoria?.toLowerCase().includes(termo) ||
-        realocacao.ong?.toLowerCase().includes(termo)
-      );
-    }
-    
+    const { page = 1, limit = 6 } = options;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
-    const items = realocacoesFiltradas.slice(startIndex, endIndex);
+    const items = realocacoes.slice(startIndex, endIndex);
     
     return {
       items,
       currentPage: page,
-      totalPages: Math.ceil(realocacoesFiltradas.length / limit),
-      totalItems: realocacoesFiltradas.length,
-      total: realocacoesFiltradas.length,
-      hasNextPage: endIndex < realocacoesFiltradas.length,
+      totalPages: Math.ceil(realocacoes.length / limit),
+      totalItems: realocacoes.length,
+      total: realocacoes.length,
+      hasNextPage: endIndex < realocacoes.length,
       hasPrevPage: page > 1
     };
   };
@@ -330,37 +292,18 @@ export const DataProvider = ({ children }) => {
 
   // Paginação para MINHAS realocações (usado na tela HomeRealocacao)
   const getMinhasRealocacoesPaginadas = (options = {}) => {
-    const { page = 1, limit = 6, filters = {} } = options;
-    let realocacoesFiltradas = [...minhasRealocacoes];
-    
-    // Aplicar filtro de categoria se fornecido
-    if (filters.categoria && filters.categoria !== 'Todos') {
-      realocacoesFiltradas = realocacoesFiltradas.filter(realocacao => 
-        realocacao.categoria === filters.categoria
-      );
-    }
-    
-    // Aplicar filtro de busca por termo se fornecido
-    if (filters.termo && filters.termo.trim() !== '') {
-      const termo = filters.termo.toLowerCase();
-      realocacoesFiltradas = realocacoesFiltradas.filter(realocacao =>
-        realocacao.titulo?.toLowerCase().includes(termo) ||
-        realocacao.categoria?.toLowerCase().includes(termo) ||
-        realocacao.ong?.toLowerCase().includes(termo)
-      );
-    }
-    
+    const { page = 1, limit = 6 } = options;
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
-    const items = realocacoesFiltradas.slice(startIndex, endIndex);
+    const items = minhasRealocacoes.slice(startIndex, endIndex);
     
     return {
       items,
       currentPage: page,
-      totalPages: Math.ceil(realocacoesFiltradas.length / limit),
-      totalItems: realocacoesFiltradas.length,
-      total: realocacoesFiltradas.length,
-      hasNextPage: endIndex < realocacoesFiltradas.length,
+      totalPages: Math.ceil(minhasRealocacoes.length / limit),
+      totalItems: minhasRealocacoes.length,
+      total: minhasRealocacoes.length,
+      hasNextPage: endIndex < minhasRealocacoes.length,
       hasPrevPage: page > 1
     };
   };
