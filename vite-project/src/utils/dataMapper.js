@@ -6,8 +6,6 @@
 export const mapDoacaoFromBackend = (backendData) => {
   if (!backendData) return null;
   
-  console.log('🔍 DataMapper - URL da imagem do backend:', backendData.url_imagem);
-  
   return {
     id: backendData.id_produto,
     id_produto: backendData.id_produto,
@@ -26,6 +24,7 @@ export const mapDoacaoFromBackend = (backendData) => {
     ongData: backendData.ong,
     status: backendData.status,
     criado_em: backendData.criado_em,
+    publicado: formatDate(backendData.criado_em), // Formatação da data de criação
     whatsapp: backendData.whatsapp,
     email: backendData.email
   };
@@ -34,8 +33,6 @@ export const mapDoacaoFromBackend = (backendData) => {
 // Mapear dados de realocação do backend para o formato esperado pelo frontend
 export const mapRealocacaoFromBackend = (backendData) => {
   if (!backendData) return null;
-  
-  console.log('🔍 DataMapper Realocação - URL da imagem do backend:', backendData.url_imagem);
   
   return {
     id: backendData.id_produto,
@@ -53,6 +50,7 @@ export const mapRealocacaoFromBackend = (backendData) => {
     ongData: backendData.ong,
     status: backendData.status,
     criado_em: backendData.criado_em,
+    publicado: formatDate(backendData.criado_em), // Formatação da data de criação
     whatsapp: backendData.whatsapp,
     email: backendData.email
   };
