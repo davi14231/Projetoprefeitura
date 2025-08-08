@@ -17,7 +17,7 @@ export const mapDoacaoFromBackend = (backendData) => {
     quantidade: backendData.quantidade,
     imageUrl: backendData.url_imagem,
     url_imagem: backendData.url_imagem,
-    validade: backendData.prazo_necessidade,
+    validade: formatDate(backendData.prazo_necessidade), // Formatação da data de validade
     prazo_necessidade: backendData.prazo_necessidade,
     prazo: backendData.prazo_necessidade,
     ong: backendData.ong?.nome || backendData.ong,
@@ -44,7 +44,7 @@ export const mapRealocacaoFromBackend = (backendData) => {
     quantidade: backendData.quantidade,
     imageUrl: backendData.url_imagem,
     url_imagem: backendData.url_imagem,
-    validade: backendData.prazo_necessidade,
+    validade: formatDate(backendData.prazo_necessidade), // Formatação da data de validade
     prazo_necessidade: backendData.prazo_necessidade,
     ong: backendData.ong?.nome || backendData.ong,
     ongData: backendData.ong,
@@ -73,7 +73,12 @@ export const formatDate = (dateString) => {
   
   try {
     const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR');
+    // Garantir que retorna apenas DD/MM/AAAA sem informações extras
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
   } catch (error) {
     return dateString;
   }

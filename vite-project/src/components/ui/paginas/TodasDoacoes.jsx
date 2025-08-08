@@ -116,6 +116,7 @@ export default function TodasDoacoes() {
 			publicadoEm: item.publicado,
 			titulo: item.titulo,
 			categoria: item.categoria,
+			quantidade: item.quantidade || 1, // ✅ Adicionado campo quantidade
 			diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
 			imagemUrl: item.imageUrl,
 			descricao: item.descricao,
