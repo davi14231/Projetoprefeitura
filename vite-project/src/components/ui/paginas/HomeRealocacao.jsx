@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Headeredicao } from "@/components/ui/layouts/Headeredicao";
 import { Footer } from "@/components/ui/layouts/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit2, Facebook, Trash2, Search } from "lucide-react";
+import { Edit2, Facebook, Trash2 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ConfirmacaoEncerrarRealocacao from "./ConfirmacaoEncerrarRealocacao";
 import ConfirmacaoDeletar from "./ConfirmacaoDeletar";
@@ -232,43 +232,6 @@ function HomeRealocacao() {
 				</section>
 
 				{/* Filtros */}
-				<section className="max-w-6xl mx-auto px-4 mb-6">
-					<Card className="w-full bg-white border">
-						<CardContent className="py-4 px-6">
-							<div className="flex flex-col md:flex-row gap-4">
-								{/* Campo de busca */}
-								<div className="flex-1">
-									<div className="relative">
-										<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-										<input
-											type="text"
-											placeholder="Buscar itens..."
-											value={busca}
-											onChange={(e) => setBusca(e.target.value)}
-											className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-										/>
-									</div>
-								</div>
-								
-								{/* Filtro de categoria */}
-								<div className="md:w-64">
-									<select
-										value={categoria}
-										onChange={(e) => setCategoria(e.target.value)}
-										className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-									>
-										<option value="">Todas as categorias</option>
-										{todasCategorias.map((cat) => (
-											<option key={cat} value={cat}>
-												{cat}
-											</option>
-										))}
-									</select>
-								</div>
-							</div>
-						</CardContent>
-					</Card>
-				</section>
 
 				{/* Listagem de pedidos */}
 				<section className="max-w-6xl mx-auto px-4 mb-8">

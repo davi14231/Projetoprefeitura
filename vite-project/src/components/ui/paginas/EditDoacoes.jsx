@@ -342,11 +342,19 @@ const handleConfirmEncerramento = () => {
 							<span aria-hidden="true">&times;</span>
 						</button>
 						<div className="p-6">
-							<SolicitarDoacao 
-								onClose={handleCloseSolicitarModal} 
-								editData={editId ? editData : null}
-								editId={editId}
-							/>
+							{SolicitarDoacao ? (
+								<SolicitarDoacao 
+									onClose={handleCloseSolicitarModal} 
+									editData={editId ? editData : null}
+									editId={editId}
+								/>
+							) : (
+								<div>
+									<h2 className="text-lg font-bold mb-4">Solicitar Doação</h2>
+									<p>Conteúdo da tela de solicitação de doação não encontrado.</p>
+									<button className="mt-4 px-4 py-2 bg-[#172233] text-white rounded" onClick={handleCloseSolicitarModal}>Fechar</button>
+								</div>
+							)}
 						</div>
 					</div>
 					{/* Animation keyframes */}
