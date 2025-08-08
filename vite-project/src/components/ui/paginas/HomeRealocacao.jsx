@@ -16,8 +16,6 @@ function HomeRealocacao() {
 	const [editData, setEditData] = useState(null);
 	const [editId, setEditId] = useState(null);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
-	const [busca, setBusca] = useState("");
-	const [categoria, setCategoria] = useState("");
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [showConfirmacaoDeletar, setShowConfirmacaoDeletar] = useState(false);
@@ -26,19 +24,6 @@ function HomeRealocacao() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const { getMinhasRealocacoesPaginadas, removeRealocacao, encerrarRealocacao, forceUpdate, loadMinhasRealocacoes } = useData();
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
-
-	// Lista completa de categorias disponíveis
-	const todasCategorias = [
-		"Roupas e Calçados",
-		"Materiais Educativos e Culturais", 
-		"Saúde e Higiene",
-		"Utensílios Gerais",
-		"Itens de Inclusão e Mobilidade",
-		"Eletrodomésticos e Móveis",
-		"Itens Pet",
-		"Eletrônicos",
-		"Outros"
-	];
 
 	// Carregar minhas realocações ao montar o componente
 	useEffect(() => {
@@ -107,19 +92,17 @@ function HomeRealocacao() {
 		// Este useEffect garante que o componente re-renderize quando uma nova realocação é adicionada
 	}, [forceUpdate]);
 
-	// Obter dados paginados usando Context
+	// Obter dados paginados usando Context (SEM FILTROS para HomeRealocacao)
 	const paginatedData = getMinhasRealocacoesPaginadas({
 		page: currentPage,
-		limit: itemsPerPage,
-		filters: { categoria, termo: busca }
+		limit: itemsPerPage
 	});
 
 	// Garantir que os dados sejam sempre atualizados
 	const refreshedData = React.useMemo(() => {
 		const data = getMinhasRealocacoesPaginadas({
 			page: currentPage,
-			limit: itemsPerPage,
-			filters: { categoria, termo: busca }
+			limit: itemsPerPage
 		});
 		
 		// DEBUG: Verificar se as URLs das imagens estão presentes
@@ -129,7 +112,7 @@ function HomeRealocacao() {
 		});
 		
 		return data;
-	}, [currentPage, forceUpdate, getMinhasRealocacoesPaginadas, categoria, busca]);
+	}, [currentPage, forceUpdate, getMinhasRealocacoesPaginadas]);
 
 	// Prevent background scroll when any modal is open
 	React.useEffect(() => {
@@ -230,8 +213,6 @@ function HomeRealocacao() {
 						</CardContent>
 					</Card>
 				</section>
-
-				{/* Filtros */}
 
 				{/* Listagem de pedidos */}
 				<section className="max-w-6xl mx-auto px-4 mb-8">

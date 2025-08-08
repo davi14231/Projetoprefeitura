@@ -7,6 +7,7 @@ import DetalheDoacao from "./DetalheDoacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
 import { Facebook, Package, Clock } from "lucide-react";
+import { formatDate } from "@/utils/dataMapper";
 
 const badgeColors = {
   Alimentos: "bg-blue-500 text-white",
@@ -76,6 +77,11 @@ export default function TodasDoacoes() {
 		}
 	}, [location.search]);
 
+	// Resetar página quando filtros mudarem
+	React.useEffect(() => {
+		setCurrentPage(1);
+	}, [categoria, busca]);
+
 	// Obter dados paginados usando Context
 	const paginatedData = getDoacoesPaginadas({
 		page: currentPage,
@@ -116,7 +122,8 @@ export default function TodasDoacoes() {
 			publicadoEm: item.publicado,
 			titulo: item.titulo,
 			categoria: item.categoria,
-			diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
+			quantidade: item.quantidade || 1,
+			diasRestantes: item.validade ? `Válido até ${formatDate(item.validade)}` : "Sem prazo definido",
 			imagemUrl: item.imageUrl,
 			descricao: item.descricao,
 			email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",

@@ -7,6 +7,7 @@ import { PostagemRealocacao } from "./PostagemRealocacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
 import { Facebook, Package, Clock } from "lucide-react";
+import { formatDate } from "@/utils/dataMapper";
 
 // import "./MyNewScreen.css";
 
@@ -101,7 +102,8 @@ export function RealocacaoListagem() {
       publicadoEm: item.publicado || "Data não informada",
       titulo: item.titulo,
       categoria: item.categoria,
-      diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
+      quantidade: item.quantidade || 1,
+      diasRestantes: item.validade ? `Válido até ${formatDate(item.validade)}` : "Sem prazo definido",
       imagemUrl: item.imageUrl,
       descricao: item.descricao,
       email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
