@@ -64,20 +64,22 @@ export function Headerrealocacao() {
   return (
     <header className="bg-gray-800 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between py-3">
+        <div className="flex items-center justify-between py-3 gap-4">
           {/* Logo */}
-          <Link to="/home-ong" className="flex items-center min-w-[140px] cursor-pointer">
-            <img
-              src="/imagens/logo-recife.png"
-              alt="Recife Prefeitura"
-              className="h-10 w-auto"
-              draggable={false}
-            />
-          </Link>
+          <div className="flex items-center" style={{minWidth: '180px'}}>
+            <Link to="/home-ong" className="flex items-center cursor-pointer">
+              <img
+                src="/imagens/logo-recife.png"
+                alt="Recife Prefeitura"
+                className="h-10 w-auto"
+                draggable={false}
+              />
+            </Link>
+          </div>
 
           {/* Campo de busca */}
-          <div className="flex-1 flex justify-center md:justify-center my-2 md:my-0">
-            <div className="relative w-full max-w-md" ref={searchRef}>
+          <div className="flex-1 flex justify-center mx-4">
+            <div className="relative w-full max-w-lg" ref={searchRef}>
               <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <img
                   src="/imagens/lupa.png"
@@ -104,7 +106,7 @@ export function Headerrealocacao() {
           </div>
 
           {/* Navegação */}
-          <nav className="flex items-center gap-4 min-w-fit justify-end">
+          <nav className="flex items-center gap-4" style={{minWidth: '180px', justifyContent: 'flex-end'}}>
             <Link to="/home-ong" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Início</Link>
             <Link to="/realocacao-listagem" className="text-blue-400 hover:text-blue-300 transition-colors text-sm border-b-2 border-blue-400 pb-1">Realocação</Link>
             <Link to="/todas-doacoes" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Necessidades</Link>

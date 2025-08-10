@@ -21,7 +21,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
   // Imagens do carrossel (separadas)
   const imagensCarrossel = [
-    "https://previews.123rf.com/images/marctran/marctran1706/marctran170600911/80529244-toy-donation-box-with-unwanted-items-for-poor.jpg?v=" + Date.now(),
+    "https://previews.123rf.com/images/marctran/marctran1706/marctran170600911/80529244-toy-donation-box-with-unwanted-items-for-poor.jpg",
     "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80",
     "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80"
   ];
