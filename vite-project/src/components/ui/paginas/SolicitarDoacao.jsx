@@ -7,7 +7,7 @@ import { Upload, X } from "lucide-react";
 import { useData } from "@/context/DataContext";
 import { uploadService } from "@/services/uploadService";
 
-export function SolicitarDoacao({ onClose, editData = null }) {
+export function SolicitarDoacao({ onClose, editData = null, editId = null }) {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(editData?.imageUrl || null);
   // Função util para extrair e formatar WhatsApp
@@ -76,7 +76,7 @@ export function SolicitarDoacao({ onClose, editData = null }) {
   
   const navigate = useNavigate();
   const { addDoacao, updateDoacao } = useData();
-  const isEditing = editData !== null;
+  const isEditing = editData !== null || !!editId;
 
   function handleCancel() {
     if (onClose) {
@@ -162,25 +162,29 @@ export function SolicitarDoacao({ onClose, editData = null }) {
         finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
       }
 
-    // Calcular data final baseada no prazo selecionado
+    // Calcular data final/prazo_necessidade.
+    // Caso de edição: se o prazo no estado já vier em formato ISO (YYYY-MM-DD), mantemos.
     let dataFinal = "";
-    if (formData.prazo) {
-      const hoje = new Date();
-      let diasPrazo = 60; // padrão
-      
-      if (formData.prazo === "15 dias") diasPrazo = 15;
-      else if (formData.prazo === "30 dias") diasPrazo = 30;
-      else if (formData.prazo === "45 dias") diasPrazo = 45;
-      else if (formData.prazo === "60 dias") diasPrazo = 60;
-      
-      const dataLimite = new Date(hoje);
-      dataLimite.setDate(hoje.getDate() + diasPrazo);
-      
-      // Formatar data como YYYY-MM-DD para o backend
-      const ano = dataLimite.getFullYear();
-      const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
-      const dia = String(dataLimite.getDate()).padStart(2, '0');
-      dataFinal = `${ano}-${mes}-${dia}`;
+    const prazoValue = formData.prazo;
+    const isIso = /^\d{4}-\d{2}-\d{2}$/.test(prazoValue);
+    if (prazoValue) {
+      if (isIso) {
+        dataFinal = prazoValue; // já está formatado
+      } else {
+        // Usuário selecionou uma opção relativa
+        const hoje = new Date();
+        let diasPrazo = 60; // padrão
+        if (prazoValue === "15 dias") diasPrazo = 15;
+        else if (prazoValue === "30 dias") diasPrazo = 30;
+        else if (prazoValue === "45 dias") diasPrazo = 45;
+        else if (prazoValue === "60 dias") diasPrazo = 60;
+        const dataLimite = new Date(hoje);
+        dataLimite.setDate(hoje.getDate() + diasPrazo);
+        const ano = dataLimite.getFullYear();
+        const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+        const dia = String(dataLimite.getDate()).padStart(2, '0');
+        dataFinal = `${ano}-${mes}-${dia}`;
+      }
     }
 
     // Criar dados da doação
@@ -198,8 +202,9 @@ export function SolicitarDoacao({ onClose, editData = null }) {
     };
 
     if (isEditing) {
-      // Atualizar doação existente
-      await updateDoacao(editData.id, dadosDoacao);
+      // Atualizar doação existente (prioriza editId prop, fallback editData.id)
+      const targetId = editId || editData.id || editData.id_produto;
+      await updateDoacao(targetId, dadosDoacao);
       alert("Doação atualizada com sucesso!");
     } else {
       // Adicionar nova doação
