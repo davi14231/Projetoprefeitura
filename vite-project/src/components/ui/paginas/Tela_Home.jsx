@@ -11,7 +11,7 @@ import React from "react";
 
 export default function Tela_Home({ imagensCarrossel }) {
   // Usar dados do contexto em vez de props
-  const { doacoes, loading } = useData();
+  const { doacoes, doacoesPrestesVencer, loading, loadDoacoesPrestesVencer } = useData();
   
   // As imagens do carrossel agora vêm separadas
   const [imgIndex, setImgIndex] = React.useState(0);
@@ -158,7 +158,7 @@ export default function Tela_Home({ imagensCarrossel }) {
                 <span className="text-red-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
                 <span className="font-bold text-lg">Prestes a Vencer</span>
               </div>
-              <ListagemHome itens={doacoes} carrosselId="carousel-prestes" onCardClick={handleOpenDetalheModal} />
+              <ListagemHome itens={ (doacoesPrestesVencer && doacoesPrestesVencer.length>0) ? doacoesPrestesVencer : doacoes } carrosselId="carousel-prestes" onCardClick={handleOpenDetalheModal} />
             </div>
 
             {/* Carrossel 2: Todas as Necessidades */}

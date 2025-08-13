@@ -23,6 +23,25 @@ export const doacoesService = {
     }
   },
 
+  // 🔍 Listar doações prestes a vencer (usa endpoint dedicado se existir; fallback tentativo)
+  async listarDoacoesPrestesVencer() {
+    // Tentamos endpoints prováveis e, se não existirem, deixamos o caller decidir fallback local
+    const caminhos = ['/doacoes/prestes-vencer', '/doacoes/prestes-a-vencer'];
+    let ultimaErro;
+    for (const path of caminhos) {
+      try {
+        const response = await api.get(path);
+        // Se o backend retornar array diretamente
+        return mapDoacoesFromBackend(response.data);
+      } catch (err) {
+        ultimaErro = err;
+        // Continua para tentar o próximo caminho
+      }
+    }
+    // Se nenhum endpoint respondeu, propagamos o último erro para que o DataContext faça fallback de cálculo local
+    throw new Error(ultimaErro?.response?.data?.message || 'Endpoints de "prestes a vencer" não disponíveis');
+  },
+
   // 🔍 Listar minhas doações ativas (ONG logada)
   async listarMinhasDoacoes(filtros = {}) {
     try {

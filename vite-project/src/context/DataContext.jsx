@@ -17,6 +17,7 @@ export const useData = () => {
 // Provider do Context
 export const DataProvider = ({ children }) => {
   const [doacoes, setDoacoes] = useState([]);
+  const [doacoesPrestesVencer, setDoacoesPrestesVencer] = useState([]); // Lista destacada
   const [minhasDoacoes, setMinhasDoacoes] = useState([]); // Estado separado para minhas doações
   const [realocacoes, setRealocacoes] = useState([]);
   const [minhasRealocacoes, setMinhasRealocacoes] = useState([]); // Estado separado para minhas realocações
@@ -36,6 +37,7 @@ export const DataProvider = ({ children }) => {
       try {
         await loadDoacoes();
         await loadRealocacoes();
+  await loadDoacoesPrestesVencer();
       } catch (error) {
         console.warn('Erro ao carregar dados iniciais:', error);
         // Não quebrar a aplicação se houver erro na API
@@ -79,6 +81,38 @@ export const DataProvider = ({ children }) => {
       setApiConnected(false);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Função para carregar doações prestes a vencer (usa endpoint; fallback calcula localmente)
+  const loadDoacoesPrestesVencer = async () => {
+    setError(null);
+    try {
+      try {
+        const apiLista = await doacoesService.listarDoacoesPrestesVencer();
+        setDoacoesPrestesVencer(Array.isArray(apiLista) ? apiLista : []);
+        return;
+      } catch (endpointError) {
+        // Fallback: calcular localmente usando doacoes já carregadas
+        const agora = new Date();
+        const limiteDias = 3; // janela de "prestes a vencer"
+        const proximas = doacoes.filter(d => {
+          if (!d.validade_raw && !d.prazo && !d.prazo_necessidade) return false;
+            const iso = d.validade_raw || d.prazo || d.prazo_necessidade;
+            const dt = new Date(iso);
+            if (isNaN(dt)) return false;
+            const diffDias = (dt - agora) / (1000*60*60*24);
+            return diffDias >= 0 && diffDias <= limiteDias;
+        }).sort((a,b) => {
+          const da = new Date(a.validade_raw || a.prazo || a.prazo_necessidade);
+          const db = new Date(b.validade_raw || b.prazo || b.prazo_necessidade);
+          return da - db;
+        });
+        setDoacoesPrestesVencer(proximas.slice(0, 20)); // limitar
+      }
+    } catch (error) {
+      console.error('Erro ao carregar doações prestes a vencer:', error);
+      setDoacoesPrestesVencer([]);
     }
   };
 
@@ -409,6 +443,7 @@ export const DataProvider = ({ children }) => {
     error,
     apiConnected,
     forceUpdate,
+  doacoesPrestesVencer,
     
     // Métodos para doações
     addDoacao,
@@ -435,6 +470,7 @@ export const DataProvider = ({ children }) => {
     // Utilitários
     loadDoacoes,
     loadMinhasDoacoes,
+  loadDoacoesPrestesVencer,
     loadRealocacoes,
     loadMinhasRealocacoes,
     refreshData,

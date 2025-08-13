@@ -109,7 +109,8 @@ export function RealocacaoListagem() {
       titulo: item.titulo,
       categoria: item.categoria,
       quantidade: item.quantidade || 1,
-      diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
+  // Removido campo de diasRestantes para realocações (não exibimos 'Válido até')
+  // diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
       imagemUrl: item.imageUrl,
       descricao: item.descricao,
       email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
@@ -298,10 +299,7 @@ export function RealocacaoListagem() {
                   )}
 
                   <div className="mt-auto flex flex-col gap-1 text-[11px] text-[#888]">
-                    <div className="flex items-center gap-1 text-[#FF3B30] font-semibold">
-                      <Clock className="w-4 h-4" />
-                      <span>Válido até {item.validade || "Data não informada"}</span>
-                    </div>
+                    {/* Validade removida para realocações */}
                   </div>
                 </div>
               </div>
