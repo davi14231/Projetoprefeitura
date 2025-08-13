@@ -17,6 +17,15 @@ export function CardHome({
   if (urgencia === "Média" || urgencia === "Media" || urgencia === "MEDIA") urgenciaColor = "bg-yellow-400/90 text-yellow-900";
   if (urgencia === "Baixa" || urgencia === "BAIXA") urgenciaColor = "bg-green-400/90 text-white";
 
+  // Normalizar validade: se for string ISO com 'T', formatar pt-BR
+  let validadeExibicao = validade;
+  if (typeof validadeExibicao === 'string' && validadeExibicao.includes('T')) {
+    const d = new Date(validadeExibicao);
+    if (!isNaN(d.getTime())) {
+      validadeExibicao = d.toLocaleDateString('pt-BR');
+    }
+  }
+
   return (
     <Card 
       onClick={onClick}
@@ -70,7 +79,7 @@ export function CardHome({
         {/* Data de validade na parte inferior */}
         <div className="flex items-center gap-1 text-red-500 text-sm font-medium mt-auto">
           <Clock className="w-4 h-4" />
-          <span>Válido até {validade}</span>
+          <span>Válido até {validadeExibicao || 'Data não informada'}</span>
         </div>
       </CardContent>
     </Card>

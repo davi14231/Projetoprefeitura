@@ -7,7 +7,6 @@ import { PostagemRealocacao } from "./PostagemRealocacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
 import { Facebook, Package, Clock } from "lucide-react";
-import { formatDate } from "@/utils/dataMapper";
 
 // import "./MyNewScreen.css";
 
@@ -34,7 +33,7 @@ export function RealocacaoListagem() {
   const [showDetalheModal, setShowDetalheModal] = useState(false);
   const [dadosDetalhe, setDadosDetalhe] = useState(null);
   const [showPostagemModal, setShowPostagemModal] = useState(false);
-  const { filterRealocacoes, getRealocacoesPaginadas, forceUpdate } = useData();
+  const { getRealocacoesPaginadas, loadRealocacoes, realocacoes, forceUpdate } = useData();
 
   const itemsPerPage = 6;
 
@@ -45,9 +44,16 @@ export function RealocacaoListagem() {
     setCurrentPage(page);
   }, [location.search]);
 
-  // Efeito para forçar re-renderização quando forceUpdate muda (nova realocação adicionada)
+  // Carregar dados se ainda não vieram (evita ter que recarregar manualmente)
   useEffect(() => {
-    // Este useEffect garante que o componente re-renderize quando uma nova realocação é adicionada
+    if (!realocacoes || realocacoes.length === 0) {
+      loadRealocacoes().catch(() => {});
+    }
+  }, []);
+
+  // Recarregar quando força atualização disparar
+  useEffect(() => {
+    // Apenas refazer paginação; dados já atualizados no contexto
   }, [forceUpdate]);
 
   // Obter dados paginados usando Context
@@ -103,7 +109,7 @@ export function RealocacaoListagem() {
       titulo: item.titulo,
       categoria: item.categoria,
       quantidade: item.quantidade || 1,
-      diasRestantes: item.validade ? `Válido até ${formatDate(item.validade)}` : "Sem prazo definido",
+      diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
       imagemUrl: item.imageUrl,
       descricao: item.descricao,
       email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",

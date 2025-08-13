@@ -12,6 +12,13 @@ export function CardPedidos({
     publicado,
     validade,
 }) {
+  let validadeExibicao = validade;
+  if (typeof validadeExibicao === 'string' && validadeExibicao.includes('T')) {
+    const d = new Date(validadeExibicao);
+    if (!isNaN(d.getTime())) {
+      validadeExibicao = d.toLocaleDateString('pt-BR');
+    }
+  }
   return (
     <Card className="max-w-md w-full bg-white rounded-xl border border-gray-300 shadow-lg overflow-hidden p-0">
       <div className="relative">
@@ -50,7 +57,7 @@ export function CardPedidos({
           </div>
           <div className="flex items-center gap-2 text-red-600 font-semibold">
             <CalendarDays className="w-4 h-4" />
-            <span>Válido até {validade}</span>
+            <span>Válido até {validadeExibicao || 'Data não informada'}</span>
           </div>
         </div>
       </CardContent>

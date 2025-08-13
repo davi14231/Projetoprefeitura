@@ -123,7 +123,7 @@ export default function TodasDoacoes() {
 			titulo: item.titulo,
 			categoria: item.categoria,
 			quantidade: item.quantidade || 1,
-			diasRestantes: item.validade ? `Válido até ${formatDate(item.validade)}` : "Sem prazo definido",
+			diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
 			imagemUrl: item.imageUrl,
 			descricao: item.descricao,
 			email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",

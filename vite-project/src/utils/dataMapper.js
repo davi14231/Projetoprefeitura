@@ -17,7 +17,10 @@ export const mapDoacaoFromBackend = (backendData) => {
     quantidade: backendData.quantidade,
     imageUrl: backendData.url_imagem,
     url_imagem: backendData.url_imagem,
-    validade: backendData.prazo_necessidade,
+  // validade formatada para exibição (ex: 10/08/2025)
+  validade: formatDate(backendData.prazo_necessidade),
+  // valor bruto ISO preservado caso seja necessário para cálculos
+  validade_raw: backendData.prazo_necessidade,
     prazo_necessidade: backendData.prazo_necessidade,
     prazo: backendData.prazo_necessidade,
     ong: backendData.ong?.nome || backendData.ong,
@@ -44,7 +47,8 @@ export const mapRealocacaoFromBackend = (backendData) => {
     quantidade: backendData.quantidade,
     imageUrl: backendData.url_imagem,
     url_imagem: backendData.url_imagem,
-    validade: backendData.prazo_necessidade,
+  validade: formatDate(backendData.prazo_necessidade),
+  validade_raw: backendData.prazo_necessidade,
     prazo_necessidade: backendData.prazo_necessidade,
     ong: backendData.ong?.nome || backendData.ong,
     ongData: backendData.ong,
