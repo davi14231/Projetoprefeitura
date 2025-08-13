@@ -95,9 +95,15 @@ const handleDelete = (id) => {
 };
 
 // Confirma exclusão no modal
-const handleConfirmDelete = () => {
+const handleConfirmDelete = async () => {
   if (idParaExcluir) {
-	removeDoacao(idParaExcluir);
+    try {
+	  await removeDoacao(idParaExcluir);
+	  alert('Doação excluída com sucesso!');
+	} catch (e) {
+	  console.error(e);
+	  alert('Erro ao excluir doação.');
+	}
 	setIdParaExcluir(null);
   }
   setShowConfirmacaoDeletar(false);
@@ -116,12 +122,18 @@ const handleCloseConfirmacaoEncerrar = () => {
 };
 
 // Confirmar encerramento da solicitação
-const handleConfirmEncerramento = () => {
-  if (idParaEncerrar) {
-    encerrarDoacao(idParaEncerrar);
-    setIdParaEncerrar(null);
-  }
-  setShowConfirmacaoEncerrar(false);
+const handleConfirmEncerramento = async () => {
+	if (idParaEncerrar) {
+		try {
+			await encerrarDoacao(idParaEncerrar);
+			alert('Doação encerrada com sucesso!');
+		} catch (e) {
+			console.error(e);
+			alert('Erro ao encerrar doação.');
+		}
+		setIdParaEncerrar(null);
+	}
+	setShowConfirmacaoEncerrar(false);
 };
 
 	return (

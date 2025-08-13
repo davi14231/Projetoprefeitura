@@ -49,9 +49,15 @@ function HomeRealocacao() {
 	};
 
 	// Confirma exclusão no modal
-	const handleConfirmDelete = () => {
+	const handleConfirmDelete = async () => {
 		if (idParaExcluir) {
-			removeRealocacao(idParaExcluir);
+			try {
+				await removeRealocacao(idParaExcluir);
+				alert('Realocação excluída com sucesso!');
+			} catch (e) {
+				console.error(e);
+				alert('Erro ao excluir realocação.');
+			}
 			setIdParaExcluir(null);
 		}
 		setShowConfirmacaoDeletar(false);
@@ -70,9 +76,15 @@ function HomeRealocacao() {
 	};
 
 	// Confirmar encerramento da realocação
-	const handleConfirmEncerramento = () => {
+	const handleConfirmEncerramento = async () => {
 		if (idParaEncerrar) {
-			encerrarRealocacao(idParaEncerrar);
+			try {
+				await encerrarRealocacao(idParaEncerrar);
+				alert('Realocação encerrada com sucesso!');
+			} catch (e) {
+				console.error(e);
+				alert('Erro ao encerrar realocação.');
+			}
 			setIdParaEncerrar(null);
 		}
 		setShowConfirmacaoModal(false);
