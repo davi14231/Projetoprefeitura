@@ -40,10 +40,10 @@ export default function DetalheDoacao({ dados, onClose }) {
       <div className="w-full max-w-4xl bg-white text-slate-900 flex flex-col rounded-xl shadow-2xl animate-in fade-in-0 zoom-in-95 overflow-hidden">
         
         {/* Cabeçalho */}
-        <header className="bg-[#394a5c] text-white px-6 py-4 flex justify-between items-start">
+  <header className="text-white px-6 py-4 flex justify-between items-start" style={{backgroundColor: 'var(--brand-color, #00A5F4)'}}>
           <div>
             <h2 className="text-lg font-medium leading-none">{dados.instituto || dados.ong || "Instituto Viver Mais"}</h2>
-            <p className="text-sm text-slate-300 pt-1">Publicado em {dados.publicadoEm || dados.publicado || "07/04/25"}</p>
+            <p className="text-sm text-white/95 pt-1">Publicado em {dados.publicadoEm || dados.publicado || "07/04/25"}</p>
           </div>
           <button 
             className="inline-flex items-center justify-center rounded-full w-8 h-8 text-white hover:bg-slate-600 cursor-pointer"

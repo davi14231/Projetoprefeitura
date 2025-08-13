@@ -1,10 +1,11 @@
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import TelaFlutuante from "../TelaFlutuante";
 import { SearchDropdown } from "../SearchDropdown";
 
 export function Headernecessidade() {
+  const location = useLocation();
   const [telaFlutuanteVisible, setTelaFlutuanteVisible] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -62,7 +63,7 @@ export function Headernecessidade() {
   }, []);
 
   return (
-    <header className="bg-gray-800 text-white shadow-lg">
+  <header className="text-white shadow-lg" style={{backgroundColor: 'var(--brand-color, #00A5F4)'}}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between py-3 gap-4">
           {/* Logo */}
@@ -107,9 +108,18 @@ export function Headernecessidade() {
 
           {/* Navegação */}
           <nav className="flex items-center gap-4 justify-end" style={{minWidth: '180px'}}>
-            <Link to="/home-ong" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Início</Link>
-            <Link to="/realocacao-listagem" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Realocação</Link>
-            <Link to="/todas-doacoes" className="text-blue-400 hover:text-blue-300 transition-colors text-sm border-b-2 border-blue-400 pb-1">Necessidades</Link>
+            <Link
+              to="/home-ong"
+              className={`text-white transition-colors text-sm border-b-2 pb-1 ${location.pathname === '/home-ong' ? 'border-white' : 'border-transparent hover:border-white/60 hover:text-white/80'}`}
+            >Início</Link>
+            <Link
+              to="/realocacao-listagem"
+              className={`text-white transition-colors text-sm border-b-2 pb-1 ${location.pathname.startsWith('/realocacao') ? 'border-white' : 'border-transparent hover:border-white/60 hover:text-white/80'}`}
+            >Realocação</Link>
+            <Link
+              to="/todas-doacoes"
+              className={`text-white transition-colors text-sm border-b-2 pb-1 ${(location.pathname.startsWith('/todas-doacoes') || location.pathname.startsWith('/doacoes')) ? 'border-white' : 'border-transparent hover:border-white/60 hover:text-white/80'}`}
+            >Necessidades</Link>
             
             {/* Minha ONG com dropdown */}
             <div 
@@ -117,7 +127,7 @@ export function Headernecessidade() {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1 whitespace-nowrap cursor-pointer">
+              <div className="flex items-center gap-2 text-white hover:text-white/80 transition-colors text-sm border-b-2 border-transparent hover:border-white/60 pb-1 whitespace-nowrap cursor-pointer">
                 <span className="w-7 h-7 flex items-center justify-center text-xs font-semibold bg-gray-600 text-white rounded-full">ONG</span>
                 <Link to="/edit-doacoes" className="flex items-center gap-1">
                   Minha ONG

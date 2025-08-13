@@ -173,6 +173,7 @@ export const DataProvider = ({ children }) => {
       console.log('✅ Doação criada, recarregando listas...');
       await loadDoacoes(); // Recarregar doações públicas
       await loadMinhasDoacoes(); // Recarregar minhas doações
+      await loadDoacoesPrestesVencer(); // Recarregar destaque
       triggerUpdate(); // Forçar atualização dos componentes
       console.log('🔄 Listas atualizadas');
       return result;
@@ -203,6 +204,7 @@ export const DataProvider = ({ children }) => {
       console.log('✅ Doação atualizada, recarregando listas...');
       await loadDoacoes(); // Recarregar doações públicas
       await loadMinhasDoacoes(); // Recarregar minhas doações
+      await loadDoacoesPrestesVencer(); // Recarregar destaque
       triggerUpdate(); // Forçar atualização dos componentes
       console.log('🔁 Listas de doações recarregadas');
     } catch (error) {
@@ -217,6 +219,7 @@ export const DataProvider = ({ children }) => {
       await doacoesService.alterarStatus(id, 'FINALIZADA');
       await loadDoacoes(); // Recarregar doações públicas
       await loadMinhasDoacoes(); // Recarregar minhas doações
+      await loadDoacoesPrestesVencer(); // Recarregar destaque
       triggerUpdate(); // Forçar atualização dos componentes
     } catch (error) {
       console.error('Erro ao encerrar doação:', error);

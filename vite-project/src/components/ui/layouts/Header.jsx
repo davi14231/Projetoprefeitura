@@ -1,9 +1,10 @@
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { SearchDropdown } from "../SearchDropdown";
 
 export function Header() {
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchVisible, setSearchVisible] = useState(false);
   const searchRef = useRef(null);
@@ -35,7 +36,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="bg-gray-800 text-white shadow-lg">
+  <header className="text-white shadow-md" style={{backgroundColor: 'var(--brand-color, #00A5F4)'}}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between py-3">
           {/* Logo */}
@@ -77,10 +78,20 @@ export function Header() {
           </div>
 
           {/* Navegação */}
-          <nav className="flex items-center gap-4 min-w-fit justify-end">
-            <Link to="/home-ong" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Início</Link>
-            <Link to="/realocacao-listagem" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Realocação</Link>
-            <Link to="/todas-doacoes" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Necessidades</Link>
+          <nav className="flex items-center space-x-6">
+            <Link
+              to="/"
+              className={`text-white transition-colors text-sm border-b-2 pb-1 ${location.pathname === '/' ? 'border-white' : 'border-transparent hover:border-white/60 hover:text-white/80'}`}
+            >Início</Link>
+            <Link
+              to="/sobre"
+              className={`text-white transition-colors text-sm border-b-2 pb-1 ${location.pathname.startsWith('/sobre') ? 'border-white' : 'border-transparent hover:border-white/60 hover:text-white/80'}`}
+            >Sobre</Link>
+            <Link
+              to="/contato"
+              className={`text-white transition-colors text-sm border-b-2 pb-1 ${location.pathname.startsWith('/contato') ? 'border-white' : 'border-transparent hover:border-white/60 hover:text-white/80'}`}
+            >Contato</Link>
+            <Link to="/login" className="bg-white text-[var(--brand-color,#00A5F4)] hover:bg-white/90 px-4 py-2 rounded-md text-sm font-medium transition-colors">Entrar</Link>
           </nav>
         </div>
       </div>

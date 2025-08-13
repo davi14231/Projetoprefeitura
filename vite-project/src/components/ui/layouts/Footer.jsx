@@ -8,7 +8,7 @@ export function Footer() {
   const homeRoute = isAuthenticated ? '/home-ong' : '/';
 
   return (
-    <footer className="bg-[#172233] w-full text-white py-12 px-4 border-t-2 border-blue-400">
+  <footer className="w-full text-white py-12 px-4 border-t-2" style={{backgroundColor: 'var(--brand-color, #00A5F4)', borderColor: 'rgba(255,255,255,0.25)'}}>
       <div className="max-w-6xl mx-auto flex flex-wrap gap-12">
         {/* Logo e slogan */}
         <div className="min-w-[220px] flex flex-col gap-2">
