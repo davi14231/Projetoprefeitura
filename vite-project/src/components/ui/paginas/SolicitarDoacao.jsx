@@ -10,13 +10,45 @@ import { uploadService } from "@/services/uploadService";
 export function SolicitarDoacao({ onClose, editData = null }) {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(editData?.imageUrl || null);
+  // Função util para extrair e formatar WhatsApp
+  function parseWhatsappInput(raw) {
+    if (!raw) return { digits: "", display: "" };
+    let texto = raw.trim();
+    // Se colou link wa.me
+    const waMatch = texto.match(/wa\.me\/(\d+)/);
+    if (waMatch) texto = waMatch[1];
+    // Manter só dígitos
+    let digits = texto.replace(/\D/g, "");
+    // Remover zeros iniciais repetidos
+    digits = digits.replace(/^0+/, "");
+    // Se vier com código do país 55 + DDD + número (13 dígitos), reduz para 11 (sem 55)
+    if (digits.length > 11 && digits.startsWith("55")) {
+      digits = digits.slice(2);
+    }
+    // Limitar a 11 dígitos (DDD + 9 número) ou 10 dígitos (sem 9)
+    if (digits.length > 11) digits = digits.slice(-11);
+    // Montar exibição
+    let display = digits;
+    if (digits.length >= 10) {
+      const ddd = digits.slice(0, 2);
+      if (digits.length === 11) {
+        display = `(${ddd}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+      } else { // 10
+        display = `(${ddd}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+      }
+    }
+    return { digits, display };
+  }
+
+  const initialWhatsapp = parseWhatsappInput(editData?.whatsapp);
   const [formData, setFormData] = useState({
     titulo: editData?.titulo || "",
     categoria: editData?.categoria || "",
     quantidade: editData?.quantidade || "",
     urgencia: editData?.urgencia || "",
     prazo: editData?.prazo || "",
-    whatsapp: editData?.whatsapp || "",
+    whatsapp: initialWhatsapp.digits,
+    whatsappDisplay: initialWhatsapp.display,
     email: editData?.email || "",
     descricao: editData?.descricao || "",
     imageUrl: editData?.imageUrl || ""
@@ -25,13 +57,15 @@ export function SolicitarDoacao({ onClose, editData = null }) {
   // 🔧 Atualizar formData quando editData mudar
   useEffect(() => {
     if (editData) {
+      const w = parseWhatsappInput(editData.whatsapp);
       setFormData({
         titulo: editData.titulo || "",
         categoria: editData.categoria || "",
         quantidade: editData.quantidade || "",
         urgencia: editData.urgencia || "",
         prazo: editData.prazo || "",
-        whatsapp: editData.whatsapp || "",
+        whatsapp: w.digits,
+        whatsappDisplay: w.display,
         email: editData.email || "",
         descricao: editData.descricao || "",
         imageUrl: editData.imageUrl || ""
@@ -54,10 +88,12 @@ export function SolicitarDoacao({ onClose, editData = null }) {
 
   function handleInputChange(e) {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    if (name === 'whatsapp') {
+      const parsed = parseWhatsappInput(value);
+      setFormData(prev => ({ ...prev, whatsapp: parsed.digits, whatsappDisplay: parsed.display }));
+      return;
+    }
+    setFormData(prev => ({ ...prev, [name]: value }));
   }
 
   function handleImageUpload(e) {
@@ -93,6 +129,12 @@ export function SolicitarDoacao({ onClose, editData = null }) {
     // Validação básica
     if (!formData.titulo || !formData.categoria || !formData.email || !formData.whatsapp || !formData.descricao) {
       alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    // Validação mínima de WhatsApp (10 ou 11 dígitos após normalização)
+    if (formData.whatsapp.length < 10) {
+      alert('WhatsApp inválido. Informe DDD + número.');
       return;
     }
 
@@ -147,7 +189,8 @@ export function SolicitarDoacao({ onClose, editData = null }) {
       categoria: formData.categoria, // Será mapeado para tipo_item na API
       quantidade: parseInt(formData.quantidade) || 1,
       email: formData.email,
-      whatsapp: formData.whatsapp,
+  // Enviar somente dígitos (sem formatação). Adapte para incluir 55 se backend exigir.
+  whatsapp: formData.whatsapp,
       urgencia: (formData.urgencia || "BAIXA").toUpperCase(), // Backend espera MAIÚSCULO
       prazo: dataFinal, // Será convertido para prazo_necessidade na API
       descricao: formData.descricao,
@@ -299,7 +342,7 @@ function handleBackdropClick(e) {
                     value={formData.prazo}
                     onChange={handleInputChange}
                   >
-                    <option value="">60 dias</option>
+                    <option value="">Escolha o prazo</option>
                     <option value="15 dias">15 dias</option>
                     <option value="30 dias">30 dias</option>
                     <option value="45 dias">45 dias</option>
@@ -311,12 +354,13 @@ function handleBackdropClick(e) {
                   <Input 
                     id="whatsapp" 
                     name="whatsapp"
-                    placeholder="(xx) xxxxx-xxxx" 
+                    placeholder="(DD) 9XXXX-XXXX" 
                     className="mt-1"
-                    value={formData.whatsapp}
+                    value={formData.whatsappDisplay}
                     onChange={handleInputChange}
                     required
                   />
+                  <p className="text-xs text-gray-500 mt-1">Aceita: 81999998888, (81) 99999-8888, +55 81 99999-8888, link wa.me. Será normalizado automaticamente.</p>
                 </div>
                 <div className="col-span-2">
                   <Label htmlFor="email" className="text-base font-medium">Email para contato</Label>
