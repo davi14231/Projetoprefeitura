@@ -15,9 +15,9 @@ export const ProtectedRoute = ({ children }) => {
     );
   }
 
-  // Se não está autenticado, redirecionar para login
+  // Se não está autenticado, redirecionar para a home pública
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" replace />;
   }
 
   // Se está autenticado, renderizar o componente

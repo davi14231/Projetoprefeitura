@@ -34,11 +34,11 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Token expirado ou inválido
-      console.warn('🔑 Token inválido. Redirecionando para login...');
+      console.warn('🔑 Token inválido. Redirecionando para a home pública...');
       Cookies.remove('auth_token');
       Cookies.remove('user_data');
-      // Redirecionar para login se necessário
-      window.location.href = '/login';
+      // Redirecionar para a home pública para evitar loops de login
+      window.location.href = '/';
     }
     return Promise.reject(error);
   }
