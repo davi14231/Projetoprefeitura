@@ -14,6 +14,12 @@ export default defineConfig({
         target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
+      },
+      // Proxy alternativo para ambiente Docker
+      '/api-docker': {
+        target: 'http://projeto-prefeitura-backend:3000/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-docker/, '')
       }
     }
   },
