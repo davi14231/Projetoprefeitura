@@ -85,7 +85,7 @@ export function SearchDropdown({ searchTerm, onClose }) {
   const hasResults = results.items.length > 0 || results.pages.length > 0;
 
   return (
-    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+    <div data-testid="search-dropdown" className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
       {hasResults ? (
         <div className="py-2">
           {/* Seção de Páginas */}
@@ -97,6 +97,7 @@ export function SearchDropdown({ searchTerm, onClose }) {
               {results.pages.map((page, index) => (
                 <div
                   key={index}
+                  data-testid="search-page-item"
                   onClick={() => handlePageClick(page)}
                   className="px-3 py-2 hover:bg-gray-50 cursor-pointer border-b border-gray-100"
                 >
@@ -125,6 +126,7 @@ export function SearchDropdown({ searchTerm, onClose }) {
               {results.items.map((item, index) => (
                 <div
                   key={index}
+                  data-testid="search-result-item"
                   onClick={() => handleItemClick(item)}
                   className="px-3 py-2 hover:bg-gray-50 cursor-pointer border-b border-gray-100"
                 >
