@@ -22,7 +22,7 @@ export function BlocoDoador() {
             <Phone className="w-8 h-8 text-blue-600 mb-2" />
             <span className="font-semibold text-gray-800 mb-1">Entre em contato</span>
             <span className="text-gray-500 text-sm text-center">
-              Conecte-se diretamente com as ONGs através de WhatsApp ou telefone
+              Conecte-se diretamente com as ONGs através de WhatsApp ou Email
             </span>
           </div>
           <div className="bg-white rounded-lg shadow-md p-6 w-64 flex flex-col items-center">
