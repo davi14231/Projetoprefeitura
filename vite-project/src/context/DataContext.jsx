@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 // Usar alias para facilitar mocking consistente nos testes
 import { doacoesService } from '@/services/doacoesService';
 import { realocacoesService } from '@/services/realocacoesService';
+import { mapRealocacaoFromBackend } from '@/utils/dataMapper';
 
 // Criar o Context
 const DataContext = createContext();
@@ -85,32 +86,12 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  // Função para carregar doações prestes a vencer (usa endpoint; fallback calcula localmente)
+  // Função para carregar doações prestes a vencer (SEM fallback local)
   const loadDoacoesPrestesVencer = async () => {
     setError(null);
     try {
-      try {
-        const apiLista = await doacoesService.listarDoacoesPrestesVencer();
-        setDoacoesPrestesVencer(Array.isArray(apiLista) ? apiLista : []);
-        return;
-      } catch (endpointError) {
-        // Fallback: calcular localmente usando doacoes já carregadas
-        const agora = new Date();
-        const limiteDias = 3; // janela de "prestes a vencer"
-        const proximas = doacoes.filter(d => {
-          if (!d.validade_raw && !d.prazo && !d.prazo_necessidade) return false;
-            const iso = d.validade_raw || d.prazo || d.prazo_necessidade;
-            const dt = new Date(iso);
-            if (isNaN(dt)) return false;
-            const diffDias = (dt - agora) / (1000*60*60*24);
-            return diffDias >= 0 && diffDias <= limiteDias;
-        }).sort((a,b) => {
-          const da = new Date(a.validade_raw || a.prazo || a.prazo_necessidade);
-          const db = new Date(b.validade_raw || b.prazo || b.prazo_necessidade);
-          return da - db;
-        });
-        setDoacoesPrestesVencer(proximas.slice(0, 20)); // limitar
-      }
+      const apiLista = await doacoesService.listarDoacoesPrestesVencer();
+      setDoacoesPrestesVencer(Array.isArray(apiLista) ? apiLista : []);
     } catch (error) {
       console.error('Erro ao carregar doações prestes a vencer:', error);
       setDoacoesPrestesVencer([]);
@@ -234,12 +215,35 @@ export const DataProvider = ({ children }) => {
     try {
       console.log('🆕 Adicionando realocação:', realocacao);
       const result = await realocacoesService.criarRealocacao(realocacao);
-      console.log('✅ Realocação criada, recarregando listas...');
-      await loadRealocacoes(); // Recarregar realocações públicas
-      await loadMinhasRealocacoes(); // Recarregar minhas realocações
-      triggerUpdate(); // Forçar atualização dos componentes
-      console.log('🔄 Listas atualizadas');
-      return result;
+      // Mapear resposta para o formato frontend (caso backend não esteja retornando em /minhas/ativas ainda)
+      const mapped = mapRealocacaoFromBackend(result);
+
+      // Atualização otimista: inserir imediatamente na lista de "minhas" realocações
+      setMinhasRealocacoes(prev => {
+        // Evitar duplicação se já existir (por id_produto)
+        if (mapped && !prev.some(r => r.id === mapped.id)) {
+          return [mapped, ...prev];
+        }
+        return prev;
+      });
+
+      // Se o status permitir exibição pública (ex: ATIVA), adiciona também à lista pública
+      if (mapped?.status === 'ATIVA') {
+        setRealocacoes(prev => {
+          if (!prev.some(r => r.id === mapped.id)) {
+            return [mapped, ...prev];
+          }
+          return prev;
+        });
+      }
+
+      triggerUpdate();
+      console.log('✅ Realocação criada (otimista). Recarregando em segundo plano...');
+
+      // Recarregar em segundo plano para sincronizar (não bloquear UI)
+      loadMinhasRealocacoes().catch(() => {});
+      loadRealocacoes().catch(() => {});
+      return mapped;
     } catch (error) {
       console.error('❌ Erro ao adicionar realocação:', error);
       setError('Erro ao adicionar realocação');

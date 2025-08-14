@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, Share, Mail, Phone } from 'lucide-react';
 
-export default function DetalheDoacao({ dados, onClose }) {
+export default function DetalheDoacao({ dados, onClose, hidePrazo = false }) {
   // 🐛 Debug: Verificar dados recebidos
   console.log('🔍 DetalheDoacao - dados completos:', dados);
   console.log('🔍 DetalheDoacao - WhatsApp:', dados?.whatsapp);
@@ -35,6 +35,30 @@ export default function DetalheDoacao({ dados, onClose }) {
     window.open(whatsappUrl, '_blank', 'width=600,height=400');
   };
 
+  // Calcular dias restantes dinamicamente caso backend não forneça pronto
+  const prazoRaw = dados?.validade_raw || dados?.prazo_necessidade || dados?.validade;
+  const diasRestantesCalc = React.useMemo(() => {
+    if (!prazoRaw) return null;
+    try {
+      const end = new Date(prazoRaw);
+      if (isNaN(end.getTime())) return null;
+      const today = new Date();
+      // Zerar horas para cálculo mais preciso em dias
+      end.setHours(0,0,0,0);
+      today.setHours(0,0,0,0);
+      const diffMs = end - today;
+      const diffDias = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+      if (diffDias < 0) return 'Expirado';
+      if (diffDias === 0) return 'Último dia';
+      if (diffDias === 1) return '1 dia restante';
+      return `${diffDias} dias restantes`;
+    } catch (e) {
+      return null;
+    }
+  }, [prazoRaw]);
+
+  const labelDias = dados?.diasRestantes || dados?.tempoRestante || diasRestantesCalc || '';
+
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4">
       <div className="w-full max-w-4xl bg-white text-slate-900 flex flex-col rounded-xl shadow-2xl animate-in fade-in-0 zoom-in-95 overflow-hidden">
@@ -67,10 +91,12 @@ export default function DetalheDoacao({ dados, onClose }) {
               <img src="/imagens/quant.jpg" alt="Quantidade" className="w-4 h-4" />
               {dados.quantidade || "5"}
             </span>
-            <span className="px-3 py-1 rounded-full font-medium text-sm bg-orange-50 text-orange-600 border border-orange-200 flex items-center gap-1">
-              <img src="/imagens/relogio.jpg" alt="Tempo" className="w-4 h-4" />
-              {dados.diasRestantes || dados.tempoRestante || "17 dias restantes"}
-            </span>
+            {!hidePrazo && (
+              <span className="px-3 py-1 rounded-full font-medium text-sm bg-orange-50 text-orange-600 border border-orange-200 flex items-center gap-1">
+                <img src="/imagens/relogio.jpg" alt="Tempo" className="w-4 h-4" />
+                {labelDias}
+              </span>
+            )}
           </div>
 
           {/* Layout principal com imagem e descrição */}
