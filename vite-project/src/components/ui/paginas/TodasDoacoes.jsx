@@ -21,11 +21,19 @@ const badgeColors = {
   default: "bg-blue-500 text-white",
 };
 
-const urgencyColors = {
-	"Alta": "bg-[#FF3B30] text-white", // vermelho
-	"Média": "bg-[#FF9500] text-white", // laranja  
-	"Baixa": "bg-[#34C759] text-white", // verde
-	default: "bg-gray-300 text-gray-800",
+// Cores de urgência (pastéis, padronizadas com outras telas)
+const getUrgencyClasses = (u) => {
+	const val = (u || '').normalize('NFD').replace(/\p{Diacritic}/gu,'').toUpperCase();
+	switch (val) {
+		case 'ALTA':
+			return 'bg-red-100 border border-red-200 text-red-700';
+		case 'MEDIA':
+			return 'bg-yellow-100 border border-yellow-200 text-yellow-700';
+		case 'BAIXA':
+			return 'bg-green-100 border border-green-200 text-green-700';
+		default:
+			return 'bg-gray-100 border border-gray-200 text-gray-600';
+	}
 };
 
 export default function TodasDoacoes() {
@@ -260,11 +268,9 @@ export default function TodasDoacoes() {
 									{/* Badge urgência */}
 									{item.urgencia && (
 										<span
-											className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold shadow ${
-												urgencyColors[item.urgencia] || urgencyColors.default
-											}`}
+											className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold shadow ${getUrgencyClasses(item.urgencia)}`}
 										>
-											{item.urgencia}
+											{item.urgencia.charAt(0).toUpperCase() + item.urgencia.slice(1).toLowerCase()}
 										</span>
 									)}
 								</div>

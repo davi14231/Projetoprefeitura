@@ -13,9 +13,11 @@ export function CardHome({
   onClick, // Recebe a função de clique como uma propriedade
 }) {
   // Define a cor do badge de urgência conforme o valor
-  let urgenciaColor = "bg-red-400/90 text-white";
-  if (urgencia === "Média" || urgencia === "Media" || urgencia === "MEDIA") urgenciaColor = "bg-yellow-400/90 text-yellow-900";
-  if (urgencia === "Baixa" || urgencia === "BAIXA") urgenciaColor = "bg-green-400/90 text-white";
+  // Urgência em tons suaves padronizados
+  const norm = (urgencia || '').normalize('NFD').replace(/\p{Diacritic}/gu,'').toUpperCase();
+  let urgenciaColor = 'bg-red-100 border border-red-200 text-red-700'; // ALTA (default se vier diferente)
+  if (norm === 'MEDIA') urgenciaColor = 'bg-yellow-100 border border-yellow-200 text-yellow-700';
+  if (norm === 'BAIXA') urgenciaColor = 'bg-green-100 border border-green-200 text-green-700';
 
   // Normalizar validade: se for string ISO com 'T', formatar pt-BR
   let validadeExibicao = validade;
@@ -41,8 +43,8 @@ export function CardHome({
         />
         {/* Badges sobre a imagem */}
         <div className="absolute top-4 left-4 flex gap-2 z-10">
-          <span className={`${urgenciaColor} text-xs px-3 py-1 rounded-full font-semibold shadow-sm drop-shadow`}>
-            {urgencia}
+          <span className={`${urgenciaColor} text-xs px-3 py-1 rounded-full font-semibold shadow-sm drop-shadow`}>            
+            {urgencia?.charAt(0).toUpperCase() + urgencia?.slice(1).toLowerCase()}
           </span>
           <span className="bg-white/90 text-gray-800 text-xs px-3 py-1 rounded-full font-semibold shadow-sm border border-gray-200">
             {categoria}
