@@ -18,7 +18,11 @@ export function HeaderTelainicial() {
         <div className="flex-1"></div>
         {/* Botão Entrar como ONG */}
         <div className="flex justify-end" style={{minWidth: '180px'}}>
-          <Link to="/login" className="bg-white/15 hover:bg-white/25 text-white px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer backdrop-blur-sm">
+          <Link
+            to="/login"
+            className="text-white px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer"
+            style={{ backgroundColor: '#294BB6' }}
+          >
             Entrar como ONG
           </Link>
         </div>

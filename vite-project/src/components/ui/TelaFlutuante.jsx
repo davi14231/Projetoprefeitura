@@ -22,6 +22,9 @@ const TelaFlutuante = ({
     
     // Fechar o dropdown
     if (onClose) onClose();
+
+  // Redirecionar para a tela inicial
+  navigate('/');
   };
 
   // Usar o nome da ONG do usuário autenticado, se disponível
