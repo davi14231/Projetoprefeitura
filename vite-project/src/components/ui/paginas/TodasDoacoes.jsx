@@ -7,6 +7,7 @@ import DetalheDoacao from "./DetalheDoacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
 import { Facebook, Package, Clock } from "lucide-react";
+import { formatDate } from "@/utils/dataMapper";
 
 const badgeColors = {
   Alimentos: "bg-blue-500 text-white",
@@ -20,11 +21,19 @@ const badgeColors = {
   default: "bg-blue-500 text-white",
 };
 
-const urgencyColors = {
-	"Alta": "bg-[#FF3B30] text-white", // vermelho
-	"Média": "bg-[#FF9500] text-white", // laranja  
-	"Baixa": "bg-[#34C759] text-white", // verde
-	default: "bg-gray-300 text-gray-800",
+// Cores de urgência (pastéis, padronizadas com outras telas)
+const getUrgencyClasses = (u) => {
+	const val = (u || '').normalize('NFD').replace(/\p{Diacritic}/gu,'').toUpperCase();
+	switch (val) {
+		case 'ALTA':
+			return 'bg-red-100 border border-red-200 text-red-700';
+		case 'MEDIA':
+			return 'bg-yellow-100 border border-yellow-200 text-yellow-700';
+		case 'BAIXA':
+			return 'bg-green-100 border border-green-200 text-green-700';
+		default:
+			return 'bg-gray-100 border border-gray-200 text-gray-600';
+	}
 };
 
 export default function TodasDoacoes() {
@@ -35,7 +44,7 @@ export default function TodasDoacoes() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { filterDoacoes } = useData();
+	const { getDoacoesPaginadas } = useData();
 
 	const itemsPerPage = 6;
 
@@ -76,29 +85,21 @@ export default function TodasDoacoes() {
 		}
 	}, [location.search]);
 
-	// Aplicar filtros aos dados
-	const filteredDoacoes = filterDoacoes({
-		categoria,
-		busca
+	// Resetar página quando filtros mudarem
+	React.useEffect(() => {
+		setCurrentPage(1);
+	}, [categoria, busca]);
+
+	// Obter dados paginados usando Context
+	const paginatedData = getDoacoesPaginadas({
+		page: currentPage,
+		limit: itemsPerPage,
+		filters: { categoria, termo: busca }
 	});
 
-	// Obter dados paginados dos itens filtrados
-	const getPaginatedData = () => {
-		const startIndex = (currentPage - 1) * itemsPerPage;
-		const endIndex = startIndex + itemsPerPage;
-		const items = filteredDoacoes.slice(startIndex, endIndex);
-		const totalPages = Math.ceil(filteredDoacoes.length / itemsPerPage);
-		
-		return {
-			items,
-			currentPage,
-			totalPages,
-			totalItems: filteredDoacoes.length,
-			itemsPerPage
-		};
-	};
-
-	const paginatedData = getPaginatedData();
+	// Verificar se há dados antes de acessar
+	const items = paginatedData?.items || [];
+	const totalPages = paginatedData?.totalPages || 1;
 
 	// Função para mudar página
 	const handlePageChange = (page) => {
@@ -122,17 +123,22 @@ export default function TodasDoacoes() {
 
 	// Abrir modal DetalheDoacao
 	const handleOpenDetalheModal = (item) => {
+		console.log("Dados do item antes da formatação:", item);
+		
 		const dadosFormatados = {
 			instituto: item.ong,
 			publicadoEm: item.publicado,
 			titulo: item.titulo,
 			categoria: item.categoria,
+			quantidade: item.quantidade || 1,
 			diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
 			imagemUrl: item.imageUrl,
 			descricao: item.descricao,
 			email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
-			telefone: item.whatsapp || "(81) 9999-9999"
+			whatsapp: item.whatsapp || "(81) 9999-9999"
 		};
+		
+		console.log("Dados formatados para o modal:", dadosFormatados);
 		setDadosDetalhe(dadosFormatados);
 		setShowDetalheModal(true);
 	};
@@ -229,12 +235,13 @@ export default function TodasDoacoes() {
 
 				{/* Grid de cards */}
 				<section className="max-w-[900px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 px-2">
-					{paginatedData.items.map((item) => (
-						<div key={item.id}>
-							<div
-								className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full cursor-pointer"
-								onClick={() => handleOpenDetalheModal(item)}
-							>
+					{items && items.length > 0 ? (
+						items.map((item) => (
+							<div key={item.id}>
+								<div
+									className="relative flex flex-col bg-white rounded-2xl border border-gray-200 shadow hover:shadow-lg transition overflow-hidden h-full cursor-pointer"
+									onClick={() => handleOpenDetalheModal(item)}
+								>
 								{/* Imagem */}
 								<div className="relative">
 									<img
@@ -261,11 +268,9 @@ export default function TodasDoacoes() {
 									{/* Badge urgência */}
 									{item.urgencia && (
 										<span
-											className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold shadow ${
-												urgencyColors[item.urgencia] || urgencyColors.default
-											}`}
+											className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold shadow ${getUrgencyClasses(item.urgencia)}`}
 										>
-											{item.urgencia}
+											{item.urgencia.charAt(0).toUpperCase() + item.urgencia.slice(1).toLowerCase()}
 										</span>
 									)}
 								</div>
@@ -324,14 +329,27 @@ export default function TodasDoacoes() {
 								</div>
 							</div>
 						</div>
-					))}
+					))
+					) : (
+						<div className="col-span-full text-center py-12">
+							<Package className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+							<h3 className="text-lg font-medium text-gray-900 mb-2">
+								Nenhuma doação encontrada
+							</h3>
+							<p className="text-gray-500">
+								{categoria || busca 
+									? 'Tente ajustar os filtros de busca.' 
+									: 'Não há doações disponíveis no momento.'}
+							</p>
+						</div>
+					)}
 				</section>
 				<div className="max-w-[900px] mx-auto flex justify-center mb-12">
 					<Pagination
 						currentPage={currentPage}
-						totalPages={paginatedData.totalPages}
+						totalPages={totalPages}
 						onPageChange={handlePageChange}
-						baseUrl="/todas_doacoes"
+						baseUrl="/todas-doacoes"
 					/>
 				</div>
 

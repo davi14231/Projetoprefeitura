@@ -24,10 +24,15 @@ export function EditDoacoes() {
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [idParaEncerrar, setIdParaEncerrar] = useState(null);
-	const { getDoacoesPaginadas, removeDoacao, encerrarDoacao, forceUpdate } = useData();
+	const { getMinhasDoacoesPaginadas, removeDoacao, encerrarDoacao, forceUpdate, loadMinhasDoacoes } = useData();
 	const navigate = useNavigate();
 
 	const itemsPerPage = 6;
+
+	// Carregar minhas doações ao montar o componente
+	useEffect(() => {
+		loadMinhasDoacoes();
+	}, []);
 
 	// Efeito para ler parâmetros da URL e definir página atual
 	useEffect(() => {
@@ -39,16 +44,17 @@ export function EditDoacoes() {
 	// Efeito para forçar re-renderização quando forceUpdate muda (nova doação adicionada)
 	useEffect(() => {
 		// Este useEffect garante que o componente re-renderize quando uma nova doação é adicionada
+		loadMinhasDoacoes(); // Recarregar minhas doações quando houver mudança
 	}, [forceUpdate]);
 
 	// Garantir que os dados sejam sempre atualizados
 	const refreshedData = React.useMemo(() => {
-		return getDoacoesPaginadas({
+		return getMinhasDoacoesPaginadas({
 			page: currentPage,
 			limit: itemsPerPage,
 			filters: {}
 		});
-	}, [currentPage, forceUpdate, getDoacoesPaginadas]);
+	}, [currentPage, forceUpdate, getMinhasDoacoesPaginadas]);
 
 	// Prevent background scroll when any modal is open
 	React.useEffect(() => {
@@ -89,9 +95,15 @@ const handleDelete = (id) => {
 };
 
 // Confirma exclusão no modal
-const handleConfirmDelete = () => {
+const handleConfirmDelete = async () => {
   if (idParaExcluir) {
-	removeDoacao(idParaExcluir);
+    try {
+	  await removeDoacao(idParaExcluir);
+	  alert('Doação excluída com sucesso!');
+	} catch (e) {
+	  console.error(e);
+	  alert('Erro ao excluir doação.');
+	}
 	setIdParaExcluir(null);
   }
   setShowConfirmacaoDeletar(false);
@@ -110,12 +122,18 @@ const handleCloseConfirmacaoEncerrar = () => {
 };
 
 // Confirmar encerramento da solicitação
-const handleConfirmEncerramento = () => {
-  if (idParaEncerrar) {
-    encerrarDoacao(idParaEncerrar);
-    setIdParaEncerrar(null);
-  }
-  setShowConfirmacaoEncerrar(false);
+const handleConfirmEncerramento = async () => {
+	if (idParaEncerrar) {
+		try {
+			await encerrarDoacao(idParaEncerrar);
+			alert('Doação encerrada com sucesso!');
+		} catch (e) {
+			console.error(e);
+			alert('Erro ao encerrar doação.');
+		}
+		setIdParaEncerrar(null);
+	}
+	setShowConfirmacaoEncerrar(false);
 };
 
 	return (
@@ -248,7 +266,7 @@ const handleConfirmEncerramento = () => {
 													<div className="flex gap-2">
 														<button 
 															className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
-																pedido.urgencia === 'Baixa' || pedido.status === 'baixa'
+																pedido.urgencia === 'BAIXA' || pedido.urgencia === 'Baixa'
 																	? 'bg-green-100 border-green-200 text-green-700' 
 																	: 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200'
 															}`}
@@ -257,7 +275,7 @@ const handleConfirmEncerramento = () => {
 														</button>
 														<button 
 															className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
-																pedido.urgencia === 'Média' || pedido.status === 'média'
+																pedido.urgencia === 'MEDIA' || pedido.urgencia === 'Média'
 																	? 'bg-yellow-100 border-yellow-200 text-yellow-700' 
 																	: 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200'
 															}`}
@@ -266,7 +284,7 @@ const handleConfirmEncerramento = () => {
 														</button>
 														<button 
 															className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
-																pedido.urgencia === 'Alta' || pedido.status === 'alta'
+																pedido.urgencia === 'ALTA' || pedido.urgencia === 'Alta'
 																	? 'bg-red-100 border-red-200 text-red-700' 
 																	: 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200'
 															}`}

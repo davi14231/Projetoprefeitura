@@ -1,29 +1,82 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, X } from "lucide-react";
 import { useData } from "@/context/DataContext";
+import { uploadService } from "@/services/uploadService";
 
-export function SolicitarDoacao({ onClose, editData = null }) {
+export function SolicitarDoacao({ onClose, editData = null, editId = null }) {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(editData?.imageUrl || null);
+  // Função util para extrair e formatar WhatsApp
+  function parseWhatsappInput(raw) {
+    if (!raw) return { digits: "", display: "" };
+    let texto = raw.trim();
+    // Se colou link wa.me
+    const waMatch = texto.match(/wa\.me\/(\d+)/);
+    if (waMatch) texto = waMatch[1];
+    // Manter só dígitos
+    let digits = texto.replace(/\D/g, "");
+    // Remover zeros iniciais repetidos
+    digits = digits.replace(/^0+/, "");
+    // Se vier com código do país 55 + DDD + número (13 dígitos), reduz para 11 (sem 55)
+    if (digits.length > 11 && digits.startsWith("55")) {
+      digits = digits.slice(2);
+    }
+    // Limitar a 11 dígitos (DDD + 9 número) ou 10 dígitos (sem 9)
+    if (digits.length > 11) digits = digits.slice(-11);
+    // Montar exibição
+    let display = digits;
+    if (digits.length >= 10) {
+      const ddd = digits.slice(0, 2);
+      if (digits.length === 11) {
+        display = `(${ddd}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+      } else { // 10
+        display = `(${ddd}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+      }
+    }
+    return { digits, display };
+  }
+
+  const initialWhatsapp = parseWhatsappInput(editData?.whatsapp);
   const [formData, setFormData] = useState({
     titulo: editData?.titulo || "",
     categoria: editData?.categoria || "",
     quantidade: editData?.quantidade || "",
     urgencia: editData?.urgencia || "",
     prazo: editData?.prazo || "",
-    whatsapp: editData?.whatsapp || "",
+    whatsapp: initialWhatsapp.digits,
+    whatsappDisplay: initialWhatsapp.display,
     email: editData?.email || "",
     descricao: editData?.descricao || "",
     imageUrl: editData?.imageUrl || ""
   });
+
+  // 🔧 Atualizar formData quando editData mudar
+  useEffect(() => {
+    if (editData) {
+      const w = parseWhatsappInput(editData.whatsapp);
+      setFormData({
+        titulo: editData.titulo || "",
+        categoria: editData.categoria || "",
+        quantidade: editData.quantidade || "",
+        urgencia: editData.urgencia || "",
+        prazo: editData.prazo || "",
+        whatsapp: w.digits,
+        whatsappDisplay: w.display,
+        email: editData.email || "",
+        descricao: editData.descricao || "",
+        imageUrl: editData.imageUrl || ""
+      });
+      setImagePreview(editData.imageUrl || null);
+    }
+  }, [editData]);
   
   const navigate = useNavigate();
   const { addDoacao, updateDoacao } = useData();
-  const isEditing = editData !== null;
+  const isEditing = editData !== null || !!editId;
 
   function handleCancel() {
     if (onClose) {
@@ -35,10 +88,12 @@ export function SolicitarDoacao({ onClose, editData = null }) {
 
   function handleInputChange(e) {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    if (name === 'whatsapp') {
+      const parsed = parseWhatsappInput(value);
+      setFormData(prev => ({ ...prev, whatsapp: parsed.digits, whatsappDisplay: parsed.display }));
+      return;
+    }
+    setFormData(prev => ({ ...prev, [name]: value }));
   }
 
   function handleImageUpload(e) {
@@ -68,7 +123,7 @@ export function SolicitarDoacao({ onClose, editData = null }) {
     }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     
     // Validação básica
@@ -77,66 +132,83 @@ export function SolicitarDoacao({ onClose, editData = null }) {
       return;
     }
 
-    // Se não há imagem enviada, usar uma imagem padrão baseada na categoria
-    let finalImageUrl = formData.imageUrl;
-    if (!finalImageUrl) {
-      const defaultImages = {
-        "Roupas e Calçados": "/imagens/roupas.jpg",
-        "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
-        "Saúde e Higiene": "/imagens/med.jpg",
-        "Utensílios Gerais": "/imagens/alimentos.jpg",
-        "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
-        "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
-        "Itens Pet": "/imagens/outros.jpg",
-        "Eletrônicos": "/imagens/Laptops.jpg",
-        "Outros": "/imagens/outros.jpg"
-      };
-      finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
+    // Validação mínima de WhatsApp (10 ou 11 dígitos após normalização)
+    if (formData.whatsapp.length < 10) {
+      alert('WhatsApp inválido. Informe DDD + número.');
+      return;
     }
 
-    // Calcular data final baseada no prazo selecionado
+    try {
+      // Se há uma imagem para upload, fazer o upload primeiro
+      let finalImageUrl = formData.imageUrl;
+      
+      if (imageFile) {
+        console.log('📤 Fazendo upload da imagem...');
+        finalImageUrl = await uploadService.uploadImage(imageFile);
+        console.log('✅ URL da imagem:', finalImageUrl);
+      } else if (!finalImageUrl) {
+        // Se não há imagem enviada, usar uma imagem padrão baseada na categoria
+        const defaultImages = {
+          "Roupas e Calçados": "/imagens/roupas.jpg",
+          "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
+          "Saúde e Higiene": "/imagens/med.jpg",
+          "Utensílios Gerais": "/imagens/alimentos.jpg",
+          "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
+          "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
+          "Itens Pet": "/imagens/outros.jpg",
+          "Eletrônicos": "/imagens/Laptops.jpg",
+          "Outros": "/imagens/outros.jpg"
+        };
+        finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
+      }
+
+    // Calcular data final/prazo_necessidade.
+    // Caso de edição: se o prazo no estado já vier em formato ISO (YYYY-MM-DD), mantemos.
     let dataFinal = "";
-    if (formData.prazo) {
-      const hoje = new Date();
-      let diasPrazo = 60; // padrão
-      
-      if (formData.prazo === "15 dias") diasPrazo = 15;
-      else if (formData.prazo === "30 dias") diasPrazo = 30;
-      else if (formData.prazo === "45 dias") diasPrazo = 45;
-      else if (formData.prazo === "60 dias") diasPrazo = 60;
-      
-      const dataLimite = new Date(hoje);
-      dataLimite.setDate(hoje.getDate() + diasPrazo);
-      
-      // Formatar data como DD/MM/YYYY
-      const dia = String(dataLimite.getDate()).padStart(2, '0');
-      const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
-      const ano = dataLimite.getFullYear();
-      dataFinal = `${dia}/${mes}/${ano}`;
+    const prazoValue = formData.prazo;
+    const isIso = /^\d{4}-\d{2}-\d{2}$/.test(prazoValue);
+    if (prazoValue) {
+      if (isIso) {
+        dataFinal = prazoValue; // já está formatado
+      } else {
+        // Usuário selecionou uma opção relativa
+        const hoje = new Date();
+        let diasPrazo = 60; // padrão
+        if (prazoValue === "15 dias") diasPrazo = 15;
+        else if (prazoValue === "30 dias") diasPrazo = 30;
+        else if (prazoValue === "45 dias") diasPrazo = 45;
+        else if (prazoValue === "60 dias") diasPrazo = 60;
+        const dataLimite = new Date(hoje);
+        dataLimite.setDate(hoje.getDate() + diasPrazo);
+        const ano = dataLimite.getFullYear();
+        const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+        const dia = String(dataLimite.getDate()).padStart(2, '0');
+        dataFinal = `${ano}-${mes}-${dia}`;
+      }
     }
 
     // Criar dados da doação
     const dadosDoacao = {
       titulo: formData.titulo,
-      categoria: formData.categoria,
-      quantidade: formData.quantidade,
+      categoria: formData.categoria, // Será mapeado para tipo_item na API
+      quantidade: parseInt(formData.quantidade) || 1,
       email: formData.email,
-      whatsapp: formData.whatsapp,
-      urgencia: formData.urgencia || "Baixa",
-      prazo: dataFinal,
+  // Enviar somente dígitos (sem formatação). Adapte para incluir 55 se backend exigir.
+  whatsapp: formData.whatsapp,
+      urgencia: (formData.urgencia || "BAIXA").toUpperCase(), // Backend espera MAIÚSCULO
+      prazo: dataFinal, // Será convertido para prazo_necessidade na API
       descricao: formData.descricao,
-      ong: "Sua ONG", // Seria pego do usuário logado
-      imageUrl: finalImageUrl, // Usar a imagem enviada ou padrão
-      validade: dataFinal
+      imageUrl: finalImageUrl // Será mapeado para url_imagem na API
     };
 
     if (isEditing) {
-      // Atualizar doação existente
-      updateDoacao(editData.id, dadosDoacao);
+      // Atualizar doação existente (prioriza editId prop, fallback editData.id)
+      const targetId = editId || editData.id || editData.id_produto;
+      await updateDoacao(targetId, dadosDoacao);
       alert("Doação atualizada com sucesso!");
     } else {
       // Adicionar nova doação
-      addDoacao(dadosDoacao);
+      await addDoacao(dadosDoacao);
       alert("Solicitação de doação criada com sucesso!");
     }
     
@@ -144,9 +216,13 @@ export function SolicitarDoacao({ onClose, editData = null }) {
     if (onClose) {
       onClose();
     }
+  } catch (error) {
+    console.error('Erro ao processar doação:', error);
+    alert('Erro ao processar a solicitação. Tente novamente.');
   }
+}
 
-  function handleBackdropClick(e) {
+function handleBackdropClick(e) {
     // Fechar modal se clicar no backdrop (fundo escuro)
     if (e.target === e.currentTarget) {
       handleCancel();
@@ -257,9 +333,9 @@ export function SolicitarDoacao({ onClose, editData = null }) {
                     value={formData.urgencia}
                     onChange={handleInputChange}
                   >
-                    <option value="Alta">Alta</option>
-                    <option value="Média">Média</option>
-                    <option value="Baixa">Baixa</option>
+                    <option value="ALTA">Alta</option>
+                    <option value="MEDIA">Média</option>
+                    <option value="BAIXA">Baixa</option>
                   </select>
                 </div>
                 <div>
@@ -271,7 +347,7 @@ export function SolicitarDoacao({ onClose, editData = null }) {
                     value={formData.prazo}
                     onChange={handleInputChange}
                   >
-                    <option value="">60 dias</option>
+                    <option value="">Escolha o prazo</option>
                     <option value="15 dias">15 dias</option>
                     <option value="30 dias">30 dias</option>
                     <option value="45 dias">45 dias</option>
@@ -283,12 +359,13 @@ export function SolicitarDoacao({ onClose, editData = null }) {
                   <Input 
                     id="whatsapp" 
                     name="whatsapp"
-                    placeholder="(xx) xxxxx-xxxx" 
+                    placeholder="(DD) 9XXXX-XXXX" 
                     className="mt-1"
-                    value={formData.whatsapp}
+                    value={formData.whatsappDisplay}
                     onChange={handleInputChange}
                     required
                   />
+                  <p className="text-xs text-gray-500 mt-1">Aceita: 81999998888, (81) 99999-8888, +55 81 99999-8888, link wa.me. Será normalizado automaticamente.</p>
                 </div>
                 <div className="col-span-2">
                   <Label htmlFor="email" className="text-base font-medium">Email para contato</Label>
@@ -306,9 +383,7 @@ export function SolicitarDoacao({ onClose, editData = null }) {
               </div>
             </div>
 
-            {/* Upload de imagem */}
-
-            {/* Upload de imagem */}
+            {/* Descrição */}
             <div>
               <Label htmlFor="descricao" className="mb-1 block text-base font-medium">
                 Descrição e propósito do Item (para que fim o item vai ser utilizado):
@@ -321,9 +396,6 @@ export function SolicitarDoacao({ onClose, editData = null }) {
                 value={formData.descricao}
                 onChange={handleInputChange}
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Se não inserir uma imagem, usaremos uma imagem padrão da categoria
-              </p>
               <p className="text-xs text-gray-500 mt-1">
                 Se não inserir uma imagem, usaremos uma imagem padrão da categoria
               </p>

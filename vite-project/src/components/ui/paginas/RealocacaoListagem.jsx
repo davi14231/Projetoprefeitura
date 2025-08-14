@@ -33,7 +33,7 @@ export function RealocacaoListagem() {
   const [showDetalheModal, setShowDetalheModal] = useState(false);
   const [dadosDetalhe, setDadosDetalhe] = useState(null);
   const [showPostagemModal, setShowPostagemModal] = useState(false);
-  const { filterRealocacoes, getRealocacoesPaginadas } = useData();
+  const { getRealocacoesPaginadas, loadRealocacoes, realocacoes, forceUpdate } = useData();
 
   const itemsPerPage = 6;
 
@@ -43,6 +43,18 @@ export function RealocacaoListagem() {
     const page = parseInt(searchParams.get('page')) || 1;
     setCurrentPage(page);
   }, [location.search]);
+
+  // Carregar dados se ainda não vieram (evita ter que recarregar manualmente)
+  useEffect(() => {
+    if (!realocacoes || realocacoes.length === 0) {
+      loadRealocacoes().catch(() => {});
+    }
+  }, []);
+
+  // Recarregar quando força atualização disparar
+  useEffect(() => {
+    // Apenas refazer paginação; dados já atualizados no contexto
+  }, [forceUpdate]);
 
   // Obter dados paginados usando Context
   const paginatedData = getRealocacoesPaginadas({
@@ -89,17 +101,23 @@ export function RealocacaoListagem() {
 
   // Abrir modal DetalheDoacao
   const handleOpenDetalheModal = (item) => {
+    console.log("Dados do item antes da formatação (RealocacaoListagem):", item);
+    
     const dadosFormatados = {
       instituto: item.ong,
       publicadoEm: item.publicado || "Data não informada",
       titulo: item.titulo,
       categoria: item.categoria,
-      diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
+      quantidade: item.quantidade || 1,
+  // Removido campo de diasRestantes para realocações (não exibimos 'Válido até')
+  // diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
       imagemUrl: item.imageUrl,
       descricao: item.descricao,
-      email: "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
-      telefone: "(81) 9999-9999"
+      email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
+      whatsapp: item.whatsapp || "(81) 9999-9999"
     };
+    
+    console.log("Dados formatados para o modal (RealocacaoListagem):", dadosFormatados);
     setDadosDetalhe(dadosFormatados);
     setShowDetalheModal(true);
   };
@@ -281,10 +299,7 @@ export function RealocacaoListagem() {
                   )}
 
                   <div className="mt-auto flex flex-col gap-1 text-[11px] text-[#888]">
-                    <div className="flex items-center gap-1 text-[#FF3B30] font-semibold">
-                      <Clock className="w-4 h-4" />
-                      <span>Válido até {item.validade || "Data não informada"}</span>
-                    </div>
+                    {/* Validade removida para realocações */}
                   </div>
                 </div>
               </div>

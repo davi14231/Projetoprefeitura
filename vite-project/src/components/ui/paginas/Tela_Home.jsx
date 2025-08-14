@@ -7,8 +7,12 @@ import React from "react";
   import Footer from "@/components/ui/layouts/Footer";
   import { HeaderTelainicial } from "../layouts/Headertelainicial";
   import DetalheDoacao from "./DetalheDoacao";
+  import { useData } from "@/context/DataContext";
 
-export default function Tela_Home({ imagensCarrossel, itens }) {
+export default function Tela_Home({ imagensCarrossel }) {
+  // Usar dados do contexto em vez de props
+  const { doacoes, doacoesPrestesVencer, loading, loadDoacoesPrestesVencer } = useData();
+  
   // As imagens do carrossel agora vêm separadas
   const [imgIndex, setImgIndex] = React.useState(0);
   const [showDetalheModal, setShowDetalheModal] = React.useState(false);
@@ -30,6 +34,8 @@ export default function Tela_Home({ imagensCarrossel, itens }) {
 
   // Abrir modal DetalheDoacao
   const handleOpenDetalheModal = (item) => {
+    console.log("Dados do item antes da formatação (Tela_Home):", item);
+    
     const dadosFormatados = {
       instituto: item.ong,
       publicadoEm: item.publicado || "Data não informada",
@@ -38,9 +44,11 @@ export default function Tela_Home({ imagensCarrossel, itens }) {
       diasRestantes: item.validade ? `Válido até ${item.validade}` : "Sem prazo definido",
       imagemUrl: item.imageUrl,
       descricao: item.descricao,
-      email: "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
-      telefone: "(81) 9999-9999"
+      email: item.email || "contato@" + item.ong.toLowerCase().replace(/\s+/g, '') + ".org.br",
+      whatsapp: item.whatsapp || "(81) 9999-9999"
     };
+    
+    console.log("Dados formatados para o modal (Tela_Home):", dadosFormatados);
     setDadosDetalhe(dadosFormatados);
     setShowDetalheModal(true);
   };
@@ -141,8 +149,21 @@ export default function Tela_Home({ imagensCarrossel, itens }) {
         <BlocoDoador />
         <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-2 text-gray-900">Necessidades</h2>
-            <p className="text-center text-gray-500 mb-20 text-base">ONGs que precisam da sua doação agora.</p>
+            {/* Cabeçalho da seção alinhado conforme o layout: título + descrição à esquerda e botão à direita */}
+            <div className="w-full max-w-4xl mx-auto mb-8">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold text-gray-900">Necessidades</h2>
+                <p className="text-gray-500 text-sm">ONGs que precisam da sua doação agora</p>
+              </div>
+              <div className="flex justify-center mt-4">
+                <button
+                  onClick={() => navigate('/todas-doacoes')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md shadow-sm transition-colors"
+                >
+                  Ver Todas as Necessidades
+                </button>
+              </div>
+            </div>
 
             {/* Carrossel 1: Prestes a Vencer */}
             <div className="mb-12">
@@ -150,16 +171,16 @@ export default function Tela_Home({ imagensCarrossel, itens }) {
                 <span className="text-red-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
                 <span className="font-bold text-lg">Prestes a Vencer</span>
               </div>
-              <ListagemHome itens={itens} carrosselId="carousel-prestes" onCardClick={handleOpenDetalheModal} />
+              <ListagemHome itens={ (doacoesPrestesVencer && doacoesPrestesVencer.length>0) ? doacoesPrestesVencer : doacoes } carrosselId="carousel-prestes" onCardClick={handleOpenDetalheModal} />
             </div>
 
             {/* Carrossel 2: Todas as Necessidades */}
-            <div className="mb-4z">
+            <div className="mb-4">
               <div className="flex items-center gap-2 mb-6">
                 <span className="text-purple-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20m10-10H2"/></svg></span>
                 <span className="font-bold text-lg">Todas as Necessidades</span>
               </div>
-              <ListagemHome2 itens={itens} carrosselId="carousel-todas" onCardClick={handleOpenDetalheModal} />
+              <ListagemHome2 itens={doacoes} carrosselId="carousel-todas" onCardClick={handleOpenDetalheModal} />
               <div className="flex justify-end mt-6">
                 <button 
                   onClick={() => navigate('/todas-doacoes?from=home')} 

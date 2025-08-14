@@ -1,11 +1,16 @@
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
 import TelaFlutuante from "../TelaFlutuante";
+import { SearchDropdown } from "../SearchDropdown";
 
 export function Headerrealocacao() {
+  const location = useLocation();
   const [telaFlutuanteVisible, setTelaFlutuanteVisible] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchVisible, setSearchVisible] = useState(false);
+  const searchRef = useRef(null);
 
   const handleMouseEnter = () => {
     if (timeoutId) {
@@ -31,23 +36,51 @@ export function Headerrealocacao() {
     setTelaFlutuanteVisible(false);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setSearchVisible(e.target.value.length >= 2);
+  };
+
+  const handleSearchFocus = () => {
+    if (searchTerm.length >= 2) {
+      setSearchVisible(true);
+    }
+  };
+
+  const handleSearchClose = () => {
+    setSearchVisible(false);
+  };
+
+  // Fechar dropdown ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchVisible(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <header className="bg-gray-800 text-white shadow-lg">
+    <header className="text-white shadow-lg" style={{backgroundColor: 'var(--brand-color, #00A5F4)'}}>
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between py-3">
+        <div className="flex items-center justify-between py-3 gap-4">
           {/* Logo */}
-          <Link to="/home-ong" className="flex items-center min-w-[140px] cursor-pointer">
-            <img
-              src="/imagens/logo-recife.png"
-              alt="Recife Prefeitura"
-              className="h-10 w-auto"
-              draggable={false}
-            />
-          </Link>
+          <div className="flex items-center" style={{minWidth: '180px'}}>
+            <Link to="/home-ong" className="flex items-center cursor-pointer">
+              <img
+                src="/imagens/logo-recife.png"
+                alt="Recife Prefeitura"
+                className="h-10 w-auto"
+                draggable={false}
+              />
+            </Link>
+          </div>
 
           {/* Campo de busca */}
-          <div className="flex-1 flex justify-center md:justify-cen'ter my-2 md:my-0">
-            <div className="relative w-full max-w-md">
+          <div className="flex-1 flex justify-center mx-4">
+            <div className="relative w-full max-w-lg" ref={searchRef}>
               <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <img
                   src="/imagens/lupa.png"
@@ -60,15 +93,39 @@ export function Headerrealocacao() {
                 type="text"
                 placeholder="Pesquisar necessidades ou itens das ONGs"
                 className="pl-10 pr-4 py-2 rounded-lg text-gray-800 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onFocus={handleSearchFocus}
               />
+              {searchVisible && (
+                <SearchDropdown 
+                  searchTerm={searchTerm} 
+                  onClose={handleSearchClose}
+                />
+              )}
             </div>
           </div>
 
           {/* Navegação */}
-          <nav className="flex items-center gap-4 min-w-fit justify-end">
-            <Link to="/home-ong" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Início</Link>
-            <Link to="/realocacao-listagem" className="text-blue-400 hover:text-blue-300 transition-colors text-sm border-b-2 border-blue-400 pb-1">Realocação</Link>
-            <Link to="/todas-doacoes" className="text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1">Necessidades</Link>
+          <nav className="flex items-center gap-4" style={{minWidth: '180px', justifyContent: 'flex-end'}}>
+            <Link
+              to="/home-ong"
+              className={`text-white transition-colors text-sm border-b-2 pb-1 ${location.pathname === '/home-ong' ? 'border-white' : 'border-transparent hover:border-white/60 hover:text-white/80'}`}
+            >
+              Início
+            </Link>
+            <Link
+              to="/realocacao-listagem"
+              className={`text-white transition-colors text-sm border-b-2 pb-1 ${location.pathname.startsWith('/realocacao') ? 'border-white' : 'border-transparent hover:border-white/60 hover:text-white/80'}`}
+            >
+              Realocação
+            </Link>
+            <Link
+              to="/todas-doacoes"
+              className={`text-white transition-colors text-sm border-b-2 pb-1 ${location.pathname.startsWith('/todas-doacoes') ? 'border-white' : 'border-transparent hover:border-white/60 hover:text-white/80'}`}
+            >
+              Necessidades
+            </Link>
                         
             {/* Minha ONG com dropdown */}
             <div 
@@ -76,7 +133,7 @@ export function Headerrealocacao() {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors text-sm border-b-2 border-transparent hover:border-blue-400 pb-1 whitespace-nowrap cursor-pointer">
+              <div className="flex items-center gap-2 text-white hover:text-white/80 transition-colors text-sm border-b-2 border-transparent hover:border-white/60 pb-1 whitespace-nowrap cursor-pointer">
                 <span className="w-7 h-7 flex items-center justify-center text-xs font-semibold bg-gray-600 text-white rounded-full">ONG</span>
                 <Link to="/edit-doacoes" className="flex items-center gap-1">
                   Minha ONG

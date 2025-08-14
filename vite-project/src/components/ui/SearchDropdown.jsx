@@ -4,7 +4,7 @@ import { useData } from '@/context/DataContext';
 
 export function SearchDropdown({ searchTerm, onClose }) {
   const navigate = useNavigate();
-  const { getDoacoes, getRealocacoes } = useData();
+  const { getDoacoesPaginadas, getRealocacoesPaginadas, doacoes, realocacoes } = useData();
   const [results, setResults] = useState({ items: [], pages: [] });
 
   // Definir páginas disponíveis para busca
@@ -24,11 +24,11 @@ export function SearchDropdown({ searchTerm, onClose }) {
 
     const searchLower = searchTerm.toLowerCase();
     
-    // Buscar em itens (doações e realocações)
-    const doacoes = getDoacoes() || [];
-    const realocacoes = getRealocacoes() || [];
+    // Buscar em itens (doações e realocações) - usar os dados do estado
+    const allDoacoes = doacoes || [];
+    const allRealocacoes = realocacoes || [];
     
-    const filteredDoacoes = doacoes
+    const filteredDoacoes = allDoacoes
       .filter(item => !item.encerrado)
       .filter(item => 
         item.titulo?.toLowerCase().includes(searchLower) ||
@@ -39,7 +39,7 @@ export function SearchDropdown({ searchTerm, onClose }) {
       .slice(0, 5) // Limitar a 5 resultados
       .map(item => ({ ...item, type: 'doacao' }));
 
-    const filteredRealocacoes = realocacoes
+    const filteredRealocacoes = allRealocacoes
       .filter(item => !item.encerrado)
       .filter(item => 
         item.titulo?.toLowerCase().includes(searchLower) ||
@@ -62,7 +62,7 @@ export function SearchDropdown({ searchTerm, onClose }) {
       items: [...filteredDoacoes, ...filteredRealocacoes].slice(0, 6), // Total de 6 itens
       pages: filteredPages
     });
-  }, [searchTerm, getDoacoes, getRealocacoes]);
+  }, [searchTerm, doacoes, realocacoes]);
 
   const handleItemClick = (item) => {
     if (item.type === 'doacao') {
@@ -85,7 +85,7 @@ export function SearchDropdown({ searchTerm, onClose }) {
   const hasResults = results.items.length > 0 || results.pages.length > 0;
 
   return (
-    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+    <div data-testid="search-dropdown" className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
       {hasResults ? (
         <div className="py-2">
           {/* Seção de Páginas */}
@@ -97,6 +97,7 @@ export function SearchDropdown({ searchTerm, onClose }) {
               {results.pages.map((page, index) => (
                 <div
                   key={index}
+                  data-testid="search-page-item"
                   onClick={() => handlePageClick(page)}
                   className="px-3 py-2 hover:bg-gray-50 cursor-pointer border-b border-gray-100"
                 >
@@ -125,6 +126,7 @@ export function SearchDropdown({ searchTerm, onClose }) {
               {results.items.map((item, index) => (
                 <div
                   key={index}
+                  data-testid="search-result-item"
                   onClick={() => handleItemClick(item)}
                   className="px-3 py-2 hover:bg-gray-50 cursor-pointer border-b border-gray-100"
                 >

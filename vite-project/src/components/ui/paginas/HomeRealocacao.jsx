@@ -9,7 +9,6 @@ import ConfirmacaoDeletar from "./ConfirmacaoDeletar";
 import { PostagemRealocacao } from "./PostagemRealocacao";
 import { useData } from "@/context/DataContext";
 import { Pagination } from "@/components/ui/Pagination";
-import { TempoRestante } from "@/components/ui/TempoRestante";
 
 const footerColor = "#172233";
 
@@ -23,8 +22,18 @@ function HomeRealocacao() {
 	const [showConfirmacaoModal, setShowConfirmacaoModal] = useState(false);
 	const [showPostagemModal, setShowPostagemModal] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const { getRealocacoesPaginadas, removeRealocacao, encerrarRealocacao, forceUpdate } = useData();
+	const { getMinhasRealocacoesPaginadas, removeRealocacao, encerrarRealocacao, forceUpdate, loadMinhasRealocacoes } = useData();
 	const [idParaExcluir, setIdParaExcluir] = useState(null);
+
+	// Carregar minhas realocações ao montar o componente
+	useEffect(() => {
+		loadMinhasRealocacoes();
+	}, []);
+
+	// Efeito para forçar re-renderização quando forceUpdate muda (nova realocação adicionada)
+	useEffect(() => {
+		loadMinhasRealocacoes(); // Recarregar minhas realocações quando houver mudança
+	}, [forceUpdate]);
 
 	// Função para editar realocação
 	const handleEdit = (pedido) => {
@@ -40,9 +49,15 @@ function HomeRealocacao() {
 	};
 
 	// Confirma exclusão no modal
-	const handleConfirmDelete = () => {
+	const handleConfirmDelete = async () => {
 		if (idParaExcluir) {
-			removeRealocacao(idParaExcluir);
+			try {
+				await removeRealocacao(idParaExcluir);
+				alert('Realocação excluída com sucesso!');
+			} catch (e) {
+				console.error(e);
+				alert('Erro ao excluir realocação.');
+			}
 			setIdParaExcluir(null);
 		}
 		setShowConfirmacaoDeletar(false);
@@ -61,9 +76,15 @@ function HomeRealocacao() {
 	};
 
 	// Confirmar encerramento da realocação
-	const handleConfirmEncerramento = () => {
+	const handleConfirmEncerramento = async () => {
 		if (idParaEncerrar) {
-			encerrarRealocacao(idParaEncerrar);
+			try {
+				await encerrarRealocacao(idParaEncerrar);
+				alert('Realocação encerrada com sucesso!');
+			} catch (e) {
+				console.error(e);
+				alert('Erro ao encerrar realocação.');
+			}
 			setIdParaEncerrar(null);
 		}
 		setShowConfirmacaoModal(false);
@@ -83,21 +104,27 @@ function HomeRealocacao() {
 		// Este useEffect garante que o componente re-renderize quando uma nova realocação é adicionada
 	}, [forceUpdate]);
 
-	// Obter dados paginados usando Context
-	const paginatedData = getRealocacoesPaginadas({
+	// Obter dados paginados usando Context (SEM FILTROS para HomeRealocacao)
+	const paginatedData = getMinhasRealocacoesPaginadas({
 		page: currentPage,
-		limit: itemsPerPage,
-		filters: {}
+		limit: itemsPerPage
 	});
 
 	// Garantir que os dados sejam sempre atualizados
 	const refreshedData = React.useMemo(() => {
-		return getRealocacoesPaginadas({
+		const data = getMinhasRealocacoesPaginadas({
 			page: currentPage,
-			limit: itemsPerPage,
-			filters: {}
+			limit: itemsPerPage
 		});
-	}, [currentPage, forceUpdate, getRealocacoesPaginadas]);
+		
+		// DEBUG: Verificar se as URLs das imagens estão presentes
+		console.log('🖼️ HomeRealocacao - Dados das minhas realocações:', data.items);
+		data.items.forEach((item, index) => {
+			console.log(`🖼️ Item ${index + 1}: ${item.titulo} - imageUrl: ${item.imageUrl}`);
+		});
+		
+		return data;
+	}, [currentPage, forceUpdate, getMinhasRealocacoesPaginadas]);
 
 	// Prevent background scroll when any modal is open
 	React.useEffect(() => {
@@ -246,7 +273,6 @@ function HomeRealocacao() {
 											</div>
 											<div className="text-sm text-gray-500 mt-1 flex items-center gap-4">
 												<span>Publicado: {pedido.publicado}</span>
-												<TempoRestante prazo={pedido.prazo || pedido.validade} publicado={pedido.publicado} />
 											</div>
 											<div className="mt-2 text-gray-700 text-base">
 												<span className="block w-full break-words">

@@ -2,6 +2,11 @@ import React from 'react';
 import { X, Share, Mail, Phone } from 'lucide-react';
 
 export default function DetalheDoacao({ dados, onClose }) {
+  // 🐛 Debug: Verificar dados recebidos
+  console.log('🔍 DetalheDoacao - dados completos:', dados);
+  console.log('🔍 DetalheDoacao - WhatsApp:', dados?.whatsapp);
+  console.log('🔍 DetalheDoacao - Email:', dados?.email);
+
   // Função para compartilhar nas redes sociais
   const handleShare = async () => {
     const url = window.location.href;
@@ -35,10 +40,10 @@ export default function DetalheDoacao({ dados, onClose }) {
       <div className="w-full max-w-4xl bg-white text-slate-900 flex flex-col rounded-xl shadow-2xl animate-in fade-in-0 zoom-in-95 overflow-hidden">
         
         {/* Cabeçalho */}
-        <header className="bg-[#394a5c] text-white px-6 py-4 flex justify-between items-start">
+  <header className="text-white px-6 py-4 flex justify-between items-start" style={{backgroundColor: 'var(--brand-color, #00A5F4)'}}>
           <div>
             <h2 className="text-lg font-medium leading-none">{dados.instituto || dados.ong || "Instituto Viver Mais"}</h2>
-            <p className="text-sm text-slate-300 pt-1">Publicado em {dados.publicadoEm || dados.publicado || "07/04/25"}</p>
+            <p className="text-sm text-white/95 pt-1">Publicado em {dados.publicadoEm || dados.publicado || "07/04/25"}</p>
           </div>
           <button 
             className="inline-flex items-center justify-center rounded-full w-8 h-8 text-white hover:bg-slate-600 cursor-pointer"
@@ -101,27 +106,27 @@ export default function DetalheDoacao({ dados, onClose }) {
               </button>
             </div>
 
-            {/* Email centralizado na área da descrição */}
+            {/* Email centralizado na área da descrição (não clicável, mesma cor) */}
             <div className="lg:col-span-2 flex justify-center">
-              <a 
-                href={`mailto:${dados.email || 'kellysayonara854@gmail.com'}`}
+              <div 
                 className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition"
+                aria-label="Email de contato"
               >
                 <Mail size={18} />
-                <span className="font-medium">{dados.email || 'kellysayonara854@gmail.com'}</span>
-              </a>
+                <span className="font-medium">{dados.email || 'Sem email cadastrado'}</span>
+              </div>
             </div>
 
             {/* Telefone alinhado à direita */}
             <div className="lg:col-span-1 flex justify-end">
               <a 
-                href={`https://wa.me/5581984465009?text=${encodeURIComponent(`Olá! Vi sua doação "${dados.titulo}" e tenho interesse.`)}`}
+                href={`https://wa.me/55${dados.whatsapp?.replace(/\D/g, '') || '81999999999'}?text=${encodeURIComponent(`Olá! Vi sua doação "${dados.titulo}" e tenho interesse.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition"
               >
                 <Phone size={18} />
-                <span className="font-medium">{dados.whatsapp || dados.telefone || "(81) 8446-5009"}</span>
+                <span className="font-medium">{dados.whatsapp || 'Sem WhatsApp cadastrado'}</span>
               </a>
             </div>
           </div>
