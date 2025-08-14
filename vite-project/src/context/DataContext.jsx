@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 // Usar alias para facilitar mocking consistente nos testes
 import { doacoesService } from '@/services/doacoesService';
 import { realocacoesService } from '@/services/realocacoesService';
+import { mapRealocacaoFromBackend } from '@/utils/dataMapper';
 
 // Criar o Context
 const DataContext = createContext();
@@ -214,12 +215,35 @@ export const DataProvider = ({ children }) => {
     try {
       console.log('🆕 Adicionando realocação:', realocacao);
       const result = await realocacoesService.criarRealocacao(realocacao);
-      console.log('✅ Realocação criada, recarregando listas...');
-      await loadRealocacoes(); // Recarregar realocações públicas
-      await loadMinhasRealocacoes(); // Recarregar minhas realocações
-      triggerUpdate(); // Forçar atualização dos componentes
-      console.log('🔄 Listas atualizadas');
-      return result;
+      // Mapear resposta para o formato frontend (caso backend não esteja retornando em /minhas/ativas ainda)
+      const mapped = mapRealocacaoFromBackend(result);
+
+      // Atualização otimista: inserir imediatamente na lista de "minhas" realocações
+      setMinhasRealocacoes(prev => {
+        // Evitar duplicação se já existir (por id_produto)
+        if (mapped && !prev.some(r => r.id === mapped.id)) {
+          return [mapped, ...prev];
+        }
+        return prev;
+      });
+
+      // Se o status permitir exibição pública (ex: ATIVA), adiciona também à lista pública
+      if (mapped?.status === 'ATIVA') {
+        setRealocacoes(prev => {
+          if (!prev.some(r => r.id === mapped.id)) {
+            return [mapped, ...prev];
+          }
+          return prev;
+        });
+      }
+
+      triggerUpdate();
+      console.log('✅ Realocação criada (otimista). Recarregando em segundo plano...');
+
+      // Recarregar em segundo plano para sincronizar (não bloquear UI)
+      loadMinhasRealocacoes().catch(() => {});
+      loadRealocacoes().catch(() => {});
+      return mapped;
     } catch (error) {
       console.error('❌ Erro ao adicionar realocação:', error);
       setError('Erro ao adicionar realocação');

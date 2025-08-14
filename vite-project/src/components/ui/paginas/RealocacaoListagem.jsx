@@ -355,6 +355,7 @@ export function RealocacaoListagem() {
         <DetalheDoacao 
           dados={dadosDetalhe}
           onClose={handleCloseDetalheModal}
+          hidePrazo
         />
       )}
 

@@ -50,6 +50,12 @@ export function PostagemRealocacao({ onClose, editData = null }) {
 
   function handleInputChange(e) {
     const { name, value } = e.target;
+    // Sanitizar whatsapp: somente dígitos, limitar a 13
+    if (name === 'whatsapp') {
+      const digits = value.replace(/\D/g, '').slice(0, 13);
+      setFormData(prev => ({ ...prev, whatsapp: digits }));
+      return;
+    }
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -89,6 +95,13 @@ export function PostagemRealocacao({ onClose, editData = null }) {
     // Validação básica
     if (!formData.titulo || !formData.categoria || !formData.email || !formData.whatsapp || !formData.descricao) {
       alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    // Validar whatsapp (somente números, 10 a 13 dígitos conforme requisito backend)
+    const whatsappDigits = formData.whatsapp.replace(/\D/g, '');
+    if (whatsappDigits.length < 10 || whatsappDigits.length > 13) {
+      alert('WhatsApp deve conter entre 10 e 13 dígitos numéricos.');
       return;
     }
 
@@ -133,7 +146,7 @@ export function PostagemRealocacao({ onClose, editData = null }) {
         categoria: formData.categoria, // Será mapeado para tipo_item na API
         quantidade: parseInt(formData.quantidade) || 1,
         email: formData.email,
-        whatsapp: formData.whatsapp,
+  whatsapp: whatsappDigits, // Enviar somente números
         urgencia: "MEDIA", // Padrão para realocações
         prazo: dataFinal, // Será convertido para prazo_necessidade na API
         descricao: formData.descricao,
