@@ -13,14 +13,16 @@ A aplicação oferece portais distintos para doadores e para ONGs, garantindo um
 ## ✨ Funcionalidades Principais
 
 - **Portal para ONGs:**
-  - Cadastro e gestão de necessidades (pedidos de doação).
-  - Acompanhamento do status das doações recebidas.
-  - Visualização do histórico de itens recebidos.
-- **Portal para Doadores:**
-  - Visualização e busca de necessidades publicadas pelas ONGs.
-  - Filtros por categoria de item, urgência e localização.
-  - Realização de doações de forma simplificada.
-- **Autenticação Segura:** Sistema de login e rotas protegidas para garantir a segurança dos dados.
+  - **Gestão de Necessidades:** Cadastro, edição e acompanhamento de pedidos de doação para o público geral.
+  - **Gestão de Realocações:** Publicação de itens excedentes para que outras ONGs possam solicitá-los, otimizando o uso de recursos.
+  - **Acompanhamento:** Visualização do histórico de doações recebidas e itens realocados.
+
+- **Portal para Doadores (Público):**
+  - **Catálogo de Necessidades:** Visualização e busca de necessidades publicadas pelas ONGs.
+  - **Filtros Avançados:** Filtros por categoria, urgência ou busca por texto para encontrar doações específicas.
+  - **Contato Simplificado:** Acesso a informações de contato da ONG para combinar a entrega da doação.
+
+- **Autenticação Segura:** Sistema de login e rotas protegidas para garantir que apenas ONGs autenticadas possam gerenciar seus dados.
 
 ---
 
