@@ -4,10 +4,10 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-COPY package*.json ./
+COPY vite-project/package*.json ./
 RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
-COPY . .
+COPY vite-project/ ./
 
 ARG VITE_API_URL=/api
 ENV VITE_API_URL=$VITE_API_URL \
