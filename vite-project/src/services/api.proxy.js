@@ -3,7 +3,8 @@ import Cookies from 'js-cookie';
 
 // ⚠️ VERSÃO COM PROXY PARA CONTORNAR CORS
 // Use esta configuração se o backend não aceitar a porta do frontend
-const API_BASE_URL = '/api'; // Usa proxy do Vite
+// Base da API configurável por ambiente
+const API_BASE_URL = import.meta.env?.VITE_API_URL || '/api';
 
 // Criar instância do axios
 const api = axios.create({

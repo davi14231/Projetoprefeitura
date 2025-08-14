@@ -5,10 +5,13 @@
  * no console do navegador para depuração.
  */
 
+// Base da API configurável por ambiente
+const API_BASE_URL = import.meta.env?.VITE_API_URL || '/api';
+
 async function testarBackend() {
   console.log('🔍 Iniciando testes de conectividade...');
   
-  const baseUrl = 'http://localhost:3000';
+  const baseUrl = API_BASE_URL;
   
   // Teste 1: Verificar se backend está respondendo
   try {

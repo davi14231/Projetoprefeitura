@@ -17,12 +17,16 @@ export default defineConfig({
 		video: 'retain-on-failure',
 		screenshot: 'only-on-failure'
 	},
-		webServer: {
-			command: 'npm run build && npm run preview',
-			url: 'http://localhost:4173',
-			reuseExistingServer: true,
-			timeout: 120_000
-		},
+			webServer: {
+				command: 'npm run build && npm run preview',
+				url: 'http://localhost:4173',
+				reuseExistingServer: true,
+				timeout: 120_000,
+				// Garante que a build use a API correta durante E2E
+				env: {
+					VITE_API_URL: process.env.PW_VITE_API_URL || 'http://localhost:3000'
+				}
+			},
 	projects: [
 		{ name: 'chromium', use: { ...devices['Desktop Chrome'] } },
 		{ name: 'firefox', use: { ...devices['Desktop Firefox'] } }

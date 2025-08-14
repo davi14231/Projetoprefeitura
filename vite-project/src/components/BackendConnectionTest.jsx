@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 
+// Base da API configurável por ambiente
+const API_BASE_URL = import.meta.env?.VITE_API_URL || '/api';
+
 const BackendConnectionTest = () => {
   const [connectionStatus, setConnectionStatus] = useState('checking');
   const [backendData, setBackendData] = useState(null);
@@ -12,7 +15,7 @@ const BackendConnectionTest = () => {
     
     try {
       // Tentar conectar na rota principal do backend
-      const response = await fetch('http://localhost:3000/', {
+      const response = await fetch(`${API_BASE_URL}/`, {
         method: 'GET',
         headers: {
           'Accept': 'text/plain'

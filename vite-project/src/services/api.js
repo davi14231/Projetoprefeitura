@@ -1,9 +1,9 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-// ⚠️ VERSÃO COM PROXY PARA CONTORNAR CORS
-// O Vite fará proxy de /api/* para http://localhost:3000/*
-const API_BASE_URL = '/api';
+// Base da API configurável por ambiente
+// Em dev, use o proxy do Vite com '/api'; em Docker/produção pode vir de VITE_API_URL
+const API_BASE_URL = import.meta.env?.VITE_API_URL || '/api';
 
 // Criar instância do axios
 const api = axios.create({

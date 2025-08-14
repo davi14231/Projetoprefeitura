@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+// Base da API configurável por ambiente
+const API_BASE_URL = import.meta.env?.VITE_API_URL || '/api';
+
 export const NetworkDiagnostic = () => {
   const [result, setResult] = useState('');
   const [testing, setTesting] = useState(false);
@@ -10,7 +13,7 @@ export const NetworkDiagnostic = () => {
     
     // Testar diferentes URLs base
     const baseUrls = [
-      'http://localhost:3000',
+      API_BASE_URL,
       'http://localhost:3001',
       'http://localhost:8000',
       'http://localhost:5000'
@@ -19,7 +22,7 @@ export const NetworkDiagnostic = () => {
     // Testar diferentes endpoints de login
     const loginEndpoints = [
       '/auth/login',
-      '/api/auth/login', 
+      `${API_BASE_URL}/auth/login`, 
       '/login'
     ];
     
@@ -40,7 +43,7 @@ export const NetworkDiagnostic = () => {
       // Teste 2: Testar endpoints de login
       setResult(prev => prev + '\n2️⃣ Testando endpoints de login...\n');
       
-      for (const baseUrl of ['http://localhost:3000']) {
+      for (const baseUrl of [API_BASE_URL]) {
         for (const endpoint of loginEndpoints) {
           try {
             setResult(prev => prev + `   Testando: ${baseUrl}${endpoint}\n`);
@@ -81,7 +84,7 @@ export const NetworkDiagnostic = () => {
       // Teste 3: Verificar se é problema de CORS
       setResult(prev => prev + '\n3️⃣ Verificando CORS...\n');
       try {
-        const response = await fetch('http://localhost:3000', {
+        const response = await fetch(API_BASE_URL, {
           method: 'OPTIONS',
           headers: {
             'Origin': 'http://localhost:5174',
