@@ -48,6 +48,8 @@ export default function DetalheDoacao({ dados, onClose }) {
           <button 
             className="inline-flex items-center justify-center rounded-full w-8 h-8 text-white hover:bg-slate-600 cursor-pointer"
             onClick={onClose}
+            aria-label="Fechar"
+            title="Fechar"
           >
             <X size={20} />
           </button>

@@ -1,12 +1,14 @@
 #!/usr/bin/env node
-
-// Script para verificar se a integração com o backend está configurada corretamente
+// Script ESM para verificar se a integração com o backend está configurada corretamente
+// Convertido para import (antes usava require e gerava erro no-undef sob config ESM)
+import fs from 'node:fs';
+import path from 'node:path';
+import url from 'node:url';
 
 console.log('🔍 Verificando configuração da integração...\n');
 
-// 1. Verificar se os arquivos necessários existem
-const fs = require('fs');
-const path = require('path');
+// Diretório raiz baseado em URL (equivalente a __dirname em ESM)
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const checkFileExists = (filePath, description) => {
   if (fs.existsSync(filePath)) {
@@ -19,16 +21,16 @@ const checkFileExists = (filePath, description) => {
 };
 
 console.log('📁 Verificando arquivos essenciais:');
-checkFileExists('./src/services/api.js', 'Configuração da API');
-checkFileExists('./src/services/doacoesService.js', 'Serviço de Doações');
-checkFileExists('./src/services/realocacoesService.js', 'Serviço de Realocações');
-checkFileExists('./src/utils/dataMapper.js', 'Mapeador de dados');
-checkFileExists('./src/components/BackendConnectionTest.jsx', 'Monitor de conexão');
-checkFileExists('./vite.config.js', 'Configuração do Vite (proxy)');
+checkFileExists(path.join(__dirname,'./src/services/api.js'), 'Configuração da API');
+checkFileExists(path.join(__dirname,'./src/services/doacoesService.js'), 'Serviço de Doações');
+checkFileExists(path.join(__dirname,'./src/services/realocacoesService.js'), 'Serviço de Realocações');
+checkFileExists(path.join(__dirname,'./src/utils/dataMapper.js'), 'Mapeador de dados');
+checkFileExists(path.join(__dirname,'./src/components/BackendConnectionTest.jsx'), 'Monitor de conexão');
+checkFileExists(path.join(__dirname,'./vite.config.js'), 'Configuração do Vite (proxy)');
 
 console.log('\n🔧 Verificando configuração do proxy:');
 try {
-  const viteConfig = fs.readFileSync('./vite.config.js', 'utf8');
+  const viteConfig = fs.readFileSync(path.join(__dirname,'./vite.config.js'), 'utf8');
   if (viteConfig.includes('proxy') && viteConfig.includes('localhost:3000')) {
     console.log('✅ Proxy configurado para localhost:3000');
   } else {
@@ -40,7 +42,7 @@ try {
 
 console.log('\n📦 Verificando package.json:');
 try {
-  const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+  const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname,'./package.json'), 'utf8'));
   
   // Verificar dependências essenciais
   const essentialDeps = ['axios', 'react', 'react-router-dom'];
@@ -64,7 +66,7 @@ try {
 
 console.log('\n🌐 Configuração da API:');
 try {
-  const apiConfig = fs.readFileSync('./src/services/api.js', 'utf8');
+  const apiConfig = fs.readFileSync(path.join(__dirname,'./src/services/api.js'), 'utf8');
   if (apiConfig.includes("baseURL: '/api'")) {
     console.log('✅ API configurada para usar proxy (/api)');
   } else {

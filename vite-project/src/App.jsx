@@ -14,9 +14,31 @@ import { DataProvider } from "./context/DataContext";
 import { AuthProvider } from "./context/AuthContext";
 import ConfirmacaoDeletar from "./components/ui/paginas/ConfirmacaoDeletar";
 import TelaFlutuante from "./components/ui/TelaFlutuante";
-import BackendConnectionTest from "./components/BackendConnectionTest";
+// import BackendConnectionTest from "./components/BackendConnectionTest"; // opcional
 import React, { useState } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
+
+// Extração das rotas para facilitar testes (AppRoutes pode ser importado isoladamente)
+export function AppRoutes({ imagensCarrossel }) {
+  return (
+    <Routes>
+      {/* Rotas públicas */}
+      <Route path="/" element={<Tela_Home imagensCarrossel={imagensCarrossel} />} />
+      <Route path="/login" element={<Teladelogin />} />
+      <Route path="/todas-doacoes" element={<TodasDoacoes />} />
+      <Route path="/realocacao-listagem" element={<RealocacaoListagem />} />
+      {/* Rotas protegidas - requerem autenticação */}
+      <Route path="/edit-doacoes" element={<ProtectedRoute><EditDoacoes /></ProtectedRoute>} />
+      <Route path="/home-realocacao" element={<ProtectedRoute><HomeRealocacao /></ProtectedRoute>} />
+      <Route path="/solicitar-doacao" element={<ProtectedRoute><SolicitarDoacao /></ProtectedRoute>} />
+      <Route path="/postagem-realocacao" element={<ProtectedRoute><PostagemRealocacao /></ProtectedRoute>} />
+      <Route path="/home-ong" element={<ProtectedRoute><TelahomeONG imagensCarrossel={imagensCarrossel} /></ProtectedRoute>} />
+      <Route path="/confirmar-encerrar-solicitacao" element={<ProtectedRoute><ConfirmacaoEncerrarSolicitacao /></ProtectedRoute>} />
+      <Route path="/confirmar-encerrar-realocacao" element={<ProtectedRoute><ConfirmacaoEncerrarRealocacao /></ProtectedRoute>} />
+      <Route path="/confirmar-deletar" element={<ProtectedRoute><ConfirmacaoDeletar /></ProtectedRoute>} />
+    </Routes>
+  );
+}
 
 function App() {
   // Imagens do carrossel (separadas)
@@ -28,9 +50,7 @@ function App() {
 
     const [telaFlutuanteVisible, setTelaFlutuanteVisible] = useState(false);
 
-    const abrirTelaFlutuante = () => {
-      setTelaFlutuanteVisible(true);
-    };
+  // const abrirTelaFlutuante = () => { setTelaFlutuanteVisible(true); } // (desativado - não usado)
 
     const fecharTelaFlutuante = () => {
       setTelaFlutuanteVisible(false);
@@ -40,55 +60,7 @@ function App() {
     <AuthProvider>
       <DataProvider>
         <BrowserRouter>
-        <Routes>
-          {/* Rotas públicas */}
-          <Route path="/" element={<Tela_Home imagensCarrossel={imagensCarrossel} />} />
-          <Route path="/login" element={<Teladelogin />} />
-          <Route path="/todas-doacoes" element={<TodasDoacoes />} />
-          <Route path="/realocacao-listagem" element={<RealocacaoListagem />} />
-          
-          {/* Rotas protegidas - requerem autenticação */}
-          <Route path="/edit-doacoes" element={
-            <ProtectedRoute>
-              <EditDoacoes />
-            </ProtectedRoute>
-          } />
-          <Route path="/home-realocacao" element={
-            <ProtectedRoute>
-              <HomeRealocacao />
-            </ProtectedRoute>
-          } />
-          <Route path="/solicitar-doacao" element={
-            <ProtectedRoute>
-              <SolicitarDoacao />
-            </ProtectedRoute>
-          } />
-          <Route path="/postagem-realocacao" element={
-            <ProtectedRoute>
-              <PostagemRealocacao />
-            </ProtectedRoute>
-          } />
-          <Route path="/home-ong" element={
-            <ProtectedRoute>
-              <TelahomeONG imagensCarrossel={imagensCarrossel} />
-            </ProtectedRoute>
-          } />
-          <Route path="/confirmar-encerrar-solicitacao" element={
-            <ProtectedRoute>
-              <ConfirmacaoEncerrarSolicitacao />
-            </ProtectedRoute>
-          } />
-          <Route path="/confirmar-encerrar-realocacao" element={
-            <ProtectedRoute>
-              <ConfirmacaoEncerrarRealocacao />
-            </ProtectedRoute>
-          } />
-          <Route path="/confirmar-deletar" element={
-            <ProtectedRoute>
-              <ConfirmacaoDeletar />
-            </ProtectedRoute>
-          } />
-        </Routes>
+  <AppRoutes imagensCarrossel={imagensCarrossel} />
 
         <TelaFlutuante 
           isVisible={telaFlutuanteVisible}
@@ -96,8 +68,8 @@ function App() {
           nomeONG="Instituto Beneficente"
         />
         
-        {/* Componente para monitorar conexão com backend - TEMPORARIAMENTE DESABILITADO */}
-        {/* <BackendConnectionTest /> */}
+  {/* Componente para monitorar conexão com backend - reative se necessário */}
+  {/* <BackendConnectionTest /> */}
         </BrowserRouter>
       </DataProvider>
     </AuthProvider>

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { doacoesService } from '../services/doacoesService';
-import { realocacoesService } from '../services/realocacoesService';
+// Usar alias para facilitar mocking consistente nos testes
+import { doacoesService } from '@/services/doacoesService';
+import { realocacoesService } from '@/services/realocacoesService';
 
 // Criar o Context
 const DataContext = createContext();

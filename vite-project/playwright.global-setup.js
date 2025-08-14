@@ -7,7 +7,7 @@ export default async () => {
     // Também remove símbolo interno se existir
     const sym = Object.getOwnPropertySymbols(globalThis).find(s => String(s).includes('$$jest-matchers-object'));
     if (sym) {
-      try { delete globalThis[sym]; } catch {}
+      try { delete globalThis[sym]; } catch (e) { /* silencioso: limpeza best-effort */ }
     }
-  } catch {}
+  } catch (e) { /* silencioso: ambiente pode não ter symbol */ }
 };

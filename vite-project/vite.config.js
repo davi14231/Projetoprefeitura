@@ -19,7 +19,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+  // import.meta.dirname é suportado a partir do Node 20; fallback manual
+  "@": path.resolve(typeof import.meta.dirname !== 'undefined' ? import.meta.dirname : new URL('.', import.meta.url).pathname, "./src"),
     },
   },
 })

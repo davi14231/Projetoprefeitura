@@ -49,6 +49,8 @@ const BackendConnectionTest = () => {
   };
 
   useEffect(() => {
+    // Intencional: executa apenas uma vez ao montar
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     testConnection();
   }, []);
 

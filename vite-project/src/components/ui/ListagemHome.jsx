@@ -1,8 +1,7 @@
 import { CardHome } from "@/components/ui/CardHome";
-import { useState } from "react";
 
 function ListagemHome({ itens = [], carrosselId = 'carousel-container', onCardClick }) {
-  const [scrollPosition, setScrollPosition] = useState(0);
+  // scrollPosition removido: não era utilizado para lógica de UI
 
   // Verificar se itens é um array válido
   if (!Array.isArray(itens)) {
