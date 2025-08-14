@@ -106,15 +106,15 @@ export default function DetalheDoacao({ dados, onClose }) {
               </button>
             </div>
 
-            {/* Email centralizado na área da descrição */}
+            {/* Email centralizado na área da descrição (não clicável, mesma cor) */}
             <div className="lg:col-span-2 flex justify-center">
-              <a 
-                href={`mailto:${dados.email || 'contato@example.com'}`}
+              <div 
                 className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition"
+                aria-label="Email de contato"
               >
                 <Mail size={18} />
                 <span className="font-medium">{dados.email || 'Sem email cadastrado'}</span>
-              </a>
+              </div>
             </div>
 
             {/* Telefone alinhado à direita */}

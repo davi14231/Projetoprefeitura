@@ -149,8 +149,21 @@ export default function TelahomeONG({ imagensCarrossel }) {
         <BlocoDoador />
         <section className="py-12 bg-gray-50">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-2 text-gray-900">Necessidades</h2>
-            <p className="text-center text-gray-500 mb-20 text-base">ONGs que precisam da sua doação agora.</p>
+            {/* Cabeçalho da seção alinhado conforme o layout: título + descrição à esquerda e botão à direita */}
+            <div className="w-full max-w-4xl mx-auto mb-8">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold text-gray-900">Necessidades</h2>
+                <p className="text-gray-500 text-sm">ONGs que precisam da sua doação agora</p>
+              </div>
+              <div className="flex justify-center mt-4">
+                <button
+                  onClick={() => navigate('/todas-doacoes')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md shadow-sm transition-colors"
+                >
+                  Ver Todas as Necessidades
+                </button>
+              </div>
+            </div>
 
             {/* Carrossel 1: Prestes a Vencer */}
             <div className="mb-12">
