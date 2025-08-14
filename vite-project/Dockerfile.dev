@@ -1,0 +1,20 @@
+## Desenvolvimento: imagem com hot-reload para Vite
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Instalar dependências primeiro para aproveitar cache
+COPY package*.json ./
+RUN npm install
+
+# Copiar restante do código
+COPY . .
+
+# Expor porta padrão do Vite
+EXPOSE 5173
+
+ENV HOST=0.0.0.0 \
+    PORT=5173 \
+    NODE_ENV=development
+
+CMD ["npm","run","dev","--","--host","0.0.0.0"]
