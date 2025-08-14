@@ -23,26 +23,18 @@ export const doacoesService = {
     }
   },
 
-  // 🔍 Listar doações prestes a vencer (usa endpoint dedicado se existir; fallback tentativo)
+  // 🔍 Listar doações prestes a vencer (SOMENTE endpoint oficial)
   async listarDoacoesPrestesVencer() {
-    // Tentamos endpoints prováveis e, se não existirem, deixamos o caller decidir fallback local
-    const caminhos = ['/doacoes/prestes-vencer', '/doacoes/prestes-a-vencer'];
-    for (const path of caminhos) {
-      try {
-        const response = await api.get(path);
-        if (Array.isArray(response.data) && response.data.length > 0) {
-          return mapDoacoesFromBackend(response.data);
-        }
-      } catch (err) {
-        // Silencia erros 400/404 para evitar poluir console – apenas continua.
-        const status = err?.response?.status;
-        if (![400,404].includes(status)) {
-          // Para outros status (500, etc.) podemos ainda assim seguir para fallback silencioso.
-        }
+    try {
+      const response = await api.get('/doacoes/prestes-a-vencer');
+      if (Array.isArray(response.data)) {
+        return mapDoacoesFromBackend(response.data);
       }
+      return [];
+    } catch (err) {
+      // Sem fallback local aqui; caller decide o que exibir se vier vazio
+      return [];
     }
-    // Retorna lista vazia para sinalizar necessidade de fallback local.
-    return [];
   },
 
   // 🔍 Listar minhas doações ativas (ONG logada)

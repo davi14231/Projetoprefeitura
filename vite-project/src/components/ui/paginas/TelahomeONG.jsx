@@ -171,7 +171,11 @@ export default function TelahomeONG({ imagensCarrossel }) {
                 <span className="text-red-500 text-xl"><svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
                 <span className="font-bold text-lg">Prestes a Vencer</span>
               </div>
-              <ListagemHome itens={(doacoesPrestesVencer && doacoesPrestesVencer.length>0) ? doacoesPrestesVencer : doacoes} carrosselId="carousel-prestes" onCardClick={handleOpenDetalheModal} />
+              {doacoesPrestesVencer && doacoesPrestesVencer.length > 0 ? (
+                <ListagemHome itens={doacoesPrestesVencer} carrosselId="carousel-prestes" onCardClick={handleOpenDetalheModal} />
+              ) : (
+                <div className="text-sm text-gray-500 italic px-2">Nenhum item prestes a vencer.</div>
+              )}
             </div>
 
             {/* Carrossel 2: Todas as Necessidades */}
