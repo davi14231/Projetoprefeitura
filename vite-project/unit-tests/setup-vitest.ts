@@ -1,6 +1,7 @@
 // Vitest setup isolado fora de src para não ir ao bundle
-// Matcher mínimo
+// Matchers adicionais (jest-dom) + matcher mínimo custom
 import { expect } from 'vitest';
+import '@testing-library/jest-dom/vitest';
 
 expect.extend({
   toBeInTheDocument(received) {
