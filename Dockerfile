@@ -16,23 +16,32 @@ FROM nginx:1.27-alpine AS runner
 LABEL maintainer="Projeto Prefeitura" \
       description="Frontend Vite em produção"
 
-RUN rm /etc/nginx/conf.d/default.conf && echo '\
-server {\n\
-  listen 80;\n\
-  server_name _;\n\
-  root /usr/share/nginx/html;\n\
-  index index.html;\n\
-  gzip on;\n\
-  gzip_types text/plain text/css application/javascript application/json image/svg+xml;\n\
-  location / {\n\
-    try_files $uri /index.html;\n\
-  }\n\
-  # Proxy opcional para backend:\n\
-  # location /api/ {\n\
-  #   proxy_pass http://backend:3004/api/;\n\
-  #   proxy_set_header Host $host;\n\
-  # }\n\
-}' > /etc/nginx/conf.d/app.conf
+# Criar configuração do Nginx corretamente
+RUN rm /etc/nginx/conf.d/default.conf
+COPY <<EOF /etc/nginx/conf.d/app.conf
+server {
+  listen 80;
+  server_name _;
+  root /usr/share/nginx/html;
+  index index.html;
+  
+  gzip on;
+  gzip_types text/plain text/css application/javascript application/json image/svg+xml;
+  
+  location / {
+    try_files \$uri /index.html;
+  }
+  
+  # Proxy para backend
+  location /api/ {
+    proxy_pass http://backend:3004/;
+    proxy_set_header Host \$host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto \$scheme;
+  }
+}
+EOF
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
@@ -40,4 +49,4 @@ EXPOSE 80
 
 ENV NODE_ENV=production
 
-CMD ["nginx","-g","daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
