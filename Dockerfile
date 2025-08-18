@@ -33,7 +33,7 @@ server {\n\
   }\n\
   # Proxy opcional para backend:\n\
   # location /api/ {\n\
-  #   proxy_pass http://backend:3000/api/;\n\
+  #   proxy_pass http://localhost:3004/api/;\n\
   #   proxy_set_header Host $host;\n\
   # }\n\
 }' > /etc/nginx/conf.d/app.conf
