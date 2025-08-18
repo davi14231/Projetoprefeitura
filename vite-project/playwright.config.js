@@ -24,7 +24,7 @@ export default defineConfig({
 				timeout: 120_000,
 				// Garante que a build use a API correta durante E2E
 				env: {
-					VITE_API_URL: process.env.PW_VITE_API_URL || 'http://localhost:3000'
+					VITE_API_URL: process.env.PW_VITE_API_URL || 'http://localhost:3004'
 				}
 			},
 	projects: [

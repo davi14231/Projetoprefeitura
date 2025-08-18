@@ -11,7 +11,7 @@ export default defineConfig({
     proxy: {
       // Proxy para contornar CORS - redireciona /api/* para backend:3004/*
       '/api': {
-        target: 'http://localhost:3004',
+        target: 'http://backend:3004',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },

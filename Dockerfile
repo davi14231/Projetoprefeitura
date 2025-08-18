@@ -1,6 +1,3 @@
-## Produção: build estático + Nginx (multi-stage)
-
-# Etapa 1: dependências e build
 FROM node:20-alpine AS build
 WORKDIR /app
 
@@ -15,7 +12,6 @@ ENV VITE_API_URL=$VITE_API_URL \
 
 RUN npm run build
 
-# Etapa 2: imagem final enxuta
 FROM nginx:1.27-alpine AS runner
 LABEL maintainer="Projeto Prefeitura" \
       description="Frontend Vite em produção"
@@ -33,7 +29,7 @@ server {\n\
   }\n\
   # Proxy opcional para backend:\n\
   # location /api/ {\n\
-  #   proxy_pass http://localhost:3004/api/;\n\
+  #   proxy_pass http://backend:3004/api/;\n\
   #   proxy_set_header Host $host;\n\
   # }\n\
 }' > /etc/nginx/conf.d/app.conf
