@@ -71,7 +71,10 @@ describe('NetworkDiagnostic', () => {
     fireEvent.click(screen.getByRole('button', { name: /Testar Conexão/i }));
     await waitFor(() => {
       // Deve registrar falhas para todas as baseUrls
-      expect(screen.getByText(/http:\/\/localhost:3000: general boom/)).toBeInTheDocument();
+      expect(screen.getByText(/\/api: general boom/)).toBeInTheDocument();
+      expect(screen.getByText(/http:\/\/localhost:3001: general boom/)).toBeInTheDocument();
+      expect(screen.getByText(/http:\/\/localhost:8000: general boom/)).toBeInTheDocument();
+      expect(screen.getByText(/http:\/\/localhost:5000: general boom/)).toBeInTheDocument();
       expect(screen.getByText(/CORS problema: general boom/)).toBeInTheDocument();
     });
   });

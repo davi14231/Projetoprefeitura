@@ -94,7 +94,17 @@ export const DataProvider = ({ children }) => {
       setDoacoesPrestesVencer(Array.isArray(apiLista) ? apiLista : []);
     } catch (error) {
       console.error('Erro ao carregar doações prestes a vencer:', error);
-      setDoacoesPrestesVencer([]);
+      // Fallback local: filtra doações já carregadas que vencem em até 3 dias
+      const agora = Date.now();
+      const tresDiasMs = 3 * 24 * 60 * 60 * 1000;
+      const getValidade = d => d.validade_raw || d.prazo || d.prazo_necessidade;
+      const fallback = doacoes.filter(d => {
+        const validade = getValidade(d);
+        if (!validade) return false;
+        const diff = new Date(validade).getTime() - agora;
+        return diff >= 0 && diff <= tresDiasMs;
+      });
+      setDoacoesPrestesVencer(fallback);
     }
   };
 

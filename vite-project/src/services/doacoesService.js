@@ -25,16 +25,19 @@ export const doacoesService = {
 
   // 🔍 Listar doações prestes a vencer (SOMENTE endpoint oficial)
   async listarDoacoesPrestesVencer() {
-    try {
-      const response = await api.get('/doacoes/prestes-a-vencer');
-      if (Array.isArray(response.data)) {
-        return mapDoacoesFromBackend(response.data);
+    // Tenta múltiplos endpoints e retorna a primeira lista válida mapeada
+    const endpoints = ['/doacoes/prestes-a-vencer', '/doacoes/prestes-vencer'];
+    for (const ep of endpoints) {
+      try {
+        const response = await api.get(ep);
+        if (Array.isArray(response.data)) {
+          return mapDoacoesFromBackend(response.data);
+        }
+      } catch (err) {
+        // Continua para o próximo endpoint
       }
-      return [];
-    } catch (err) {
-      // Sem fallback local aqui; caller decide o que exibir se vier vazio
-      return [];
     }
+    return [];
   },
 
   // 🔍 Listar minhas doações ativas (ONG logada)
