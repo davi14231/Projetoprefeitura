@@ -88,6 +88,7 @@ export function SolicitarDoacao({ onClose, editData = null, editId = null }) {
 
   function handleInputChange(e) {
     const { name, value } = e.target;
+    console.log('🔍 DEBUG - Campo alterado:', name, '→', value); // Debug
     if (name === 'whatsapp') {
       const parsed = parseWhatsappInput(value);
       setFormData(prev => ({ ...prev, whatsapp: parsed.digits, whatsappDisplay: parsed.display }));
@@ -104,12 +105,19 @@ export function SolicitarDoacao({ onClose, editData = null, editId = null }) {
       // Criar preview da imagem
       const reader = new FileReader();
       reader.onload = (e) => {
+        console.log('📸 DEBUG - Preview criado, tamanho:', e.target.result.length);
         setImagePreview(e.target.result);
         setFormData(prev => ({
           ...prev,
           imageUrl: e.target.result
         }));
       };
+      
+      reader.onerror = (error) => {
+        console.error('❌ Erro ao ler arquivo:', error);
+        alert('❌ Erro ao processar a imagem. Tente outro arquivo.');
+      };
+      
       reader.readAsDataURL(file);
     }
   }
@@ -125,6 +133,8 @@ export function SolicitarDoacao({ onClose, editData = null, editId = null }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    
+    console.log('🔍 DEBUG - FormData completo no submit:', formData); // Debug
     
     // Validação básica
     if (!formData.titulo || !formData.categoria || !formData.email || !formData.whatsapp || !formData.descricao) {
@@ -143,23 +153,8 @@ export function SolicitarDoacao({ onClose, editData = null, editId = null }) {
       let finalImageUrl = formData.imageUrl;
       
       if (imageFile) {
-        console.log('📤 Fazendo upload da imagem...');
         finalImageUrl = await uploadService.uploadImage(imageFile);
-        console.log('✅ URL da imagem:', finalImageUrl);
-      } else if (!finalImageUrl) {
-        // Se não há imagem enviada, usar uma imagem padrão baseada na categoria
-        const defaultImages = {
-          "Roupas e Calçados": "/imagens/roupas.jpg",
-          "Materiais Educativos e Culturais": "/imagens/MatEsc.jpg",
-          "Saúde e Higiene": "/imagens/med.jpg",
-          "Utensílios Gerais": "/imagens/alimentos.jpg",
-          "Itens de Inclusão e Mobilidade": "/imagens/outros.jpg",
-          "Eletrodomésticos e Móveis": "/imagens/moveis.jpg",
-          "Itens Pet": "/imagens/outros.jpg",
-          "Eletrônicos": "/imagens/Laptops.jpg",
-          "Outros": "/imagens/outros.jpg"
-        };
-        finalImageUrl = defaultImages[formData.categoria] || defaultImages["Outros"];
+       
       }
 
     // Calcular data final/prazo_necessidade.
@@ -195,7 +190,7 @@ export function SolicitarDoacao({ onClose, editData = null, editId = null }) {
       email: formData.email,
   // Enviar somente dígitos (sem formatação). Adapte para incluir 55 se backend exigir.
   whatsapp: formData.whatsapp,
-      urgencia: (formData.urgencia || "BAIXA").toUpperCase(), // Backend espera MAIÚSCULO
+      urgencia: (formData.urgencia || "ALTA").toUpperCase(), // Backend espera MAIÚSCULO
       prazo: dataFinal, // Será convertido para prazo_necessidade na API
       descricao: formData.descricao,
       imageUrl: finalImageUrl // Será mapeado para url_imagem na API
@@ -249,13 +244,16 @@ function handleBackdropClick(e) {
               {/* Imagem */}
               <div className="col-span-1">
                 <Label className="mb-2 block text-base font-medium">Imagem</Label>
+                <p className="text-xs text-gray-500 mb-2">
+                  ✅ Formatos: JPG, PNG, WebP, AVIF • 📏 Máximo: 5MB
+                </p>
                 {!imagePreview ? (
                   <label className="flex flex-col items-center justify-center border-2 border-dashed border-neutral-300 rounded-lg h-36 cursor-pointer bg-neutral-50 hover:bg-neutral-100 transition-colors">
                     <Upload className="w-9 h-9 text-neutral-400 mb-2" />
                     <span className="text-neutral-400 text-sm">Clique para upload</span>
                     <input 
                       type="file" 
-                      accept="image/*" 
+                      accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/avif,image/bmp" 
                       onChange={handleImageUpload}
                       className="hidden" 
                     />
@@ -333,9 +331,9 @@ function handleBackdropClick(e) {
                     value={formData.urgencia}
                     onChange={handleInputChange}
                   >
-                    <option value="ALTA">Alta</option>
-                    <option value="MEDIA">Média</option>
                     <option value="BAIXA">Baixa</option>
+                    <option value="MEDIA">Média</option>
+                    <option value="ALTA">Alta</option>
                   </select>
                 </div>
                 <div>
