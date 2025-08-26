@@ -92,7 +92,7 @@ export const doacoesService = {
         titulo: dadosDoacao.titulo,
         descricao: dadosDoacao.descricao,
         tipo_item: dadosDoacao.categoria, // frontend usa 'categoria', backend 'tipo_item'
-        urgencia: dadosDoacao.urgencia,
+        urgencia: dadosDoacao.urgencia?.toUpperCase() || 'BAIXA', // Garantir maiúsculo igual editarDoacao
         quantidade: parseInt(dadosDoacao.quantidade),
         email: dadosDoacao.email,
         whatsapp: dadosDoacao.whatsapp,
@@ -101,6 +101,8 @@ export const doacoesService = {
       };
       
       console.log('📦 Dados formatados para backend:', dadosFormatados);
+      console.log('🔍 DEBUG - Urgência original:', dadosDoacao.urgencia);
+      console.log('🔍 DEBUG - Urgência formatada:', dadosFormatados.urgencia);
       
       const response = await api.post('/doacoes', dadosFormatados);
       console.log('✅ Doação criada:', response.data);
