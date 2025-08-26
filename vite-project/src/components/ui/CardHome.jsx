@@ -42,18 +42,17 @@ export function CardHome({
           className="w-full h-48 object-cover rounded-t-2xl m-0"
         />
         {/* Badges sobre a imagem */}
-        <div className="absolute top-4 left-4 flex gap-2 z-10">
-          <span className={`${urgenciaColor} text-xs px-3 py-1 rounded-full font-semibold shadow-sm drop-shadow`}>            
-            {urgencia?.charAt(0).toUpperCase() + urgencia?.slice(1).toLowerCase()}
-          </span>
-          <span className="bg-white/90 text-gray-800 text-xs px-3 py-1 rounded-full font-semibold shadow-sm border border-gray-200">
-            {categoria}
-          </span>
-        </div>
-        <div className="absolute top-4 right-4 z-10">
-          <span className="bg-white/90 rounded-full p-2 shadow border border-blue-100 flex items-center justify-center">
-            <Clock className="w-5 h-5 text-blue-500" />
-          </span>
+        <div className="absolute top-4 left-4 z-10">
+        <span className={`${urgenciaColor} text-xs px-3 py-1 rounded-full font-semibold shadow-sm drop-shadow`}>            
+          {urgencia?.charAt(0).toUpperCase() + urgencia?.slice(1).toLowerCase()}
+        </span>
+      </div>
+
+      {/* Badge de categoria no canto superior direito */}
+      <div className="absolute top-4 right-4 z-10">
+        <span className="bg-white/90 text-gray-800 text-xs px-3 py-1 rounded-full font-semibold shadow-sm border border-gray-200">
+          {categoria}
+        </span>
         </div>
       </div>
       <CardContent className="py-2 px-4 flex-1 flex flex-col">
