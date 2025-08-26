@@ -44,13 +44,6 @@ export function Teladelogin() {
     // Exemplo: window.location.href = "/cadastro";
   };
 
-  // Função para testar com credenciais do .env
-  const handleTestLogin = () => {
-    setEmail('ong1@gmail.com');
-    setSenha('123456');
-    console.log('🧪 Credenciais de teste carregadas do .env');
-  };
-
   return (
     <div className="bg-sky-100 min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -143,21 +136,7 @@ export function Teladelogin() {
                   Criar Conta
                 </button>
               </div>
-              
-              {/* Botão de teste */}
-              <div className="text-center mt-4">
-                <button
-                  type="button"
-                  onClick={handleTestLogin}
-                  className="text-xs text-gray-500 hover:text-gray-700 px-3 py-1 border border-gray-300 rounded hover:bg-gray-50"
-                >
-                  🧪 Usar credenciais de teste
-                </button>
-              </div>
             </form>
-            
-            {/* Componente de diagnóstico */}
-            <NetworkDiagnostic />
           </CardContent>
         </Card>
       </div>
