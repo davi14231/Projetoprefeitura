@@ -245,7 +245,7 @@ function handleBackdropClick(e) {
               <div className="col-span-1">
                 <Label className="mb-2 block text-base font-medium">Imagem</Label>
                 <p className="text-xs text-gray-500 mb-2">
-                  ✅ Formatos: JPG, PNG, WebP, AVIF • 📏 Máximo: 5MB
+                  Formatos: JPG, PNG, WebP, AVIF •  Máximo: 5MB
                 </p>
                 {!imagePreview ? (
                   <label className="flex flex-col items-center justify-center border-2 border-dashed border-neutral-300 rounded-lg h-36 cursor-pointer bg-neutral-50 hover:bg-neutral-100 transition-colors">
