@@ -394,9 +394,6 @@ function handleBackdropClick(e) {
                 value={formData.descricao}
                 onChange={handleInputChange}
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Se não inserir uma imagem, usaremos uma imagem padrão da categoria
-              </p>
             </div>
 
             {/* Buttons */}

@@ -157,7 +157,7 @@ export default function Tela_Home({ imagensCarrossel }) {
               </div>
               <div className="flex justify-center mt-4">
                 <button
-                  onClick={() => navigate('/todas-doacoes')}
+                  onClick={() => navigate('/todas-doacoes?from=home')}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-md shadow-sm transition-colors"
                 >
                   Ver Todas as Necessidades

@@ -19,10 +19,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Verificar se há um usuário logado ao carregar a aplicação
     const checkAuth = () => {
+      console.log('🔍 AuthContext - Verificando autenticação...');
       if (authService.isAuthenticated()) {
         const userData = authService.getCurrentUser();
+        console.log('⚠️ USUÁRIO JÁ LOGADO DETECTADO:', userData);
+        console.log('🍪 Token encontrado:', authService.getToken());
         setUser(userData);
         setIsAuthenticated(true);
+      } else {
+        console.log('✅ Nenhum usuário logado automaticamente');
       }
       setLoading(false);
     };

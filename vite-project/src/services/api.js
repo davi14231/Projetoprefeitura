@@ -18,7 +18,10 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = Cookies.get('auth_token');
+    console.log('🍪 DEBUG - Token encontrado:', token ? `${token.substring(0, 20)}...` : 'NENHUM');
+    
     if (token) {
+      console.log('🔐 DEBUG - Adicionando token na requisição para:', config.url);
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -36,7 +39,11 @@ api.interceptors.response.use(
   (error) => {
     // Remover redirecionamento automático que causa loops
     if (error.response?.status === 401) {
+      const badToken = Cookies.get('auth_token');
       console.log('❌ Token inválido ou expirado');
+      console.log('🗑️ DEBUG - Token corrompido sendo removido:', badToken ? `${badToken.substring(0, 20)}...` : 'NENHUM');
+      console.log('📍 DEBUG - URL que falhou:', error.config?.url);
+      
       Cookies.remove('auth_token');
       Cookies.remove('user_data');
       // Deixar o componente decidir o redirecionamento
