@@ -6,8 +6,8 @@ import { defineConfig } from "vite"
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  base: "/hubdedoacao/",
   server: {
-    basename: '/hubdedoacao',
     port: 8004,
     proxy: {
       // Proxy para contornar CORS - redireciona /api/* para backend:3004/*
