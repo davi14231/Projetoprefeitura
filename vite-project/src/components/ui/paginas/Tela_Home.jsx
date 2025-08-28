@@ -72,37 +72,37 @@ export default function Tela_Home({ imagensCarrossel }) {
       { 
         id: 1, 
         titulo: "Roupas e Calçados", 
-        img: "/imagens/roupas.jpg", 
+        img: "imagens/roupas.jpg", 
         categoria: "Roupas e Calçados" 
       },
       { 
         id: 2, 
         titulo: "Eletrônicos", 
-        img: "/imagens/Laptops.jpg", 
+        img: "imagens/Laptops.jpg", 
         categoria: "Eletrônicos" 
       },
       { 
         id: 3, 
         titulo: "Eletrodomésticos e Móveis", 
-        img: "/imagens/moveis.jpg", 
+        img: "imagens/moveis.jpg", 
         categoria: "Eletrodomésticos e Móveis" 
       },
       { 
         id: 4, 
         titulo: "Utensílios Gerais", 
-        img: "/imagens/ferramentas.jpg", 
+        img: "imagens/ferramentas.jpg", 
         categoria: "Utensílios Gerais" 
       },
       { 
         id: 5, 
         titulo: "Materiais Educativos e Culturais", 
-        img: "/imagens/alimentos.jpg", 
+        img: "imagens/alimentos.jpg", 
         categoria: "Materiais Educativos e Culturais" 
       },
       { 
         id: 6, 
         titulo: "Outros", 
-        img: "/imagens/outros.jpg", 
+        img: "imagens/outros.jpg", 
         categoria: "Outros" 
       }
     ];

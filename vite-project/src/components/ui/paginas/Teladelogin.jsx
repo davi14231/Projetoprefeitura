@@ -50,7 +50,7 @@ export function Teladelogin() {
         {/* Logo Recife */}
         <div className="text-center mb-8">
           <img 
-            src="/imagens/logo_recife.png" 
+            src="imagens/logo_recife.png" 
             alt="Logo Recife" 
             className="mx-auto h-16 w-auto"
           />

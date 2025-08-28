@@ -8,7 +8,7 @@ export function HeaderTelainicial() {
         <div className="flex items-center" style={{minWidth: '180px'}}>
           <Link to="/" className="flex items-center gap-2 cursor-pointer">
             <img 
-              src="/imagens/logo-recife.png" 
+              src="imagens/logo-recife.png" 
               alt="Recife Prefeitura" 
               className="h-10 w-auto"
             />

@@ -13,7 +13,7 @@ export function Footer() {
         {/* Logo e slogan */}
         <div className="min-w-[220px] flex flex-col gap-2">
           <img
-            src="/imagens/logo-recife.png"
+            src="imagens/logo-recife.png"
             alt="Recife Prefeitura"
             className="w-36 mb-2"
           />

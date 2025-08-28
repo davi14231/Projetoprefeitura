@@ -38,7 +38,7 @@ export function BarraPesquisa({ placeholder = "Pesquisar...", className = "" }) 
       <div className="relative">
         <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
           <img
-            src="/imagens/lupa.png"
+            src="imagens/lupa.png"
             alt="Buscar"
             className="w-5 h-5 opacity-60"
             draggable={false}

@@ -183,7 +183,7 @@ export default function TodasDoacoes() {
 				<div className="bg-white rounded-xl shadow p-4 flex flex-col gap-4 mb-8 max-w-[900px] mx-auto border">
 					<span className="flex items-center gap-2 text-gray-700 font-semibold text-[1rem]">
 						<img
-							src="/imagens/Emoji Filtro.png"
+							src="imagens/Emoji Filtro.png"
 							alt="Filtro"
 							className="w-5 h-5"
 							draggable={false}

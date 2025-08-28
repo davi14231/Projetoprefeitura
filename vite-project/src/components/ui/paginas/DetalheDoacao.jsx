@@ -88,12 +88,12 @@ export default function DetalheDoacao({ dados, onClose, hidePrazo = false }) {
               {dados.categoria}
             </span>
             <span className="px-3 py-1 rounded-full font-medium text-sm bg-blue-50 text-blue-600 border border-blue-200 flex items-center gap-1">
-              <img src="/imagens/quant.jpg" alt="Quantidade" className="w-4 h-4" />
+              <img src="imagens/quant.jpg" alt="Quantidade" className="w-4 h-4" />
               {dados.quantidade || "5"}
             </span>
             {!hidePrazo && (
               <span className="px-3 py-1 rounded-full font-medium text-sm bg-orange-50 text-orange-600 border border-orange-200 flex items-center gap-1">
-                <img src="/imagens/relogio.jpg" alt="Tempo" className="w-4 h-4" />
+                <img src="imagens/relogio.jpg" alt="Tempo" className="w-4 h-4" />
                 {labelDias}
               </span>
             )}

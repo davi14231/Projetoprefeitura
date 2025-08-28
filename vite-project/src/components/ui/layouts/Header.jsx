@@ -42,7 +42,7 @@ export function Header() {
           {/* Logo */}
           <Link to="/home-ong" className="flex items-center min-w-[140px] cursor-pointer">
             <img
-              src="/imagens/logo-recife.png"
+              src="imagens/logo-recife.png"
               alt="Recife Prefeitura"
               className="h-10 w-auto"
               draggable={false}
@@ -54,7 +54,7 @@ export function Header() {
             <div className="relative w-full max-w-md" ref={searchRef}>
               <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <img
-                  src="/imagens/lupa.png"
+                  src="imagens/lupa.png"
                   alt="Buscar"
                   className="w-5 h-5 opacity-60"
                   draggable={false}
