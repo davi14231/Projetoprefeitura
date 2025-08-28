@@ -2,8 +2,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 // Base da API configurável por ambiente
-// Em dev, use o proxy do Vite com '/api'; em Docker/produção pode vir de VITE_API_URL
-const API_BASE_URL = import.meta.env?.VITE_API_URL || '/api';
+// Em dev, use o proxy do Vite com '/api'; em Docker/produção use '/hubdedoacaoback'
+const API_BASE_URL = import.meta.env?.VITE_API_URL || '/hubdedoacaoback';
 
 // Criar instância do axios
 const api = axios.create({

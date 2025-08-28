@@ -11,6 +11,9 @@ RUN npm install
 # Copiar código fonte
 COPY vite-project/ ./
 
+# Definir variável de ambiente da API para o build
+ENV VITE_API_URL=/hubdedoacaoback
+
 # Build da aplicação para produção
 RUN npm run build
 
