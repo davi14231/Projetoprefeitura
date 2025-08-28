@@ -12,7 +12,7 @@ export default defineConfig({
     proxy: {
       // Proxy para contornar CORS - redireciona /api/* para backend:3004/*
       '/api': {
-        target: 'http://vm-cinboraimpactar2.cin.ufpe.br',
+        target: 'http://vm-cinboraimpactar2.cin.ufpe.br/hubdedoacaoback',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },
