@@ -1,4 +1,4 @@
-import path from "path"
+import path, { basename } from "path"
 import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
@@ -7,11 +7,12 @@ import { defineConfig } from "vite"
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
+    basename: '/hubdedoacao',
     port: 8004,
     proxy: {
       // Proxy para contornar CORS - redireciona /api/* para backend:3004/*
       '/api': {
-        target: 'http://backend:3004',
+        target: 'http://vm-cinboraimpactar2.cin.ufpe.br',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },

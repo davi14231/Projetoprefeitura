@@ -10,7 +10,7 @@ export default defineConfig({
     port: 8004,
     proxy: {
       '/api': {
-        target: 'http://localhost:3004',
+        target: 'http://vm-cinboraimpactar2.cin.ufpe.br',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

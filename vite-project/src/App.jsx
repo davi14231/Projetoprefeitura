@@ -59,7 +59,7 @@ function App() {
   return (
     <AuthProvider>
       <DataProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/hubdedoacao">
   <AppRoutes imagensCarrossel={imagensCarrossel} />
 
         <TelaFlutuante 
